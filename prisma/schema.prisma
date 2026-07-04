@@ -1,0 +1,264 @@
+// SportSphere — Complete Database Schema
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  phone     String?
+  password  String
+  avatar    String?
+  userType  String   @default("fan") // admin, athlete, team, academy, brand, corporate, fan
+  isActive  Boolean  @default(true)
+  isVerified Boolean @default(false)
+  aiPreferences String? // JSON string
+  metadata  String? // JSON string
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Service {
+  id               String   @id @default(cuid())
+  title            String
+  tagline          String
+  icon             String?
+  sortOrder        Int      @default(0)
+  shortDescription String
+  overview         String
+  forWhomTitle     String
+  forWhomBody      String
+  bullets          String   // JSON string
+  howItWorks       String   // JSON string
+  ctaLabel         String
+  hubSlug          String?
+  accentColor      String   @default("#d4af37")
+  isActive         Boolean  @default(true)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model Athlete {
+  id          String   @id @default(cuid())
+  name        String
+  sport       String
+  level       String
+  city        String
+  country     String   @default("India")
+  age         Int
+  gender      String?
+  initials    String?
+  accentColor String?
+  avatar      String?
+  coverImage  String?
+  stats       String   // JSON string
+  achievements String? // JSON string
+  highlights  String?  // JSON string
+  bio         String?
+  isVerified  Boolean  @default(false)
+  isFeatured  Boolean  @default(false)
+  isActive    Boolean  @default(true)
+  verifiedAt  DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Team {
+  id          String   @id @default(cuid())
+  name        String
+  sport       String
+  city        String
+  level       String
+  initials    String?
+  accentColor String?
+  logo        String?
+  coverImage  String?
+  description String?
+  openTrials  Boolean  @default(false)
+  roster      String?  // JSON string
+  achievements String? // JSON string
+  isVerified  Boolean  @default(false)
+  isFeatured  Boolean  @default(false)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Academy {
+  id            String   @id @default(cuid())
+  name          String
+  sport         String
+  city          String
+  initials      String?
+  accentColor   String?
+  logo          String?
+  description   String?
+  programs      String   // JSON string
+  contactEmail  String?
+  contactPhone  String?
+  isPartner     Boolean  @default(true)
+  isFeatured    Boolean  @default(false)
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Brand {
+  id              String   @id @default(cuid())
+  name            String
+  industry        String
+  initials        String?
+  accentColor     String?
+  logo            String?
+  partnershipType String
+  website         String?
+  description     String?
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Event {
+  id               String   @id @default(cuid())
+  title            String
+  sport            String
+  eventType        String
+  city             String
+  venue            String?
+  startDate        DateTime
+  endDate          DateTime
+  accentColor      String?
+  coverImage       String?
+  description      String?
+  schedule         String?  // JSON
+  results          String?  // JSON
+  maxParticipants  Int?
+  entryFee         Float    @default(0)
+  registrationOpen Boolean  @default(true)
+  status           String   @default("upcoming") // upcoming, live, completed, cancelled
+  isFeatured       Boolean  @default(false)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model BlogPost {
+  id                 String    @id @default(cuid())
+  title              String
+  excerpt            String
+  content            String
+  category           String
+  tags               String?   // JSON
+  coverImage         String?
+  accentColor        String?
+  readingTimeMinutes Int       @default(5)
+  status             String    @default("draft") // draft, published, archived
+  publishedAt        DateTime?
+  isFeatured         Boolean   @default(false)
+  author             String?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+}
+
+model SuccessStory {
+  id          String    @id @default(cuid())
+  title       String
+  subject     String
+  sport       String
+  outcome     String
+  excerpt     String
+  content     String
+  accentColor String?
+  coverImage  String?
+  initials    String?
+  isFeatured  Boolean   @default(false)
+  isActive    Boolean   @default(true)
+  publishedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Testimonial {
+  id          String   @id @default(cuid())
+  quote       String
+  name        String
+  role        String
+  initials    String?
+  accentColor String?
+  avatar      String?
+  sortOrder   Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Partner {
+  id        String   @id @default(cuid())
+  name      String
+  tag       String
+  logo      String?
+  website   String?
+  sortOrder Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CommunityPost {
+  id                 String   @id @default(cuid())
+  authorName         String
+  authorHandle       String
+  authorRole         String
+  authorInitials     String?
+  authorAccentColor  String?
+  authorAvatar       String?
+  content            String
+  tag                String?
+  media              String?  // JSON
+  likesCount         Int      @default(0)
+  commentsCount      Int      @default(0)
+  isPinned           Boolean  @default(false)
+  isActive           Boolean  @default(true)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
+model Enquiry {
+  id          String    @id @default(cuid())
+  name        String
+  email       String
+  phone       String?
+  type        String    // general, partnership, corporate, csr, event_hosting, academy_partner, support
+  subject     String?
+  message     String
+  metadata    String?   // JSON
+  status      String    @default("new") // new, in_progress, resolved, rejected
+  adminNotes  String?
+  resolvedAt  DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Role {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  displayName String?
+  description String?
+  userCount   Int      @default(0)
+  permissionsCount Int @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model ThemeSetting {
+  id           String   @id @default(cuid())
+  key          String   @unique
+  value        String   // JSON string for complex values
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
