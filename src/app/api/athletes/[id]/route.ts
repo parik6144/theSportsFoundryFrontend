@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
 import { db } from "@/lib/db";
 import { apiError, apiSuccess, parseId } from "@/lib/api-response";
+import { prepareAthleteBody } from "@/lib/sanitize-record";
 
 export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -21,7 +22,10 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     const recordId = parseId(id);
     if (!recordId) return apiError("Not found", 404);
     const body = await req.json();
-    const record = await db.athlete.update({ where: { id: recordId }, data: body });
+    const record = await db.athlete.update({
+      where: { id: recordId },
+      data: prepareAthleteBody(body) as any,
+    });
     return apiSuccess(record);
   } catch (err: any) {
     return apiError(err.message);

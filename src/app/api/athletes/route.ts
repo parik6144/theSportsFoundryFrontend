@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
 import { db } from "@/lib/db";
 import { apiError, apiSuccess } from "@/lib/api-response";
+import { prepareAthleteBody } from "@/lib/sanitize-record";
 
 export async function GET() {
   try {
@@ -14,8 +15,7 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const slug = body.slug || String(body.title || body.name || "item").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
-    const record = await db.athlete.create({ data: { ...body, slug } });
+    const record = await db.athlete.create({ data: prepareAthleteBody(body) as any });
     return apiSuccess(record, 201);
   } catch (err: any) {
     return apiError(err.message);
