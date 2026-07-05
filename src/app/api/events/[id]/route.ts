@@ -1,34 +1,41 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { db } from "@/lib/db";
+import { apiError, apiSuccess, parseId } from "@/lib/api-response";
 
 export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params;
-    const record = await db.event.findUnique({ where: { id } });
-    if (!record) return NextResponse.json({ success: false, error: "Not found" }, { status: 404 });
-    return NextResponse.json({ success: true, data: record });
+    const recordId = parseId(id);
+    if (!recordId) return apiError("Not found", 404);
+    const record = await db.event.findUnique({ where: { id: recordId } });
+    if (!record) return apiError("Not found", 404);
+    return apiSuccess(record);
   } catch (err: any) {
-    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+    return apiError(err.message);
   }
 }
 
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params;
+    const recordId = parseId(id);
+    if (!recordId) return apiError("Not found", 404);
     const body = await req.json();
-    const record = await db.event.update({ where: { id }, data: body });
-    return NextResponse.json({ success: true, data: record });
+    const record = await db.event.update({ where: { id: recordId }, data: body });
+    return apiSuccess(record);
   } catch (err: any) {
-    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+    return apiError(err.message);
   }
 }
 
 export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params;
-    await db.event.delete({ where: { id } });
-    return NextResponse.json({ success: true, message: "Deleted" });
+    const recordId = parseId(id);
+    if (!recordId) return apiError("Not found", 404);
+    await db.event.delete({ where: { id: recordId } });
+    return apiSuccess({ message: "Deleted" });
   } catch (err: any) {
-    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+    return apiError(err.message);
   }
 }

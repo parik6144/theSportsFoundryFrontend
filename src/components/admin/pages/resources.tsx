@@ -567,7 +567,7 @@ export function RolesPage() {
           headers={["Role", "Display Name", "Users", "Permissions", "Description", "Actions"]}
           rows={data.map((r) => [
             <span className="font-mono text-[#f4d35e]">{r.name}</span>, <span className="font-medium text-white">{r.displayName}</span>,
-            <Badge color="blue">{r.userCount}</Badge>, <Badge color="purple">{r.permissionsCount}</Badge>, <span className="text-sm text-gray-400">{r.description}</span>,
+            <Badge color="blue">{r.guardName}</Badge>, <Badge color="purple">{r.displayName || r.name}</Badge>, <span className="text-sm text-gray-400">{r.description}</span>,
             <ActionIcons onEdit={() => setModal({ open: true, mode: "edit", data: r })} onDelete={() => setModal({ open: true, mode: "delete", data: r })} />,
           ])}
         />

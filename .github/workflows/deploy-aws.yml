@@ -24,11 +24,11 @@ jobs:
             cd "$APP_DIR"
             git fetch origin main
             git reset --hard origin/main
-            echo 'DATABASE_URL=${{ secrets.DATABASE_URL }}' > .env
+            printf '%s\n' "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env
+            printf '%s\n' "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env.local
             export NODE_OPTIONS="--max-old-space-size=2048"
             npm ci
             npx prisma generate
-            npx prisma db push --accept-data-loss
             npm run build
-            pm2 restart sportsphere-frontend || pm2 start npm --name sportsphere-frontend -- start
+            pm2 restart sportsphere-frontend --update-env || pm2 start npm --name sportsphere-frontend -- start
             pm2 save

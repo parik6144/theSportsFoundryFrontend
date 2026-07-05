@@ -1,21 +1,23 @@
-﻿import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { db } from "@/lib/db";
+import { apiError, apiSuccess } from "@/lib/api-response";
 
 export async function GET() {
   try {
     const records = await db.athlete.findMany({ orderBy: { createdAt: "desc" } });
-    return NextResponse.json({ success: true, data: records });
+    return apiSuccess(records);
   } catch (err: any) {
-    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+    return apiError(err.message);
   }
 }
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const record = await db.athlete.create({ data: body });
-    return NextResponse.json({ success: true, data: record }, { status: 201 });
+    const slug = body.slug || String(body.title || body.name || "item").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+    const record = await db.athlete.create({ data: { ...body, slug } });
+    return apiSuccess(record, 201);
   } catch (err: any) {
-    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+    return apiError(err.message);
   }
 }

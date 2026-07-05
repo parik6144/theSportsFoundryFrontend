@@ -61,9 +61,12 @@ sudo chown -R ubuntu:ubuntu "$APP_DIR"
 cd "$APP_DIR"
 git pull origin main || true
 
-cat > .env <<ENV
-DATABASE_URL="${DATABASE_URL}"
-ENV
+cat > .env <<EOF
+DATABASE_URL=${DATABASE_URL}
+EOF
+cat > .env.local <<EOF
+DATABASE_URL=${DATABASE_URL}
+EOF
 
 export NODE_OPTIONS="--max-old-space-size=2048"
 npm ci || npm install

@@ -1,4 +1,4 @@
-// SportSphere — Complete Database Schema
+// SportSphere — Prisma schema mapped to existing MySQL tables
 generator client {
   provider = "prisma-client-js"
 }
@@ -9,256 +9,301 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  name      String
-  email     String   @unique
-  phone     String?
-  password  String
-  avatar    String?
-  userType  String   @default("fan") // admin, athlete, team, academy, brand, corporate, fan
-  isActive  Boolean  @default(true)
-  isVerified Boolean @default(false)
-  aiPreferences String? // JSON string
-  metadata  String? // JSON string
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id              BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  name            String
+  email           String    @unique
+  phone           String?
+  emailVerifiedAt DateTime? @map("email_verified_at")
+  password        String
+  avatar          String?
+  userType        String    @default("fan") @map("user_type")
+  isActive        Boolean   @default(true) @map("is_active")
+  isVerified      Boolean   @default(false) @map("is_verified")
+  aiPreferences   String?   @map("ai_preferences") @db.LongText
+  metadata        String?   @db.LongText
+  rememberToken   String?   @map("remember_token")
+  createdAt       DateTime? @map("created_at")
+  updatedAt       DateTime? @map("updated_at")
+  deletedAt       DateTime? @map("deleted_at")
+  blogPosts       BlogPost[]
+
+  @@map("users")
 }
 
 model Service {
-  id               String   @id @default(cuid())
+  id               BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  slug             String    @unique
   title            String
   tagline          String
   icon             String?
-  sortOrder        Int      @default(0)
-  shortDescription String
-  overview         String
-  forWhomTitle     String
-  forWhomBody      String
-  bullets          String   // JSON string
-  howItWorks       String   // JSON string
-  ctaLabel         String
-  hubSlug          String?
-  accentColor      String   @default("#d4af37")
-  isActive         Boolean  @default(true)
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  sortOrder        Int       @default(0) @map("sort_order")
+  shortDescription String    @map("short_description") @db.Text
+  overview         String    @db.LongText
+  forWhomTitle     String    @map("for_whom_title")
+  forWhomBody      String    @map("for_whom_body") @db.LongText
+  bullets          String    @db.LongText
+  howItWorks       String    @map("how_it_works") @db.LongText
+  ctaLabel         String    @map("cta_label")
+  hubSlug          String?   @map("hub_slug")
+  accentColor      String    @default("#d4af37") @map("accent_color")
+  isActive         Boolean   @default(true) @map("is_active")
+  createdAt        DateTime? @map("created_at")
+  updatedAt        DateTime? @map("updated_at")
+
+  @@map("services")
 }
 
 model Athlete {
-  id          String   @id @default(cuid())
-  name        String
-  sport       String
-  level       String
-  city        String
-  country     String   @default("India")
-  age         Int
-  gender      String?
-  initials    String?
-  accentColor String?
-  avatar      String?
-  coverImage  String?
-  stats       String   // JSON string
-  achievements String? // JSON string
-  highlights  String?  // JSON string
-  bio         String?
-  isVerified  Boolean  @default(false)
-  isFeatured  Boolean  @default(false)
-  isActive    Boolean  @default(true)
-  verifiedAt  DateTime?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id           BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  userId       BigInt?   @map("user_id") @db.UnsignedBigInt
+  name         String
+  slug         String    @unique
+  sport        String
+  level        String
+  city         String
+  country      String    @default("India")
+  age          Int
+  gender       String?
+  initials     String?   @db.VarChar(3)
+  accentColor  String?   @map("accent_color")
+  avatar       String?
+  coverImage   String?   @map("cover_image")
+  stats        String    @db.LongText
+  achievements String?   @db.LongText
+  highlights   String?   @db.LongText
+  bio          String?   @db.Text
+  isVerified   Boolean   @default(false) @map("is_verified")
+  isFeatured   Boolean   @default(false) @map("is_featured")
+  isActive     Boolean   @default(true) @map("is_active")
+  verifiedAt   DateTime? @map("verified_at")
+  createdAt    DateTime? @map("created_at")
+  updatedAt    DateTime? @map("updated_at")
+  deletedAt    DateTime? @map("deleted_at")
+
+  @@map("athletes")
 }
 
 model Team {
-  id          String   @id @default(cuid())
-  name        String
-  sport       String
-  city        String
-  level       String
-  initials    String?
-  accentColor String?
-  logo        String?
-  coverImage  String?
-  description String?
-  openTrials  Boolean  @default(false)
-  roster      String?  // JSON string
-  achievements String? // JSON string
-  isVerified  Boolean  @default(false)
-  isFeatured  Boolean  @default(false)
-  isActive    Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id           BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  userId       BigInt?   @map("user_id") @db.UnsignedBigInt
+  name         String
+  slug         String    @unique
+  sport        String
+  city         String
+  level        String
+  initials     String?   @db.VarChar(3)
+  accentColor  String?   @map("accent_color")
+  logo         String?
+  coverImage   String?   @map("cover_image")
+  description  String?   @db.Text
+  openTrials   Boolean   @default(false) @map("open_trials")
+  roster       String?   @db.LongText
+  achievements String?   @db.LongText
+  isVerified   Boolean   @default(false) @map("is_verified")
+  isFeatured   Boolean   @default(false) @map("is_featured")
+  isActive     Boolean   @default(true) @map("is_active")
+  createdAt    DateTime? @map("created_at")
+  updatedAt    DateTime? @map("updated_at")
+  deletedAt    DateTime? @map("deleted_at")
+
+  @@map("teams")
 }
 
 model Academy {
-  id            String   @id @default(cuid())
-  name          String
-  sport         String
-  city          String
-  initials      String?
-  accentColor   String?
-  logo          String?
-  description   String?
-  programs      String   // JSON string
-  contactEmail  String?
-  contactPhone  String?
-  isPartner     Boolean  @default(true)
-  isFeatured    Boolean  @default(false)
-  isActive      Boolean  @default(true)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id           BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  userId       BigInt?   @map("user_id") @db.UnsignedBigInt
+  name         String
+  slug         String    @unique
+  sport        String
+  city         String
+  initials     String?   @db.VarChar(3)
+  accentColor  String?   @map("accent_color")
+  logo         String?
+  description  String?   @db.Text
+  programs     String    @db.LongText
+  contactEmail String?   @map("contact_email")
+  contactPhone String?   @map("contact_phone")
+  isPartner    Boolean   @default(true) @map("is_partner")
+  isFeatured   Boolean   @default(false) @map("is_featured")
+  isActive     Boolean   @default(true) @map("is_active")
+  createdAt    DateTime? @map("created_at")
+  updatedAt    DateTime? @map("updated_at")
+  deletedAt    DateTime? @map("deleted_at")
+
+  @@map("academies")
 }
 
 model Brand {
-  id              String   @id @default(cuid())
+  id              BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
   name            String
+  slug            String    @unique
   industry        String
-  initials        String?
-  accentColor     String?
+  initials        String?   @db.VarChar(3)
+  accentColor     String?   @map("accent_color")
   logo            String?
-  partnershipType String
+  partnershipType String    @map("partnership_type")
   website         String?
-  description     String?
-  isActive        Boolean  @default(true)
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  description     String?   @db.Text
+  isActive        Boolean   @default(true) @map("is_active")
+  createdAt       DateTime? @map("created_at")
+  updatedAt       DateTime? @map("updated_at")
+  deletedAt       DateTime? @map("deleted_at")
+
+  @@map("brands")
 }
 
 model Event {
-  id               String   @id @default(cuid())
+  id               BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
   title            String
+  slug             String    @unique
   sport            String
-  eventType        String
+  eventType        String    @map("event_type")
   city             String
   venue            String?
-  startDate        DateTime
-  endDate          DateTime
-  accentColor      String?
-  coverImage       String?
-  description      String?
-  schedule         String?  // JSON
-  results          String?  // JSON
-  maxParticipants  Int?
-  entryFee         Float    @default(0)
-  registrationOpen Boolean  @default(true)
-  status           String   @default("upcoming") // upcoming, live, completed, cancelled
-  isFeatured       Boolean  @default(false)
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  startDate        DateTime  @map("start_date") @db.Date
+  endDate          DateTime  @map("end_date") @db.Date
+  accentColor      String?   @map("accent_color")
+  coverImage       String?   @map("cover_image")
+  description      String?   @db.Text
+  schedule         String?   @db.LongText
+  results          String?   @db.LongText
+  maxParticipants  Int?      @map("max_participants")
+  entryFee         Decimal   @default(0) @map("entry_fee") @db.Decimal(10, 2)
+  registrationOpen Boolean   @default(true) @map("registration_open")
+  status           String    @default("upcoming")
+  isFeatured       Boolean   @default(false) @map("is_featured")
+  createdAt        DateTime? @map("created_at")
+  updatedAt        DateTime? @map("updated_at")
+  deletedAt        DateTime? @map("deleted_at")
+
+  @@map("events")
 }
 
 model BlogPost {
-  id                 String    @id @default(cuid())
+  id                 BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  authorId           BigInt?   @map("author_id") @db.UnsignedBigInt
   title              String
+  slug               String    @unique
   excerpt            String
-  content            String
+  content            String    @db.LongText
   category           String
-  tags               String?   // JSON
-  coverImage         String?
-  accentColor        String?
-  readingTimeMinutes Int       @default(5)
-  status             String    @default("draft") // draft, published, archived
-  publishedAt        DateTime?
-  isFeatured         Boolean   @default(false)
-  author             String?
-  createdAt          DateTime  @default(now())
-  updatedAt          DateTime  @updatedAt
+  tags               String?   @db.LongText
+  coverImage         String?   @map("cover_image")
+  accentColor        String?   @map("accent_color")
+  readingTimeMinutes Int       @default(5) @map("reading_time_minutes")
+  status             String    @default("draft")
+  publishedAt        DateTime? @map("published_at")
+  isFeatured         Boolean   @default(false) @map("is_featured")
+  createdAt          DateTime? @map("created_at")
+  updatedAt          DateTime? @map("updated_at")
+  deletedAt          DateTime? @map("deleted_at")
+  author             User?     @relation(fields: [authorId], references: [id])
+
+  @@map("blog_posts")
 }
 
 model SuccessStory {
-  id          String    @id @default(cuid())
+  id          BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
   title       String
+  slug        String    @unique
   subject     String
   sport       String
   outcome     String
-  excerpt     String
-  content     String
-  accentColor String?
-  coverImage  String?
-  initials    String?
-  isFeatured  Boolean   @default(false)
-  isActive    Boolean   @default(true)
-  publishedAt DateTime?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  excerpt     String    @db.Text
+  content     String    @db.LongText
+  accentColor String?   @map("accent_color")
+  coverImage  String?   @map("cover_image")
+  initials    String?   @db.VarChar(3)
+  isFeatured  Boolean   @default(false) @map("is_featured")
+  isActive    Boolean   @default(true) @map("is_active")
+  publishedAt DateTime? @map("published_at")
+  createdAt   DateTime? @map("created_at")
+  updatedAt   DateTime? @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+
+  @@map("success_stories")
 }
 
 model Testimonial {
-  id          String   @id @default(cuid())
-  quote       String
+  id          BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  quote       String    @db.Text
   name        String
   role        String
-  initials    String?
-  accentColor String?
+  initials    String?   @db.VarChar(3)
+  accentColor String?   @map("accent_color")
   avatar      String?
-  sortOrder   Int      @default(0)
-  isActive    Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  sortOrder   Int       @default(0) @map("sort_order")
+  isActive    Boolean   @default(true) @map("is_active")
+  createdAt   DateTime? @map("created_at")
+  updatedAt   DateTime? @map("updated_at")
+
+  @@map("testimonials")
 }
 
 model Partner {
-  id        String   @id @default(cuid())
+  id        BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
   name      String
   tag       String
   logo      String?
   website   String?
-  sortOrder Int      @default(0)
-  isActive  Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  sortOrder Int       @default(0) @map("sort_order")
+  isActive  Boolean   @default(true) @map("is_active")
+  createdAt DateTime? @map("created_at")
+  updatedAt DateTime? @map("updated_at")
+
+  @@map("partners")
 }
 
 model CommunityPost {
-  id                 String   @id @default(cuid())
-  authorName         String
-  authorHandle       String
-  authorRole         String
-  authorInitials     String?
-  authorAccentColor  String?
-  authorAvatar       String?
-  content            String
-  tag                String?
-  media              String?  // JSON
-  likesCount         Int      @default(0)
-  commentsCount      Int      @default(0)
-  isPinned           Boolean  @default(false)
-  isActive           Boolean  @default(true)
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
+  id                BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  userId            BigInt?   @map("user_id") @db.UnsignedBigInt
+  authorName        String    @map("author_name")
+  authorHandle      String    @map("author_handle")
+  authorRole        String    @map("author_role")
+  authorInitials    String?   @map("author_initials") @db.VarChar(3)
+  authorAccentColor String?   @map("author_accent_color")
+  authorAvatar      String?   @map("author_avatar")
+  content           String    @db.Text
+  tag               String?
+  media             String?   @db.LongText
+  likesCount        Int       @default(0) @map("likes_count")
+  commentsCount     Int       @default(0) @map("comments_count")
+  isPinned          Boolean   @default(false) @map("is_pinned")
+  isActive          Boolean   @default(true) @map("is_active")
+  createdAt         DateTime? @map("created_at")
+  updatedAt         DateTime? @map("updated_at")
+  deletedAt         DateTime? @map("deleted_at")
+
+  @@map("community_posts")
 }
 
 model Enquiry {
-  id          String    @id @default(cuid())
+  id          BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
   name        String
   email       String
   phone       String?
-  type        String    // general, partnership, corporate, csr, event_hosting, academy_partner, support
+  type        String
   subject     String?
-  message     String
-  metadata    String?   // JSON
-  status      String    @default("new") // new, in_progress, resolved, rejected
-  adminNotes  String?
-  resolvedAt  DateTime?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  message     String    @db.Text
+  metadata    String?   @db.LongText
+  status      String    @default("new")
+  assignedTo  BigInt?   @map("assigned_to") @db.UnsignedBigInt
+  resolvedAt  DateTime? @map("resolved_at")
+  adminNotes  String?   @map("admin_notes") @db.Text
+  createdAt   DateTime? @map("created_at")
+  updatedAt   DateTime? @map("updated_at")
+
+  @@map("enquiries")
 }
 
 model Role {
-  id          String   @id @default(cuid())
-  name        String   @unique
-  displayName String?
+  id          BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  name        String
+  guardName   String    @map("guard_name")
+  displayName String?   @map("display_name")
   description String?
-  userCount   Int      @default(0)
-  permissionsCount Int @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
+  createdAt   DateTime? @map("created_at")
+  updatedAt   DateTime? @map("updated_at")
 
-model ThemeSetting {
-  id           String   @id @default(cuid())
-  key          String   @unique
-  value        String   // JSON string for complex values
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  @@map("roles")
 }

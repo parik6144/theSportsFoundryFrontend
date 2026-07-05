@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { apiError, apiSuccess } from "@/lib/api-response";
 
 export async function GET() {
   try {
@@ -11,14 +11,9 @@ export async function GET() {
       db.user.count(),
       db.role.count(),
     ]);
-
-    return NextResponse.json({
-      success: true,
-      message: "Next.js + Prisma database is connected",
-      data: { services, partners, testimonials, athletes, users, roles },
-    });
+    return apiSuccess({ services, partners, testimonials, athletes, users, roles });
   } catch (err: any) {
-    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+    return apiError(err.message);
   }
 }
 
