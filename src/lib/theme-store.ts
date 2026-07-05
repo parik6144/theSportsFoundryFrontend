@@ -82,22 +82,13 @@ export async function writeStoredTheme(theme: ThemeData): Promise<ThemeData> {
   return payload;
 }
 
-export async function resolveTheme(
-  backendGeneral?: Record<string, any> | null
-): Promise<ThemeData> {
+export async function resolveTheme(): Promise<ThemeData> {
   const stored = await readStoredTheme();
   const logoMeta = await readLogoMeta();
 
-  const logoFromMeta = logoMeta?.url || null;
-  const logoFromBackend = backendGeneral?.site_logo || null;
-
   return {
     ...DEFAULT_THEME,
-    siteName: backendGeneral?.site_name || DEFAULT_THEME.siteName,
-    tagline: backendGeneral?.site_tagline || DEFAULT_THEME.tagline,
-    primaryColor: backendGeneral?.primary_color || DEFAULT_THEME.primaryColor,
-    backgroundColor: backendGeneral?.navy_color || DEFAULT_THEME.backgroundColor,
     ...stored,
-    logoUrl: stored.logoUrl || logoFromMeta || logoFromBackend || null,
+    logoUrl: stored.logoUrl || logoMeta?.url || null,
   };
 }

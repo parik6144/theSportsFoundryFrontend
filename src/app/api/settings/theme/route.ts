@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { backendGet, backendPost } from "@/lib/backend";
 import {
   DEFAULT_THEME,
   resolveTheme,
@@ -9,14 +8,7 @@ import {
 
 export async function GET() {
   try {
-    let general: Record<string, any> | null = null;
-    try {
-      general = (await backendGet("/settings/general")) as Record<string, any>;
-    } catch {
-      // Backend optional for local theme reads
-    }
-
-    const theme = await resolveTheme(general);
+    const theme = await resolveTheme();
     return NextResponse.json({ success: true, data: theme });
   } catch (err: any) {
     return NextResponse.json(
@@ -29,7 +21,7 @@ export async function GET() {
 export async function PUT(req: NextRequest) {
   try {
     const body = (await req.json()) as Partial<ThemeData>;
-    const current = await resolveTheme(null);
+    const current = await resolveTheme();
     const nextTheme: ThemeData = {
       ...current,
       ...body,
@@ -42,20 +34,6 @@ export async function PUT(req: NextRequest) {
     };
 
     const saved = await writeStoredTheme(nextTheme);
-
-    // Keep Laravel general settings in sync when backend is available
-    try {
-      await backendPost("/settings/general", {
-        site_name: saved.siteName,
-        site_tagline: saved.tagline,
-        site_logo: saved.logoUrl,
-        primary_color: saved.primaryColor,
-        navy_color: saved.backgroundColor,
-      });
-    } catch {
-      // Local theme file is source of truth if backend update fails
-    }
-
     return NextResponse.json({ success: true, data: saved });
   } catch (err: any) {
     return NextResponse.json(

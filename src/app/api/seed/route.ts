@@ -1,23 +1,22 @@
 import { NextResponse } from "next/server";
-import { backendGet } from "@/lib/backend";
+import { db } from "@/lib/db";
 
 export async function GET() {
   try {
-    const home = (await backendGet("/home")) as {
-      services?: unknown[];
-      partners?: unknown[];
-      testimonials?: unknown[];
-    };
+    const [services, partners, testimonials, athletes, users, roles] = await Promise.all([
+      db.service.count(),
+      db.partner.count(),
+      db.testimonial.count(),
+      db.athlete.count(),
+      db.user.count(),
+      db.role.count(),
+    ]);
+
     return NextResponse.json({
       success: true,
-      message: "Using shared MySQL database db_thesportsfoundry via Laravel API",
-      data: {
-        services: Array.isArray(home?.services) ? home.services.length : 0,
-        partners: Array.isArray(home?.partners) ? home.partners.length : 0,
-        testimonials: Array.isArray(home?.testimonials) ? home.testimonials.length : 0,
-      },
+      message: "Next.js + Prisma database is connected",
+      data: { services, partners, testimonials, athletes, users, roles },
     });
-
   } catch (err: any) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }

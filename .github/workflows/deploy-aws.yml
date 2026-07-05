@@ -20,10 +20,15 @@ jobs:
           script_stop: true
           script: |
             set -e
-            cd /var/www/sportsphere-frontend
+            APP_DIR=/var/www/sportsphere-frontend
+            cd "$APP_DIR"
             git fetch origin main
             git reset --hard origin/main
+            echo 'DATABASE_URL=${{ secrets.DATABASE_URL }}' > .env
+            export NODE_OPTIONS="--max-old-space-size=2048"
             npm ci
+            npx prisma generate
+            npx prisma db push --accept-data-loss
             npm run build
             pm2 restart sportsphere-frontend || pm2 start npm --name sportsphere-frontend -- start
             pm2 save
