@@ -177,12 +177,18 @@ export function DataTable({ headers, rows }: { headers: string[]; rows: ReactNod
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead><tr className="bg-white/[0.03] border-b border-white/5">
-            {headers.map((h, i) => <th key={i} className="text-left px-4 py-3 text-xs font-semibold uppercase tracking-wider text-gray-500">{h}</th>)}
+            {headers.map((h, i) => <th key={i} className="text-left px-4 py-3 text-xs font-semibold uppercase tracking-wider text-gray-500 whitespace-nowrap">{h}</th>)}
           </tr></thead>
           <tbody>
-            {rows.map((row, i) => (
+            {rows.length === 0 ? (
+              <tr>
+                <td colSpan={headers.length} className="px-4 py-10 text-center text-gray-500">
+                  No records found.
+                </td>
+              </tr>
+            ) : rows.map((row, i) => (
               <tr key={i} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
-                {row.map((cell, j) => <td key={j} className="px-4 py-3 text-gray-300">{cell}</td>)}
+                {row.map((cell, j) => <td key={j} className="px-4 py-3 text-gray-300 align-middle whitespace-nowrap">{cell ?? "—"}</td>)}
               </tr>
             ))}
           </tbody>

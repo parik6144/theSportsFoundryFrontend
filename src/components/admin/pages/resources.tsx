@@ -18,7 +18,7 @@ function useResource<T>(endpoint: string) {
     try {
       const res = await fetch(`/api/${endpoint}`);
       const json = await res.json();
-      if (json.success) setData(json.data);
+      if (json.success) setData(Array.isArray(json.data) ? json.data : []);
       else setError(json.error || "Failed to fetch");
     } catch (err: any) {
       setError(err.message);
@@ -322,7 +322,7 @@ export function BlogPage() {
           headers={["Title", "Category", "Status", "Author", "Published", "Featured", "Actions"]}
           rows={data.map((b) => [
             <span className="font-medium text-white">{b.title}</span>, <Badge color="blue">{b.category}</Badge>,
-            <Badge color={b.status === "published" ? "green" : "gray"}>{b.status}</Badge>, b.author,
+            <Badge color={b.status === "published" ? "green" : "gray"}>{b.status}</Badge>, typeof b.author === "object" && b.author?.name ? b.author.name : (b.author || "—"),
             b.publishedAt ? new Date(b.publishedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "—",
             b.isFeatured ? <Star className="h-4 w-4 text-[#f4d35e] fill-[#f4d35e]" /> : <Star className="h-4 w-4 text-gray-600" />,
             <ActionIcons onEdit={() => setModal({ open: true, mode: "edit", data: b })} onDelete={() => setModal({ open: true, mode: "delete", data: b })} />,
