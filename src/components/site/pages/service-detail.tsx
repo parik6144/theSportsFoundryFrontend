@@ -114,20 +114,20 @@ export function ServiceDetailPage({ serviceId }: { serviceId?: ServiceId }) {
                 </div>
                 <h4 className="font-semibold text-base mb-2">{service.cta}</h4>
                 <p className="text-xs text-muted-foreground mb-5">
-                  The platform is free to use. Get started in under 2 minutes.
+                  Send an enquiry and our team will reach out by email with next steps.
                 </p>
                 <button
-                  onClick={() => navigate("auth")}
+                  onClick={() => navigate("contact")}
                   className="w-full btn-gold rounded-full px-5 py-3 text-sm font-semibold inline-flex items-center justify-center gap-2 mb-3"
                 >
-                  Get Started
+                  Send Enquiry
                   <ArrowRight className="h-4 w-4" />
                 </button>
                 <button
-                  onClick={() => navigate(service.hubId)}
+                  onClick={() => navigate("services")}
                   className="w-full btn-outline-gold rounded-full px-5 py-3 text-sm font-semibold"
                 >
-                  Visit Hub
+                  View All Services
                 </button>
               </div>
 
@@ -159,11 +159,11 @@ export function ServiceDetailPage({ serviceId }: { serviceId?: ServiceId }) {
 
       <CTASection
         title="Let's build it together."
-        subtitle="Talk to our team about how this service can fit your goals — or sign up and explore on your own."
-        primaryLabel="Get Started Free"
-        primaryPage="auth"
-        secondaryLabel="Contact Us"
-        secondaryPage="contact"
+        subtitle="Send an enquiry and our team will connect with you about how this service fits your goals."
+        primaryLabel="Send Enquiry"
+        primaryPage="contact"
+        secondaryLabel="All Services"
+        secondaryPage="services"
       />
     </div>
   );

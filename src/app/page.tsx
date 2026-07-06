@@ -8,13 +8,16 @@ import { SiteFooter } from "@/components/site/site-footer";
 
 import { HomePage } from "@/components/site/pages/home";
 import { AboutPage } from "@/components/site/pages/about";
-import { AuthPage } from "@/components/site/pages/auth";
+import { ContactPage } from "@/components/site/pages/contact";
+import { ServicesLandingPage } from "@/components/site/pages/services-landing";
+import { ServiceDetailPage } from "@/components/site/pages/service-detail";
+import { isServicePage } from "@/lib/site-data";
 
 function PageRouter() {
   const { page, isOpen } = useNav();
 
   const renderPage = () => {
-    // Client preview: only home, about, auth are open
+    // Only enabled pages are routed; others fall back to home
     if (!isOpen(page)) {
       return <HomePage />;
     }
@@ -24,9 +27,14 @@ function PageRouter() {
         return <HomePage />;
       case "about":
         return <AboutPage />;
-      case "auth":
-        return <AuthPage />;
+      case "contact":
+        return <ContactPage />;
+      case "services":
+        return <ServicesLandingPage />;
       default:
+        if (isServicePage(page)) {
+          return <ServiceDetailPage serviceId={page} />;
+        }
         return <HomePage />;
     }
   };

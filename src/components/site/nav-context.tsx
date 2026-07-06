@@ -18,7 +18,7 @@ export function NavProvider({ children }: { children: ReactNode }) {
   const [serviceId, setServiceId] = useState<ServiceId | undefined>(undefined);
 
   const navigate = useCallback((next: PageId, svc?: ServiceId) => {
-    // Client preview lock: only landing, about, login/register are open
+    // Block pages that are not yet enabled in OPEN_PAGES
     if (!isPageOpen(next)) {
       return;
     }

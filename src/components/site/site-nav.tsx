@@ -146,16 +146,16 @@ export function SiteNav() {
             {/* CTA buttons */}
             <div className="hidden md:flex items-center gap-2">
               <button
-                onClick={() => go("auth")}
+                onClick={() => go("contact")}
                 className="btn-outline-gold rounded-full px-4 py-2 text-sm font-medium"
               >
-                Login
+                Contact
               </button>
               <button
-                onClick={() => go("auth")}
+                onClick={() => go("contact")}
                 className="btn-gold rounded-full px-4 py-2 text-sm font-semibold"
               >
-                Get Started
+                Send Enquiry
               </button>
             </div>
 
@@ -246,16 +246,16 @@ export function SiteNav() {
                 ))}
                 <div className="pt-4 border-t border-white/10 space-y-2">
                   <button
-                    onClick={() => go("auth")}
+                    onClick={() => go("contact")}
                     className="w-full btn-outline-gold rounded-full px-4 py-2.5 text-sm font-medium"
                   >
-                    Login
+                    Contact
                   </button>
                   <button
-                    onClick={() => go("auth")}
+                    onClick={() => go("contact")}
                     className="w-full btn-gold rounded-full px-4 py-2.5 text-sm font-semibold"
                   >
-                    Get Started
+                    Send Enquiry
                   </button>
                 </div>
               </div>

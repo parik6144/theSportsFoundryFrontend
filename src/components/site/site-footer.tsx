@@ -2,6 +2,7 @@
 
 import { Twitter, Instagram, Linkedin, Youtube, Facebook, Mail, Phone, MapPin } from "lucide-react";
 import { SERVICES, type PageId } from "@/lib/site-data";
+import { CONTACT_EMAIL } from "@/lib/site-contact";
 import { useNav } from "./nav-context";
 import { BrandMark, useSiteTheme } from "./site-theme";
 
@@ -15,10 +16,7 @@ export function SiteFooter() {
     { label: "Home", page: "home" },
     { label: "About Us", page: "about" },
     { label: "All Services", page: "services" },
-    { label: "Blog / News", page: "blog" },
-    { label: "Success Stories", page: "success-stories" },
     { label: "Contact", page: "contact" },
-    { label: "Login / Register", page: "auth" },
   ];
 
   const hubLinks: { label: string; page: PageId }[] = [
@@ -29,7 +27,6 @@ export function SiteFooter() {
     { label: "Corporate Sports", page: "corporate-hub" },
     { label: "Events & Tournaments", page: "events-hub" },
     { label: "Community", page: "community-hub" },
-    { label: "Underprivileged Initiative", page: "underprivileged-hub" },
   ];
 
   return (
@@ -47,7 +44,7 @@ export function SiteFooter() {
             </div>
 
             <p className="text-sm text-muted-foreground max-w-md leading-relaxed">
-              {theme.tagline} A single digital sports ecosystem that connects athletes, teams, academies, brands, corporates, and the wider sports community.
+              {theme.tagline} Connect with us directly — teams, athletes, academies, and event hosts can send an enquiry and our team replies by email.
             </p>
 
             <div className="flex items-center gap-2 mt-5">
@@ -70,7 +67,7 @@ export function SiteFooter() {
               Stay in the game
             </h4>
             <p className="text-sm text-muted-foreground mb-4">
-              Get tournament announcements, athlete spotlights, and platform updates — straight to your inbox.
+              Tournament updates and platform news — subscribe for announcements.
             </p>
             <form
               onSubmit={(e) => e.preventDefault()}
@@ -171,7 +168,7 @@ export function SiteFooter() {
               </li>
               <li className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Mail className="h-4 w-4 text-[#f4d35e] shrink-0" />
-                <a href="mailto:hello@thesportsfoundry.com" className="hover:text-[#f4d35e]">hello@thesportsfoundry.com</a>
+                <a href={`mailto:${CONTACT_EMAIL}`} className="hover:text-[#f4d35e]">{CONTACT_EMAIL}</a>
               </li>
 
               <li className="flex items-center gap-2 text-sm text-muted-foreground">

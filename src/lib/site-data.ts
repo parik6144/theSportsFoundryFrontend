@@ -38,8 +38,29 @@ export type PageId =
   | "contact"
   | "auth";
 
-/** Client preview: only these pages are open. Rest stay visible but blocked. */
-export const OPEN_PAGES: readonly PageId[] = ["home", "about", "auth"] as const;
+const SERVICE_PAGE_IDS: ServiceId[] = [
+  "athletes",
+  "teams",
+  "academies",
+  "brands",
+  "corporate",
+  "events",
+  "community",
+  "underprivileged",
+];
+
+/** Pages available from the public site navigation. */
+export const OPEN_PAGES: readonly PageId[] = [
+  "home",
+  "about",
+  "contact",
+  "services",
+  ...SERVICE_PAGE_IDS,
+] as const;
+
+export function isServicePage(page: PageId): page is ServiceId {
+  return SERVICE_PAGE_IDS.includes(page as ServiceId);
+}
 
 export function isPageOpen(page: PageId): boolean {
   return (OPEN_PAGES as readonly string[]).includes(page);
@@ -91,11 +112,11 @@ export const SERVICES: Service[] = [
       },
     ],
     howItWorks: [
-      "Register & verify your identity",
-      "Build your profile with stats & media",
-      "Get discovered & apply to opportunities",
+      "Send an athlete enquiry",
+      "Share your sport, level & goals",
+      "We connect you with trials, academies & opportunities",
     ],
-    cta: "Create Your Athlete Profile",
+    cta: "Enquire as an Athlete",
     hubId: "athletes-hub",
   },
   {
@@ -131,11 +152,11 @@ export const SERVICES: Service[] = [
       },
     ],
     howItWorks: [
-      "Register your team",
-      "Set up your digital presence",
-      "Recruit & manage players",
+      "Send a team enquiry",
+      "Share your sport, city & roster needs",
+      "We connect you for recruitment & registrations",
     ],
-    cta: "Register Your Team",
+    cta: "Enquire About Your Team",
     hubId: "teams-hub",
   },
   {
@@ -407,21 +428,13 @@ export const NAV_GROUPS: { label: string; items: NavItem[] }[] = [
       { id: "corporate-hub", label: "Corporate Sports" },
       { id: "events-hub", label: "Events & Tournaments" },
       { id: "community-hub", label: "Community" },
-      { id: "underprivileged-hub", label: "Underprivileged Initiative" },
-    ],
-  },
-  {
-    label: "Stories",
-    items: [
-      { id: "blog", label: "Blog / News" },
-      { id: "success-stories", label: "Success Stories" },
     ],
   },
 ];
 
 export const IMPACT_STATS = [
-  { value: 12500, suffix: "+", label: "Athletes Onboarded" },
-  { value: 850, suffix: "+", label: "Teams Registered" },
+  { value: 12500, suffix: "+", label: "Athletes Connected" },
+  { value: 850, suffix: "+", label: "Teams Supported" },
   { value: 320, suffix: "+", label: "Events Organised" },
   { value: 140, suffix: "+", label: "Academies Partnered" },
 ];

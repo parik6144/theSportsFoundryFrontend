@@ -10,7 +10,6 @@ import {
   Trophy,
   GraduationCap,
   Building2,
-  Heart,
   Sparkles,
   Handshake,
   Compass,
@@ -22,14 +21,14 @@ import { BrandMark, useSiteTheme } from "../site-theme";
 
 const WHO_WE_HELP = [
   {
-    icon: Trophy,
-    title: "Athletes",
-    body: "Build a profile, get seen by teams and brands, and find trials, camps, and deals.",
-  },
-  {
     icon: Users,
     title: "Teams",
-    body: "Find the right players faster, manage sign-ups, and grow your team presence.",
+    body: "Recruit players, manage registrations, and get support for leagues and tournaments.",
+  },
+  {
+    icon: Trophy,
+    title: "Athletes",
+    body: "Find trials, academies, and sponsorship opportunities through direct team support.",
   },
   {
     icon: GraduationCap,
@@ -46,33 +45,28 @@ const WHO_WE_HELP = [
     title: "Corporates",
     body: "Run company leagues, wellness challenges, and sports team-building days.",
   },
-  {
-    icon: Heart,
-    title: "Community & CSR",
-    body: "Support kids who need a fair chance — coaching, gear, and mentorship.",
-  },
 ];
 
 const HOW_WE_WORK = [
   {
     step: "01",
-    title: "You join free",
-    body: "Create an account and tell us who you are — athlete, team, academy, brand, or company.",
+    title: "You send an enquiry",
+    body: "Tell us who you are — team, athlete, academy, brand, or company — and what you need.",
   },
   {
     step: "02",
-    title: "You build your profile",
-    body: "Add your story, stats, programs, or goals so the right people can find you.",
+    title: "We review your message",
+    body: "Our team reads every enquiry and reaches out by email, usually within one business day.",
   },
   {
     step: "03",
-    title: "You get matched",
-    body: "We connect you with opportunities — trials, sponsors, academies, events, and partners.",
+    title: "We match the right path",
+    body: "Trials, registrations, partnerships, academies, or events — we route you to the right solution.",
   },
   {
     step: "04",
-    title: "You grow",
-    body: "Message, register, partner, and track progress — all in one place.",
+    title: "You move forward",
+    body: "Clear next steps and direct communication until your goal is in motion.",
   },
 ];
 
@@ -83,11 +77,11 @@ const VALUES = [
   },
   {
     title: "Clear and honest",
-    body: "We keep profiles verified and paths simple, so you always know what to do next.",
+    body: "We keep processes simple, so you always know what to do next.",
   },
   {
-    title: "Sport for everyone",
-    body: "Part of our work always goes to children who would otherwise never get a shot.",
+    title: "Direct support",
+    body: "No complicated sign-ups — just send a message and our team connects with you.",
   },
 ];
 
@@ -126,10 +120,10 @@ export function AboutPage() {
 
             <div className="mt-8 flex flex-wrap gap-3">
               <button
-                onClick={() => navigate("auth")}
+                onClick={() => navigate("contact")}
                 className="btn-gold rounded-full px-6 py-3 text-sm font-semibold inline-flex items-center gap-2"
               >
-                Join free
+                Send an enquiry
                 <ArrowRight className="h-4 w-4" />
               </button>
               <button
@@ -287,10 +281,10 @@ export function AboutPage() {
           </div>
           <div className="mt-10 text-center">
             <button
-              onClick={() => navigate("auth")}
+              onClick={() => navigate("contact")}
               className="btn-gold rounded-full px-6 py-3 text-sm font-semibold inline-flex items-center gap-2"
             >
-              Create your free account
+              Send us an enquiry
               <ArrowRight className="h-4 w-4" />
             </button>
           </div>
@@ -303,7 +297,7 @@ export function AboutPage() {
           <SectionTitle
             eyebrow="How it works"
             title="Four simple steps"
-            subtitle="No long forms. No confusion. Just a clear path from join to grow."
+            subtitle="No accounts or profiles — just send an enquiry and our team takes it from there."
           />
           <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
             {HOW_WE_WORK.map((item, i) => (
@@ -409,7 +403,7 @@ export function AboutPage() {
           <div className="mt-14 relative">
             <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-[#d4af37]/40 via-[#d4af37]/20 to-transparent" />
             <div className="space-y-8 md:space-y-12">
-              {MILESTONES.map((m, i) => (
+              {MILESTONES.filter((m) => !m.title.toLowerCase().includes("csr")).map((m, i) => (
                 <motion.div
                   key={m.year}
                   initial={{ opacity: 0, y: 20 }}
@@ -489,18 +483,18 @@ export function AboutPage() {
                 Ready when you are
               </div>
               <h2 className="text-2xl md:text-4xl font-bold text-gradient-gold mb-3">
-                Start your journey with {theme.siteName}
+                Connect with {theme.siteName}
               </h2>
               <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto mb-8 leading-relaxed">
-                Join free. Tell us who you are. We will help you take the next step — whether you
-                play, recruit, train, sponsor, or support sport.
+                Send an enquiry and tell us who you are — we help teams, athletes, academies, and
+                event hosts take the next step by email.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <button
-                  onClick={() => navigate("auth")}
+                  onClick={() => navigate("contact")}
                   className="btn-gold rounded-full px-6 py-3 text-sm font-semibold inline-flex items-center justify-center gap-2"
                 >
-                  Create free account
+                  Send an enquiry
                   <ArrowRight className="h-4 w-4" />
                 </button>
                 <button

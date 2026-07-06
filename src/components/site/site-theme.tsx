@@ -140,15 +140,18 @@ export function useSiteTheme() {
   return useContext(SiteThemeCtx);
 }
 
-/** Shared brand mark — same navy panel + glow treatment as hero logo */
+/** Shared brand mark — navy panel + gold glow (navbar, hero, footer) */
 export function BrandMark({
   className = "",
   height = 40,
   showNameFallback = true,
+  emphasis = "default",
 }: {
   className?: string;
   height?: number;
   showNameFallback?: boolean;
+  /** Slightly stronger glow for hero centerpiece — same panel treatment */
+  emphasis?: "default" | "hero";
 }) {
   const { theme } = useSiteTheme();
   const logoSrc = theme.logoUrl
@@ -159,6 +162,7 @@ export function BrandMark({
     const padY = Math.max(6, Math.round(height * 0.14));
     const padX = Math.max(10, Math.round(height * 0.22));
     const maxW = Math.round(height * 4.6);
+    const isHero = emphasis === "hero";
 
     return (
       <span
@@ -166,7 +170,9 @@ export function BrandMark({
         style={{
           padding: `${padY}px ${padX}px`,
           background: `radial-gradient(circle at 28% 18%, ${theme.primaryColor}40, transparent 55%), linear-gradient(160deg, ${theme.backgroundLight} 0%, ${theme.backgroundColor} 100%)`,
-          boxShadow: `0 8px 22px rgba(0,0,0,0.3), 0 0 18px ${theme.primaryColor}2e`,
+          boxShadow: isHero
+            ? `0 20px 48px rgba(0,0,0,0.42), 0 0 36px ${theme.primaryColor}44`
+            : `0 8px 22px rgba(0,0,0,0.3), 0 0 18px ${theme.primaryColor}2e`,
         }}
       >
         <img

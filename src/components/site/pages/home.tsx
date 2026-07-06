@@ -1,90 +1,81 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import {
   ArrowRight,
   Trophy,
   Users,
-  TrendingUp,
   Sparkles,
   Calendar,
-  MapPin,
-  Quote,
-  Heart,
   ChevronRight,
-  Activity,
   ShieldCheck,
-  Zap,
   Target,
   UserCheck,
   Building2,
   GraduationCap,
-  Newspaper,
+  Mail,
 } from "lucide-react";
 
 import { useNav } from "../nav-context";
 import { BrandMark, useSiteTheme } from "../site-theme";
-import {
-  SERVICES,
-  PARTNERS,
-  FEATURED_EVENTS,
-  IMPACT_STATS,
-  TESTIMONIALS,
-  COMMUNITY_POSTS,
-} from "@/lib/site-data";
-import { CountUp, SectionTitle } from "../ui-primitives";
+import { EnquiryForm } from "../enquiry-form";
+import { SERVICES } from "@/lib/site-data";
+import { CONTACT_EMAIL } from "@/lib/site-contact";
+import { SectionTitle } from "../ui-primitives";
 
 export function HomePage() {
   const { navigate } = useNav();
   const { theme } = useSiteTheme();
+  const [enquiryType, setEnquiryType] = useState("General");
+
+  const openEnquiry = (type: string) => {
+    setEnquiryType(type);
+    requestAnimationFrame(() => {
+      document.getElementById("enquire-form")?.scrollIntoView({ behavior: "smooth" });
+    });
+  };
 
   const purposePaths = [
     {
       id: "athlete",
       icon: Trophy,
       title: "I am an Athlete",
-      goal: "Get trials, scholarships & brand deals",
-      page: "athletes-hub" as const,
-      cta: "Build my profile",
-    },
-    {
-      id: "team",
-      icon: Users,
-      title: "I run a Team",
-      goal: "Recruit players & manage registrations",
-      page: "teams-hub" as const,
-      cta: "Open Teams Hub",
+      goal: "Find trials, scholarships, academies, and sponsorship opportunities.",
+      enquiryType: "Athlete",
+      cta: "Send athlete enquiry",
     },
     {
       id: "academy",
       icon: GraduationCap,
       title: "I run an Academy",
-      goal: "List programs & attract talent",
-      page: "academies-hub" as const,
-      cta: "List my academy",
-    },
-    {
-      id: "brand",
-      icon: Building2,
-      title: "I am a Brand",
-      goal: "Sponsor athletes, teams & events",
-      page: "brands-hub" as const,
-      cta: "Explore partnerships",
+      goal: "List programs, attract talent, and partner on events.",
+      enquiryType: "Academy",
+      cta: "Send academy enquiry",
     },
     {
       id: "corporate",
       icon: Sparkles,
       title: "I am Corporate",
-      goal: "Run leagues & wellness programs",
-      page: "corporate-hub" as const,
+      goal: "Run leagues, wellness programs, and team-building sports days.",
+      enquiryType: "Corporate",
       cta: "Plan a program",
+    },
+    {
+      id: "team",
+      icon: Users,
+      title: "I run a Team",
+      goal: "Recruit players, manage rosters, and register for leagues & tournaments.",
+      enquiryType: "Team",
+      cta: "Send team enquiry",
+      featured: true,
     },
     {
       id: "events",
       icon: Calendar,
       title: "I host Events",
-      goal: "Launch tournaments end-to-end",
-      page: "events-hub" as const,
+      goal: "Launch tournaments and leagues with end-to-end support.",
+      enquiryType: "Event",
       cta: "Host an event",
     },
   ];
@@ -105,10 +96,11 @@ export function HomePage() {
               transition={{ duration: 0.7 }}
               className="pt-2"
             >
-              <div className="inline-flex flex-wrap items-center gap-2.5 rounded-full glass px-4 py-2 text-sm font-medium mb-6 max-w-full">
-                <span className="h-2.5 w-2.5 rounded-full bg-emerald-400 animate-pulse shrink-0" />
-                <span className="text-[#f4d35e] font-semibold">12,500+ athletes</span>
-                <span className="text-muted-foreground">already on the platform</span>
+              <div className="inline-flex items-center gap-2 rounded-full glass px-4 py-2 text-sm font-medium mb-6">
+                <Mail className="h-4 w-4 text-[#f4d35e] shrink-0" />
+                <a href={`mailto:${CONTACT_EMAIL}`} className="text-[#f4d35e] font-semibold hover:underline">
+                  {CONTACT_EMAIL}
+                </a>
               </div>
 
 
@@ -127,38 +119,24 @@ export function HomePage() {
                 Events get delivered end-to-end.
               </p>
               <p className="mt-3 text-sm md:text-base text-muted-foreground leading-relaxed max-w-xl">
-                Pick who you are below — we will take you straight to the right path.
+                Tell us who you are and what you need — our team connects with you directly by email. No sign-up required.
               </p>
 
               <div className="mt-8 flex flex-col sm:flex-row gap-3">
                 <button
-                  onClick={() => document.getElementById("start-here")?.scrollIntoView({ behavior: "smooth" })}
+                  onClick={() => openEnquiry("Team")}
                   className="btn-gold rounded-full px-6 py-3.5 text-sm font-semibold inline-flex items-center justify-center gap-2"
                 >
-                  Find my path
+                  I run a Team — enquire now
                   <ArrowRight className="h-4 w-4" />
                 </button>
                 <button
-                  onClick={() => navigate("auth")}
+                  onClick={() => document.getElementById("start-here")?.scrollIntoView({ behavior: "smooth" })}
                   className="btn-outline-gold rounded-full px-6 py-3.5 text-sm font-semibold inline-flex items-center justify-center gap-2"
                 >
-                  Create free account
+                  See all paths
                   <ChevronRight className="h-4 w-4" />
                 </button>
-              </div>
-
-              <div className="mt-10 grid grid-cols-3 gap-3 sm:gap-4 max-w-lg">
-                {[
-                  { icon: Trophy, label: "Events", value: "320+" },
-                  { icon: Users, label: "Teams", value: "850+" },
-                  { icon: TrendingUp, label: "Match Rate", value: "94%" },
-                ].map((s, i) => (
-                  <div key={i} className="glass rounded-xl p-4 text-center">
-                    <s.icon className="h-5 w-5 text-[#f4d35e] mx-auto mb-2" />
-                    <div className="text-xl md:text-2xl font-bold text-gradient-gold">{s.value}</div>
-                    <div className="text-xs md:text-sm text-muted-foreground uppercase tracking-wide mt-1">{s.label}</div>
-                  </div>
-                ))}
               </div>
 
             </motion.div>
@@ -169,25 +147,22 @@ export function HomePage() {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="relative hidden lg:block"
             >
-              <div className="relative aspect-square max-w-[520px] mx-auto">
-                <div
-                  className="absolute inset-[18%] rounded-3xl border border-white/10 shadow-2xl animate-pulse-glow flex items-center justify-center p-6 overflow-hidden"
-                  style={{
-                    background: `radial-gradient(circle at 30% 20%, ${theme.primaryColor}33, transparent 55%), linear-gradient(160deg, ${theme.backgroundLight} 0%, ${theme.backgroundColor} 100%)`,
-                    boxShadow: `0 24px 60px rgba(0,0,0,0.55), 0 0 40px ${theme.primaryColor}33`,
-                  }}
-                >
-                  <div className="absolute inset-0 bg-gradient-to-tr from-white/10 via-transparent to-transparent pointer-events-none" />
-                  {theme.logoUrl ? (
-                    <img
-                      src={`${theme.logoUrl.split("?")[0]}?t=hero`}
-                      alt={theme.siteName}
-                      className="relative w-full max-w-[280px] h-auto object-contain drop-shadow-2xl"
-                      style={{ mixBlendMode: "screen" }}
+              <div className="relative aspect-square max-w-[540px] mx-auto">
+                {/* Logo — same BrandMark treatment as navbar */}
+                <div className="absolute inset-[20%] z-10 flex items-center justify-center pointer-events-none">
+                  <motion.div
+                    className="relative animate-float-slow"
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.9, delay: 0.35 }}
+                  >
+                    <BrandMark
+                      height={96}
+                      emphasis="hero"
+                      showNameFallback={!theme.logoUrl}
+                      className="rounded-2xl md:rounded-3xl"
                     />
-                  ) : (
-                    <BrandMark height={72} />
-                  )}
+                  </motion.div>
                 </div>
 
                 <div className="absolute inset-0 orbit-ring">
@@ -209,38 +184,16 @@ export function HomePage() {
                       >
                         <button
                           onClick={() => navigate(s.id)}
-                          className="glossy-card p-3 w-[110px] text-center cursor-pointer"
+                          className="glossy-card hero-orbit-chip p-3 w-[116px] text-center cursor-pointer transition-transform hover:scale-105"
                         >
-                          <s.icon className="h-5 w-5 text-[#f4d35e] mx-auto mb-1" />
-                          <div className="text-[10px] font-medium leading-tight">{s.title}</div>
+                          <s.icon className="h-5 w-5 text-[#f4d35e] mx-auto mb-1.5" />
+                          <div className="text-[10px] font-medium leading-tight text-foreground/90">{s.title}</div>
                         </button>
                       </div>
                     );
                   })}
                 </div>
 
-                <motion.div
-                  className="absolute top-6 right-2 glass-strong rounded-xl p-3 animate-float"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 1 }}
-                >
-                  <div className="flex items-center gap-2">
-                    <Activity className="h-4 w-4 text-emerald-400" />
-                    <span className="text-xs font-medium">Live: Metro Cup</span>
-                  </div>
-                </motion.div>
-                <motion.div
-                  className="absolute bottom-10 left-0 glass-strong rounded-xl p-3 animate-float-slow"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 1.2 }}
-                >
-                  <div className="flex items-center gap-2">
-                    <Sparkles className="h-4 w-4 text-[#f4d35e]" />
-                    <span className="text-xs font-medium">AI Match Found</span>
-                  </div>
-                </motion.div>
               </div>
             </motion.div>
           </div>
@@ -260,18 +213,20 @@ export function HomePage() {
           <SectionTitle
             eyebrow="Start Here"
             title="What brings you to The Sports Foundry?"
-            subtitle="Choose your role. We will take you to the exact place where you can complete your goal — no guessing."
+            subtitle="Choose your role — where you used to see brand partnerships, teams can enquire directly. We reply by email."
           />
           <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
             {purposePaths.map((path, i) => (
               <motion.button
                 key={path.id}
-                onClick={() => navigate(path.page)}
+                onClick={() => openEnquiry(path.enquiryType)}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.35, delay: (i % 3) * 0.06 }}
-                className="glossy-card p-5 md:p-6 text-left group"
+                className={`glossy-card p-5 md:p-6 text-left group ${
+                  path.featured ? "ring-1 ring-[#d4af37]/45 shadow-lg shadow-[#d4af37]/10" : ""
+                }`}
               >
                 <div className="flex items-start gap-4">
                   <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-[#d4af37]/25 to-[#d4af37]/5 border border-[#d4af37]/20 flex items-center justify-center shrink-0">
@@ -290,51 +245,14 @@ export function HomePage() {
 
             ))}
           </div>
-          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
-            <button
-              onClick={() => navigate("auth")}
-              className="btn-gold rounded-full px-6 py-3 text-sm font-semibold"
-            >
-              New here? Create free account
-            </button>
+          <div className="mt-8 flex justify-center">
             <button
               onClick={() => navigate("contact")}
-              className="btn-outline-gold rounded-full px-6 py-3 text-sm font-semibold"
+              className="btn-outline-gold rounded-full px-6 py-3 text-sm font-semibold inline-flex items-center gap-2"
             >
-              Not sure? Talk to us
+              <Mail className="h-4 w-4" />
+              Not sure? Contact us directly
             </button>
-          </div>
-        </div>
-      </section>
-
-
-      {/* ============ TRUST BAR ============ */}
-      <section className="py-10 border-b border-white/10">
-        <div className="container mx-auto px-4 md:px-6 max-w-7xl">
-          <p className="text-center text-xs uppercase tracking-[0.2em] text-muted-foreground mb-6">
-            Trusted by teams, academies, and brands across India
-          </p>
-
-
-          <div className="relative overflow-hidden">
-            <div className="flex gap-3 animate-marquee" style={{ width: "max-content" }}>
-              {[...PARTNERS, ...PARTNERS].map((p, i) => (
-                <div
-                  key={i}
-                  className="glossy-card px-5 py-3 flex items-center gap-3 shrink-0"
-                >
-                  <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-[#d4af37]/30 to-[#d4af37]/5 flex items-center justify-center font-bold text-[#f4d35e] text-xs">
-                    {p.name.charAt(0)}
-                  </div>
-                    <div>
-                      <div className="text-sm font-medium whitespace-nowrap">{p.name}</div>
-                      <div className="text-[10px] text-muted-foreground">{p.tag}</div>
-                    </div>
-
-
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </section>
@@ -385,286 +303,20 @@ export function HomePage() {
         </div>
       </section>
 
-      {/* ============ IMPACT STATS ============ */}
-      <section className="py-16 md:py-20">
-        <div className="container mx-auto px-4 md:px-6 max-w-7xl">
-          <div className="relative overflow-hidden rounded-3xl glass-strong p-8 md:p-14">
-            <div className="absolute -top-20 -left-20 w-72 h-72 rounded-full bg-[#d4af37]/15 blur-3xl pointer-events-none" />
-            <div className="absolute -bottom-20 -right-20 w-72 h-72 rounded-full bg-[#4a90e2]/15 blur-3xl pointer-events-none" />
-
-            <div className="relative grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-              {IMPACT_STATS.map((stat, i) => (
-
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: i * 0.1 }}
-                  className="text-center"
-                >
-                  <div className="text-3xl md:text-5xl font-bold text-gradient-gold">
-                    <CountUp end={stat.value} suffix={stat.suffix} />
-                  </div>
-                  <div className="mt-2 text-xs md:text-sm text-muted-foreground uppercase tracking-wide">
-                    {stat.label}
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ============ FEATURED EVENTS ============ */}
-      <section className="py-16 md:py-24">
-        <div className="container mx-auto px-4 md:px-6 max-w-7xl">
-          <div className="flex items-end justify-between flex-wrap gap-4 mb-10">
-            <SectionTitle
-              align="left"
-              eyebrow="Featured Events"
-              title="Upcoming tournaments & leagues"
-              subtitle="Register solo, with your team, or as a corporate squad."
-            />
-            <button
-              onClick={() => navigate("events-hub")}
-              className="btn-outline-gold rounded-full px-5 py-2.5 text-sm font-medium inline-flex items-center gap-2"
-            >
-              View all events
-              <ArrowRight className="h-4 w-4" />
-            </button>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {FEATURED_EVENTS.slice(0, 3).map((evt, i) => (
-              <motion.button
-                key={evt.id}
-                onClick={() => navigate("events-hub")}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: i * 0.08 }}
-                className="glossy-card overflow-hidden text-left group"
-              >
-                <div className={`relative h-40 bg-gradient-to-br ${evt.accent} flex items-center justify-center`}>
-                  <Trophy className="h-16 w-16 text-white/40" strokeWidth={1.2} />
-                  <div className="absolute top-3 left-3">
-                    <span className="text-[10px] uppercase tracking-wide glass-strong px-2 py-1 rounded-full">
-                      {evt.sport}
-                    </span>
-                  </div>
-                  {evt.registrationOpen && (
-                    <div className="absolute top-3 right-3">
-                      <span className="text-[10px] uppercase tracking-wide bg-emerald-500/20 text-emerald-300 px-2 py-1 rounded-full border border-emerald-500/40">
-                        Open
-                      </span>
-                    </div>
-                  )}
-                </div>
-                <div className="p-5">
-                  <h3 className="font-semibold text-base mb-3 group-hover:text-[#f4d35e] transition-colors">
-                    {evt.title}
-                  </h3>
-                  <div className="space-y-1.5 text-xs text-muted-foreground">
-                    <div className="flex items-center gap-2">
-                      <Calendar className="h-3.5 w-3.5 text-[#f4d35e]" />
-                      {evt.date}
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <MapPin className="h-3.5 w-3.5 text-[#f4d35e]" />
-                      {evt.location}
-                    </div>
-                  </div>
-                  <div className="mt-4 flex items-center gap-1 text-xs font-medium text-[#f4d35e]">
-                    Quick Register
-                    <ArrowRight className="h-3 w-3 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </div>
-              </motion.button>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ============ COMMUNITY SPOTLIGHT ============ */}
-      <section className="py-16 md:py-24 bg-white/[0.02] border-y border-white/10">
-        <div className="container mx-auto px-4 md:px-6 max-w-7xl">
-          <div className="flex items-end justify-between flex-wrap gap-4 mb-10">
-            <SectionTitle
-              align="left"
-              eyebrow="Community Spotlight"
-              title="What's happening on the platform"
-              subtitle="Live posts from athletes, coaches, brands, and fans."
-            />
-            <button
-              onClick={() => navigate("community-hub")}
-              className="btn-outline-gold rounded-full px-5 py-2.5 text-sm font-medium inline-flex items-center gap-2"
-            >
-              Open Community
-              <ArrowRight className="h-4 w-4" />
-            </button>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {COMMUNITY_POSTS.slice(0, 2).map((post, i) => (
-              <motion.div
-                key={post.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: i * 0.1 }}
-                className="glossy-card p-6"
-              >
-                <div className="flex items-start gap-3 mb-4">
-                  <div className={`h-11 w-11 rounded-xl bg-gradient-to-br ${post.accent} flex items-center justify-center font-bold text-sm text-white shrink-0`}>
-                    {post.initials}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <span className="font-semibold text-sm">{post.author}</span>
-                      <span className="text-xs text-muted-foreground">{post.handle}</span>
-                      <span className="text-xs text-muted-foreground">· {post.time}</span>
-                    </div>
-                    <span className="text-[10px] uppercase tracking-wide text-[#f4d35e]">{post.role}</span>
-                  </div>
-                </div>
-                <p className="text-sm leading-relaxed mb-3">{post.content}</p>
-                <div className="flex items-center justify-between pt-3 border-t border-white/10">
-                  <span className="text-[10px] uppercase tracking-wide glass px-2 py-1 rounded-full text-[#f4d35e]">
-                    {post.tag}
-                  </span>
-                  <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                    <span>❤ {post.likes}</span>
-                    <span>💬 {post.comments}</span>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ============ UNDERPRIVILEGED BANNER ============ */}
-      <section className="py-16 md:py-24">
-        <div className="container mx-auto px-4 md:px-6 max-w-7xl">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="relative overflow-hidden rounded-3xl p-8 md:p-14"
-            style={{
-              background: "linear-gradient(135deg, rgba(212,175,55,0.15) 0%, rgba(244,211,94,0.05) 50%, rgba(74,144,226,0.1) 100%)",
-              border: "1px solid rgba(212,175,55,0.3)",
-            }}
-          >
-            <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-[#d4af37]/20 blur-3xl pointer-events-none" />
-            <div className="absolute -bottom-20 -left-20 w-72 h-72 rounded-full bg-[#4a90e2]/15 blur-3xl pointer-events-none" />
-
-
-            <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-              <div>
-                <div className="inline-flex items-center gap-2 rounded-full glass-strong px-3 py-1.5 text-xs font-medium mb-4">
-                  <Heart className="h-3.5 w-3.5 text-rose-400" />
-                  <span className="text-[#f4d35e]">CSR Initiative</span>
-                </div>
-                <h2 className="text-2xl md:text-4xl font-bold text-gradient-gold mb-4">
-                  Sport is a right, not a privilege.
-                </h2>
-                <p className="text-sm md:text-base text-muted-foreground leading-relaxed mb-6 max-w-xl">
-                  Through our Underprivileged Sports Initiative, we bring coaching, equipment, competitions, and mentorship to children who'd otherwise never get a chance. 1,200+ children coached in our first year — and we're just getting started.
-                </p>
-                <div className="flex flex-wrap gap-3">
-                  <button
-                    onClick={() => navigate("underprivileged-hub")}
-                    className="btn-gold rounded-full px-6 py-3 text-sm font-semibold"
-                  >
-                    Support the Initiative
-                  </button>
-                  <button
-                    onClick={() => navigate("underprivileged-hub")}
-                    className="btn-outline-gold rounded-full px-6 py-3 text-sm font-semibold"
-                  >
-                    Get Involved
-                  </button>
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                {[
-                  { value: "1,200+", label: "Children Coached" },
-                  { value: "48", label: "Coaching Camps" },
-                  { value: "8,000+", label: "Equipment Donated" },
-                  { value: "320+", label: "Active Mentor Pairs" },
-                ].map((stat, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: i * 0.08 }}
-                    className="glass-strong rounded-2xl p-5 text-center"
-                  >
-                    <div className="text-2xl md:text-3xl font-bold text-gradient-gold">
-                      {stat.value}
-                    </div>
-                    <div className="text-[11px] text-muted-foreground uppercase tracking-wide mt-1">
-                      {stat.label}
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ============ TESTIMONIALS ============ */}
-      <section className="py-16 md:py-24 bg-white/[0.02] border-y border-white/10">
-        <div className="container mx-auto px-4 md:px-6 max-w-7xl">
-          <SectionTitle
-            eyebrow="Testimonials"
-            title="Loved by athletes, teams, academies & brands"
-            subtitle="Real outcomes from real stakeholders across the platform."
-          />
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-            {TESTIMONIALS.map((t, i) => (
-              <motion.div
-                key={t.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: i * 0.08 }}
-                className="glossy-card p-6 flex flex-col"
-              >
-                <Quote className="h-6 w-6 text-[#f4d35e]/60 mb-3" />
-                <p className="text-sm leading-relaxed flex-1">{t.quote}</p>
-                <div className="mt-5 pt-4 border-t border-white/10 flex items-center gap-3">
-                  <div className={`h-9 w-9 rounded-full bg-gradient-to-br ${t.accent} flex items-center justify-center font-bold text-xs text-white`}>
-                    {t.initials}
-                  </div>
-                  <div>
-                    <div className="text-sm font-medium">{t.name}</div>
-                    <div className="text-xs text-muted-foreground">{t.role}</div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ============ HOW IT WORKS ============ */}
       <section className="py-16 md:py-24">
         <div className="container mx-auto px-4 md:px-6 max-w-7xl">
           <SectionTitle
             eyebrow="How It Works"
-            title={`Get started with ${theme.siteName} in minutes`}
-            subtitle="A simple path from signup to real opportunities — whether you are an athlete, team, academy, or brand."
+            title={`Work with ${theme.siteName} in four steps`}
+            subtitle="No accounts or profiles to create — just send an enquiry and our team takes it from there."
           />
           <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
             {[
-              { step: "01", icon: UserCheck, title: "Create your profile", body: "Sign up free and build a verified profile with stats, media, and goals." },
-              { step: "02", icon: Target, title: "Get discovered", body: "Show up in smart matches for trials, sponsorships, camps, and events." },
-              { step: "03", icon: Zap, title: "Connect & grow", body: "Message teams, brands, and academies. Track opportunities in one place." },
-              { step: "04", icon: ShieldCheck, title: "Win with trust", body: "Verified badges, transparent processes, and outcomes you can measure." },
+              { step: "01", icon: Mail, title: "Send your enquiry", body: "Tell us who you are — team, athlete, academy, or event host — and what you need." },
+              { step: "02", icon: UserCheck, title: "We review & connect", body: "Our team reads every message and reaches out by email within one business day." },
+              { step: "03", icon: Target, title: "We match the right path", body: "Trials, registrations, partnerships, or events — we route you to the right solution." },
+              { step: "04", icon: ShieldCheck, title: "You move forward", body: "Clear next steps, direct communication, and support until your goal is in motion." },
             ].map((item, i) => (
               <motion.div
                 key={item.step}
@@ -701,16 +353,16 @@ export function HomePage() {
           />
           <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {[
-              { icon: Trophy, title: "Athletes", body: "Build a career profile, get trials, scholarships, and brand deals.", page: "athletes-hub" as const },
-              { icon: Users, title: "Teams", body: "Recruit talent, manage registrations, and grow your fan presence.", page: "teams-hub" as const },
-              { icon: GraduationCap, title: "Academies", body: "List programs, attract athletes, and partner on events.", page: "academies-hub" as const },
-              { icon: Building2, title: "Brands", body: "Find endorsement partners and sponsor teams or tournaments.", page: "brands-hub" as const },
-              { icon: Sparkles, title: "Corporates", body: "Run leagues, wellness challenges, and team-building sports days.", page: "corporate-hub" as const },
-              { icon: Heart, title: "Community & CSR", body: "Engage fans and support underprivileged sports pathways.", page: "community-hub" as const },
+              { icon: Users, title: "Teams", body: "Recruit players, manage registrations, and grow your team presence.", enquiryType: "Team" },
+              { icon: Trophy, title: "Athletes", body: "Find trials, scholarships, academies, and sponsorship opportunities.", enquiryType: "Athlete" },
+              { icon: GraduationCap, title: "Academies", body: "List programs, attract athletes, and partner on events.", enquiryType: "Academy" },
+              { icon: Building2, title: "Brands", body: "Find endorsement partners and sponsor teams or tournaments.", enquiryType: "Brand" },
+              { icon: Sparkles, title: "Corporates", body: "Run leagues, wellness challenges, and team-building sports days.", enquiryType: "Corporate" },
+              { icon: Calendar, title: "Event Hosts", body: "Launch tournaments and leagues with end-to-end delivery support.", enquiryType: "Event" },
             ].map((card, i) => (
               <motion.button
                 key={card.title}
-                onClick={() => navigate(card.page)}
+                onClick={() => openEnquiry(card.enquiryType)}
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -723,9 +375,7 @@ export function HomePage() {
                 <h3 className="font-semibold text-base mb-2 group-hover:text-[#f4d35e] transition-colors">{card.title}</h3>
                 <p className="text-xs text-muted-foreground leading-relaxed mb-4">{card.body}</p>
                 <span className="inline-flex items-center gap-1 text-xs font-medium text-[#f4d35e]">
-
-
-                  Explore hub <ArrowRight className="h-3 w-3 group-hover:translate-x-1 transition-transform" />
+                  Send enquiry <ArrowRight className="h-3 w-3 group-hover:translate-x-1 transition-transform" />
                 </span>
               </motion.button>
             ))}
@@ -735,152 +385,72 @@ export function HomePage() {
 
       {/* ============ WHY US ============ */}
       <section className="py-16 md:py-24">
-        <div className="container mx-auto px-4 md:px-6 max-w-7xl">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-            <div>
-              <SectionTitle
-                align="left"
-                eyebrow="Why Choose Us"
-                title={`The ${theme.siteName} difference`}
-                subtitle="Premium sports infrastructure with the trust, reach, and tools modern stakeholders need."
-              />
-              <div className="mt-8 space-y-4">
-                {[
-                  { title: "Verified ecosystem", body: "Athletes, teams, and partners go through clear verification so every connection is credible." },
-                  { title: "End-to-end opportunities", body: "Trials, sponsorships, academies, events, and CSR — not just another social feed." },
-                  { title: "Built for India, ready to scale", body: "Designed around Indian sport pathways while staying ready for multi-city growth." },
-                ].map((row) => (
-                  <div key={row.title} className="flex gap-3 glossy-card p-4">
-                    <div className="h-9 w-9 rounded-lg bg-[var(--primary)]/15 border border-[var(--primary)]/25 flex items-center justify-center shrink-0">
-                      <ShieldCheck className="h-4 w-4 text-[#f4d35e]" />
-                    </div>
-                    <div>
-                      <div className="text-sm font-semibold mb-1">{row.title}</div>
-                      <p className="text-xs text-muted-foreground leading-relaxed">{row.body}</p>
-
-
-                    </div>
-                  </div>
-                ))}
+        <div className="container mx-auto px-4 md:px-6 max-w-4xl">
+          <SectionTitle
+            eyebrow="Why Choose Us"
+            title={`The ${theme.siteName} difference`}
+            subtitle="Direct support for teams, athletes, academies, and event hosts — without inflated claims or fake numbers."
+          />
+          <div className="mt-10 space-y-4">
+            {[
+              { title: "Honest & direct", body: "Tell us what you need. We reply by email with clear next steps — no sign-up walls." },
+              { title: "End-to-end support", body: "Recruitment, registrations, academies, partnerships, and events — one team to talk to." },
+              { title: "Built for Indian sport", body: "Designed around how teams, academies, and events actually work in India." },
+            ].map((row) => (
+              <div key={row.title} className="flex gap-3 glossy-card p-5">
+                <div className="h-9 w-9 rounded-lg bg-[var(--primary)]/15 border border-[var(--primary)]/25 flex items-center justify-center shrink-0">
+                  <ShieldCheck className="h-4 w-4 text-[#f4d35e]" />
+                </div>
+                <div>
+                  <div className="text-sm font-semibold mb-1">{row.title}</div>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{row.body}</p>
+                </div>
               </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              {[
-                { value: "94%", label: "Match success rate" },
-                { value: "48 hrs", label: "Avg. first opportunity" },
-                { value: "20+", label: "Sports covered" },
-                { value: "Free", label: "Core platform access" },
-              ].map((stat, i) => (
-                <motion.div
-                  key={stat.label}
-                  initial={{ opacity: 0, scale: 0.94 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.35, delay: i * 0.06 }}
-                  className="glass-strong rounded-2xl p-6 text-center"
-                >
-                  <div className="text-2xl md:text-3xl font-bold text-gradient-gold">{stat.value}</div>
-                  <div className="text-[11px] text-muted-foreground uppercase tracking-wide mt-2">{stat.label}</div>
-
-
-                </motion.div>
-              ))}
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ============ SUCCESS + NEWS ============ */}
-      <section className="py-16 md:py-24 bg-white/[0.02] border-y border-white/10">
-        <div className="container mx-auto px-4 md:px-6 max-w-7xl">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-            <div>
-              <div className="flex items-end justify-between gap-4 mb-6">
-                <SectionTitle
-                  align="left"
-                  eyebrow="Success Stories"
-                  title="Real outcomes"
-                  subtitle="Athletes and partners already winning with the platform."
-                />
-              </div>
-              <div className="space-y-4">
-                {[
-                  { title: "From district trials to pro contract", sport: "Football", outcome: "Signed in 90 days" },
-                  { title: "Academy pipeline filled in one season", sport: "Cricket", outcome: "140+ enrollments" },
-                  { title: "Brand campaign with verified athletes", sport: "Multi-sport", outcome: "5 endorsements" },
-                ].map((story, i) => (
-                  <motion.button
-                    key={story.title}
-                    onClick={() => navigate("success-stories")}
-                    initial={{ opacity: 0, x: -12 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.35, delay: i * 0.06 }}
-                    className="w-full glossy-card p-4 text-left flex items-center gap-4 group"
-                  >
-                    <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-[var(--primary)]/30 to-[var(--primary)]/5 border border-[var(--primary)]/20 flex items-center justify-center shrink-0">
-                      <Trophy className="h-5 w-5 text-[#f4d35e]" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="text-sm font-semibold group-hover:text-[#f4d35e] transition-colors">{story.title}</div>
-                      <div className="text-[11px] text-muted-foreground mt-0.5">{story.sport}</div>
-                    </div>
-                    <span className="text-[10px] uppercase tracking-wide text-[#f4d35e] glass px-2 py-1 rounded-full shrink-0">
-                      {story.outcome}
-                    </span>
-                  </motion.button>
-                ))}
-                <button
-                  onClick={() => navigate("success-stories")}
-                  className="btn-outline-gold rounded-full px-5 py-2.5 text-sm font-medium inline-flex items-center gap-2"
-                >
-                  All success stories <ArrowRight className="h-4 w-4" />
-                </button>
-              </div>
+      {/* ============ ENQUIRY FORM ============ */}
+      <section id="enquire-form" className="py-16 md:py-24 bg-white/[0.02] border-y border-white/10 scroll-mt-28">
+        <div className="container mx-auto px-4 md:px-6 max-w-6xl">
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
+            <div className="lg:col-span-2">
+              <SectionTitle
+                align="left"
+                eyebrow="Get in touch"
+                title="Send us an enquiry"
+                subtitle="Same form as Contact Us — your details go straight to our team. We reply by email, usually within 24 hours."
+              />
+              <ul className="mt-6 space-y-3 text-sm text-muted-foreground">
+                <li className="flex items-start gap-2">
+                  <Mail className="h-4 w-4 text-[#f4d35e] mt-0.5 shrink-0" />
+                  <a href={`mailto:${CONTACT_EMAIL}`} className="hover:text-[#f4d35e] transition-colors">
+                    {CONTACT_EMAIL}
+                  </a>
+                </li>
+                <li className="flex items-start gap-2">
+                  <ShieldCheck className="h-4 w-4 text-[#f4d35e] mt-0.5 shrink-0" />
+                  <span>No login or profile needed — just your message and we take it from there.</span>
+                </li>
+              </ul>
             </div>
-
-            <div>
-              <div className="flex items-end justify-between gap-4 mb-6">
-                <SectionTitle
-                  align="left"
-                  eyebrow="News & Insights"
-                  title="From the foundry"
-                  subtitle="Platform updates, sports news, and partner stories."
-                />
-              </div>
-              <div className="space-y-4">
-                {[
-                  { category: "Platform", title: "New athlete verification badges are live", read: "3 min" },
-                  { category: "Events", title: "Metro Cup registrations open across 6 cities", read: "4 min" },
-                  { category: "CSR", title: "1,200 children coached in year one of our initiative", read: "5 min" },
-                ].map((post, i) => (
-                  <motion.button
-                    key={post.title}
-                    onClick={() => navigate("blog")}
-                    initial={{ opacity: 0, x: 12 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.35, delay: i * 0.06 }}
-                    className="w-full glossy-card p-4 text-left flex items-center gap-4 group"
-                  >
-                    <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-[var(--primary)]/30 to-[var(--primary)]/5 border border-[var(--primary)]/20 flex items-center justify-center shrink-0">
-                      <Newspaper className="h-5 w-5 text-[#f4d35e]" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="text-[10px] uppercase tracking-wide text-[#f4d35e] mb-0.5">{post.category}</div>
-                      <div className="text-sm font-semibold group-hover:text-[#f4d35e] transition-colors line-clamp-2">{post.title}</div>
-                    </div>
-                    <span className="text-[10px] text-muted-foreground shrink-0">{post.read}</span>
-                  </motion.button>
-                ))}
-                <button
-                  onClick={() => navigate("blog")}
-                  className="btn-outline-gold rounded-full px-5 py-2.5 text-sm font-medium inline-flex items-center gap-2"
-                >
-                  Read the blog <ArrowRight className="h-4 w-4" />
-                </button>
-              </div>
-            </div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="lg:col-span-3 glossy-card p-6 md:p-8"
+            >
+              <h3 className="text-lg font-semibold mb-1 text-gradient-gold">Tell us what you need</h3>
+              <p className="text-xs text-muted-foreground mb-6">
+                Running a team? Choose &quot;Team&quot; below and share your sport, city, and roster needs.
+              </p>
+              <EnquiryForm
+                key={enquiryType}
+                defaultType={enquiryType}
+                subject="Homepage enquiry"
+              />
+            </motion.div>
           </div>
         </div>
       </section>
@@ -908,23 +478,23 @@ export function HomePage() {
               )}
 
               <h2 className="text-2xl md:text-4xl font-bold text-gradient-gold mb-3">
-                Ready to step into the foundry?
+                Ready to connect with {theme.siteName}?
               </h2>
               <p className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto mb-7">
-                Join 12,500+ athletes, 850+ teams, 140+ academies, and the brands building the future of Indian sport with {theme.siteName}. Core access is free — for everyone.
+                Whether you run a team, host events, or need a sports partner — send an enquiry and our team will reach out directly. No sign-up required.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <button
-                  onClick={() => navigate("auth")}
+                  onClick={() => openEnquiry("Team")}
                   className="btn-gold rounded-full px-6 py-3 text-sm font-semibold"
                 >
-                  Get Started Free
+                  I run a Team — enquire now
                 </button>
                 <button
                   onClick={() => navigate("contact")}
                   className="btn-outline-gold rounded-full px-6 py-3 text-sm font-semibold"
                 >
-                  Talk to Us
+                  Contact Us
                 </button>
               </div>
             </div>

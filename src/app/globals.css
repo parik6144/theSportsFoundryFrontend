@@ -285,6 +285,28 @@
                 radial-gradient(circle at 70% 60%, rgba(74, 144, 226, 0.25) 0%, transparent 50%);
   }
 
+  .hero-orbit-chip {
+    backdrop-filter: blur(14px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+
+  .enquiry-input {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.5rem;
+    padding: 0.625rem 0.875rem;
+    font-size: 0.875rem;
+    color: var(--foreground);
+  }
+  .enquiry-input::placeholder {
+    color: var(--muted-foreground);
+  }
+  .enquiry-input:focus {
+    outline: none;
+    border-color: #d4af37;
+  }
+
 
 
   /* 3D tilt card */
