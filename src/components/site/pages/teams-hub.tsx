@@ -29,7 +29,7 @@ export function TeamsHubPage() {
       <PageHeader
         eyebrow="Teams Hub"
         title="Find teams, clubs & franchises."
-        subtitle="From grassroots clubs to professional franchises — see who's recruiting, who's playing, and where you fit."
+        subtitle="From grassroots clubs to professional franchises — send an enquiry to connect about recruitment and registrations."
       />
 
       <section className="py-8 md:py-12 pb-20">
@@ -109,10 +109,10 @@ export function TeamsHubPage() {
                     </div>
                   )}
                   <button
-                    onClick={() => navigate("auth")}
+                    onClick={() => navigate("contact")}
                     className="mt-auto w-full btn-outline-gold rounded-lg px-4 py-2.5 text-xs font-medium inline-flex items-center justify-center gap-2"
                   >
-                    View Team Profile
+                    Enquire About Team
                     <ArrowRight className="h-3 w-3" />
                   </button>
                 </motion.div>
@@ -127,10 +127,10 @@ export function TeamsHubPage() {
       </section>
 
       <CTASection
-        title="Manage a team? Join the platform."
-        subtitle="Recruit verified players, build your digital presence, and run operations — all from one dashboard."
-        primaryLabel="Register Your Team"
-        primaryPage="auth"
+        title="I run a team — let's talk."
+        subtitle="Recruit players, manage registrations, and get support for leagues and tournaments via direct enquiry."
+        primaryLabel="Send Team Enquiry"
+        primaryPage="contact"
         secondaryLabel="Learn More"
         secondaryPage="teams"
       />

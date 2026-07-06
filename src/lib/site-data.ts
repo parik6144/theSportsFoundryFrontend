@@ -39,6 +39,7 @@ export type PageId =
   | "auth";
 
 const SERVICE_PAGE_IDS: ServiceId[] = [
+  "underprivileged",
   "athletes",
   "teams",
   "academies",
@@ -46,8 +47,18 @@ const SERVICE_PAGE_IDS: ServiceId[] = [
   "corporate",
   "events",
   "community",
-  "underprivileged",
 ];
+
+export const HUB_PAGE_IDS = [
+  "underprivileged-hub",
+  "athletes-hub",
+  "teams-hub",
+  "academies-hub",
+  "brands-hub",
+  "corporate-hub",
+  "events-hub",
+  "community-hub",
+] as const satisfies readonly PageId[];
 
 /** Pages available from the public site navigation. */
 export const OPEN_PAGES: readonly PageId[] = [
@@ -56,7 +67,12 @@ export const OPEN_PAGES: readonly PageId[] = [
   "contact",
   "services",
   ...SERVICE_PAGE_IDS,
+  ...HUB_PAGE_IDS,
 ] as const;
+
+export function isHubPage(page: PageId): page is (typeof HUB_PAGE_IDS)[number] {
+  return (HUB_PAGE_IDS as readonly string[]).includes(page);
+}
 
 export function isServicePage(page: PageId): page is ServiceId {
   return SERVICE_PAGE_IDS.includes(page as ServiceId);
@@ -84,8 +100,48 @@ export interface Service {
 
 export const SERVICES: Service[] = [
   {
-    id: "athletes",
+    id: "underprivileged",
     index: 1,
+    title: "Promotes Sports Among the Underprivileged",
+    tagline: "Using sport to inspire and build brighter futures.",
+    icon: Sparkles,
+    short:
+      "We create opportunities for underprivileged children by improving access to coaching, equipment, competitions, and mentorship.",
+    overview:
+      "The Sports Foundry creates opportunities for underprivileged children by improving access to coaching, equipment, competitions, and mentorship. Through partnerships and community initiatives, we use sport as a tool to inspire, develop talent, and create brighter futures.",
+    forWhom: {
+      title: "For the Next Generation",
+      body: "Every child deserves a fair shot at sport. We work with NGOs, schools, and volunteers to make access a reality, not a privilege.",
+    },
+    bullets: [
+      {
+        title: "Coaching Access",
+        body: "Free and subsidised coaching camps in underserved communities, run by verified coaches.",
+      },
+      {
+        title: "Equipment Support",
+        body: "Equipment banks that lend, donate, and recycle kit — so cost never blocks a child's path.",
+      },
+      {
+        title: "Competition Exposure",
+        body: "Pathway tournaments that identify talent and route it into structured academies.",
+      },
+      {
+        title: "Mentorship",
+        body: "Each supported child is paired with a mentor — an athlete, coach, or community leader.",
+      },
+    ],
+    howItWorks: [
+      "Send an enquiry",
+      "Tell us how you want to partner, volunteer, or support",
+      "We connect by email with clear next steps",
+    ],
+    cta: "Send an Enquiry",
+    hubId: "underprivileged-hub",
+  },
+  {
+    id: "athletes",
+    index: 2,
     title: "Connects Athletes",
     tagline: "Discover opportunities. Build a career.",
     icon: Dumbbell,
@@ -121,7 +177,7 @@ export const SERVICES: Service[] = [
   },
   {
     id: "teams",
-    index: 2,
+    index: 3,
     title: "Onboards Teams",
     tagline: "Recruit, manage, and grow — all in one place.",
     icon: Users,
@@ -161,7 +217,7 @@ export const SERVICES: Service[] = [
   },
   {
     id: "academies",
-    index: 3,
+    index: 4,
     title: "Partners with Academies",
     tagline: "Wider reach. Real talent. New opportunities.",
     icon: GraduationCap,
@@ -201,7 +257,7 @@ export const SERVICES: Service[] = [
   },
   {
     id: "brands",
-    index: 4,
+    index: 5,
     title: "Connects Brands",
     tagline: "Strategic partnerships. Measurable returns.",
     icon: Handshake,
@@ -241,7 +297,7 @@ export const SERVICES: Service[] = [
   },
   {
     id: "corporate",
-    index: 5,
+    index: 6,
     title: "Manages Corporate Sports",
     tagline: "Build culture through sport.",
     icon: Building2,
@@ -281,7 +337,7 @@ export const SERVICES: Service[] = [
   },
   {
     id: "events",
-    index: 6,
+    index: 7,
     title: "Organizes Events",
     tagline: "Tournaments, leagues, and competitions — seamlessly delivered.",
     icon: Trophy,
@@ -317,7 +373,7 @@ export const SERVICES: Service[] = [
   },
   {
     id: "community",
-    index: 7,
+    index: 8,
     title: "Builds a Community",
     tagline: "One platform. Every stakeholder.",
     icon: Heart,
@@ -348,52 +404,12 @@ export const SERVICES: Service[] = [
       },
     ],
     howItWorks: [
-      "Create your account",
-      "Pick sports & interests",
-      "Join the conversation",
+      "Send an enquiry",
+      "Tell us your sport & interests",
+      "We connect you with the right people and updates",
     ],
-    cta: "Join the Community",
+    cta: "Send an Enquiry",
     hubId: "community-hub",
-  },
-  {
-    id: "underprivileged",
-    index: 8,
-    title: "Promotes Sports Among the Underprivileged",
-    tagline: "Using sport to inspire and build brighter futures.",
-    icon: Sparkles,
-    short:
-      "We create opportunities for underprivileged children by improving access to coaching, equipment, competitions, and mentorship.",
-    overview:
-      "SportSphere creates opportunities for underprivileged children by improving access to coaching, equipment, competitions, and mentorship. Through partnerships and community initiatives, we use sport as a tool to inspire, develop talent, and create brighter futures.",
-    forWhom: {
-      title: "For the Next Generation",
-      body: "Every child deserves a fair shot at sport. We work with NGOs, schools, and volunteers to make access a reality, not a privilege.",
-    },
-    bullets: [
-      {
-        title: "Coaching Access",
-        body: "Free and subsidised coaching camps in underserved communities, run by verified coaches.",
-      },
-      {
-        title: "Equipment Support",
-        body: "Equipment banks that lend, donate, and recycle kit — so cost never blocks a child's path.",
-      },
-      {
-        title: "Competition Exposure",
-        body: "Pathway tournaments that identify talent and route it into structured academies.",
-      },
-      {
-        title: "Mentorship",
-        body: "Each supported child is paired with a mentor — an athlete, coach, or community leader.",
-      },
-    ],
-    howItWorks: [
-      "Identify underserved communities",
-      "Partner with local NGOs & schools",
-      "Run programs & track impact",
-    ],
-    cta: "Support the Initiative",
-    hubId: "underprivileged-hub",
   },
 ];
 
@@ -421,6 +437,7 @@ export const NAV_GROUPS: { label: string; items: NavItem[] }[] = [
   {
     label: "Hubs",
     items: [
+      { id: "underprivileged-hub", label: "Underprivileged Initiative" },
       { id: "athletes-hub", label: "Athletes Hub" },
       { id: "teams-hub", label: "Teams Hub" },
       { id: "academies-hub", label: "Academies Hub" },

@@ -30,7 +30,7 @@ export function AthletesHubPage() {
       <PageHeader
         eyebrow="Athletes Hub"
         title="Discover verified athletes across sports."
-        subtitle="Search, filter, and shortlist. Every profile is verified — stats, history, and contact all in one place."
+        subtitle="Search and filter our athlete network — send an enquiry and we will connect you directly by email."
       />
 
       <section className="py-8 md:py-12 pb-20">
@@ -78,7 +78,7 @@ export function AthletesHubPage() {
           {filtered.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {filtered.map((a, i) => (
-                <AthleteCard key={a.id} athlete={a} index={i} onView={() => navigate("auth")} />
+                <AthleteCard key={a.id} athlete={a} index={i} onView={() => navigate("contact")} />
               ))}
             </div>
           ) : (
@@ -91,9 +91,9 @@ export function AthletesHubPage() {
 
       <CTASection
         title="Are you an athlete?"
-        subtitle="Create your verified profile in under 2 minutes. Get discovered by teams, brands, and academies."
-        primaryLabel="Create Your Profile"
-        primaryPage="auth"
+        subtitle="Send an enquiry with your sport, level, and goals — our team replies at info@sportsfoundry.in."
+        primaryLabel="Send Athlete Enquiry"
+        primaryPage="contact"
         secondaryLabel="Learn More"
         secondaryPage="athletes"
       />
@@ -144,7 +144,7 @@ function AthleteCard({ athlete, index, onView }: { athlete: Athlete; index: numb
         onClick={onView}
         className="mt-auto w-full btn-outline-gold rounded-lg px-4 py-2.5 text-xs font-medium inline-flex items-center justify-center gap-2"
       >
-        View Profile
+        View & Enquire
         <ArrowRight className="h-3 w-3" />
       </button>
     </motion.div>

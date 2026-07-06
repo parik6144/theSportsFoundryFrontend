@@ -124,10 +124,10 @@ export function ServiceDetailPage({ serviceId }: { serviceId?: ServiceId }) {
                   <ArrowRight className="h-4 w-4" />
                 </button>
                 <button
-                  onClick={() => navigate("services")}
+                  onClick={() => navigate(service.hubId)}
                   className="w-full btn-outline-gold rounded-full px-5 py-3 text-sm font-semibold"
                 >
-                  View All Services
+                  Open Hub
                 </button>
               </div>
 

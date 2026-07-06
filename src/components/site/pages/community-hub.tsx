@@ -14,7 +14,7 @@ export function CommunityHubPage() {
       <PageHeader
         eyebrow="Community"
         title="One platform. Every stakeholder."
-        subtitle="Athletes, fans, coaches, academies, and brands — all in one feed. Discussion, spotlights, opportunities, and shared experiences."
+        subtitle="Athletes, fans, coaches, academies, and brands — connect with us by enquiry. No account needed."
       />
 
       <section className="py-8 md:py-12 pb-20">
@@ -87,10 +87,10 @@ export function CommunityHubPage() {
                   Diya Sharma — 19, Hyderabad. Badminton. ITF rank climbing fast. Watch this space.
                 </p>
                 <button
-                  onClick={() => navigate("athletes-hub")}
+                  onClick={() => navigate("contact")}
                   className="w-full btn-outline-gold rounded-lg px-4 py-2.5 text-xs font-medium inline-flex items-center justify-center gap-2"
                 >
-                  View Profile
+                  Send Enquiry
                   <ArrowRight className="h-3 w-3" />
                 </button>
               </div>
@@ -125,9 +125,9 @@ export function CommunityHubPage() {
 
       <CTASection
         title="Join the conversation."
-        subtitle="Follow your favourite athletes, discover events, and connect with the wider sports community — free for everyone."
-        primaryLabel="Join the Community"
-        primaryPage="auth"
+        subtitle="Send an enquiry to connect with our community team — we reply by email at info@sportsfoundry.in."
+        primaryLabel="Send Enquiry"
+        primaryPage="contact"
         secondaryLabel="Learn More"
         secondaryPage="community"
       />

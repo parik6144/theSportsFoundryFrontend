@@ -20,6 +20,7 @@ export function SiteFooter() {
   ];
 
   const hubLinks: { label: string; page: PageId }[] = [
+    { label: "Underprivileged Initiative", page: "underprivileged-hub" },
     { label: "Athletes Hub", page: "athletes-hub" },
     { label: "Teams Hub", page: "teams-hub" },
     { label: "Academies Hub", page: "academies-hub" },
@@ -122,18 +123,26 @@ export function SiteFooter() {
               Services
             </h5>
             <ul className="space-y-2">
-              {SERVICES.slice(0, 8).map((s) => (
-                <li key={s.id}>
-                  <button
-                    type="button"
-                    disabled
-                    title="Coming soon"
-                    className="text-sm text-muted-foreground/40 cursor-not-allowed line-through decoration-white/15 text-left"
-                  >
-                    {s.title}
-                  </button>
-                </li>
-              ))}
+              {SERVICES.map((s) => {
+                const open = isOpen(s.id);
+                return (
+                  <li key={s.id}>
+                    <button
+                      type="button"
+                      onClick={() => open && navigate(s.id)}
+                      disabled={!open}
+                      title={open ? s.title : "Coming soon"}
+                      className={`text-sm text-left transition-colors ${
+                        open
+                          ? "text-muted-foreground hover:text-[#f4d35e]"
+                          : "text-muted-foreground/40 cursor-not-allowed line-through decoration-white/15"
+                      }`}
+                    >
+                      {s.title}
+                    </button>
+                  </li>
+                );
+              })}
             </ul>
           </div>
 
@@ -142,18 +151,26 @@ export function SiteFooter() {
               Hubs
             </h5>
             <ul className="space-y-2">
-              {hubLinks.map((l) => (
-                <li key={l.page}>
-                  <button
-                    type="button"
-                    disabled
-                    title="Coming soon"
-                    className="text-sm text-muted-foreground/40 cursor-not-allowed line-through decoration-white/15 text-left"
-                  >
-                    {l.label}
-                  </button>
-                </li>
-              ))}
+              {hubLinks.map((l) => {
+                const open = isOpen(l.page);
+                return (
+                  <li key={l.page}>
+                    <button
+                      type="button"
+                      onClick={() => open && navigate(l.page)}
+                      disabled={!open}
+                      title={open ? l.label : "Coming soon"}
+                      className={`text-sm text-left transition-colors ${
+                        open
+                          ? "text-muted-foreground hover:text-[#f4d35e]"
+                          : "text-muted-foreground/40 cursor-not-allowed line-through decoration-white/15"
+                      }`}
+                    >
+                      {l.label}
+                    </button>
+                  </li>
+                );
+              })}
             </ul>
 
           </div>

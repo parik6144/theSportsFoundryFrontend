@@ -29,7 +29,7 @@ export function EventsHubPage() {
       <PageHeader
         eyebrow="Events & Tournaments"
         title="Tournaments, leagues, and competitions — seamlessly delivered."
-        subtitle="Browse upcoming and past events. Register solo, with your team, or as a corporate squad."
+        subtitle="Browse events and send an enquiry — our team will connect you about slots, hosting, or participation."
       />
 
       <section className="py-8 md:py-12">
@@ -64,7 +64,7 @@ export function EventsHubPage() {
             {filtered.map((evt, i) => (
               <motion.button
                 key={evt.id}
-                onClick={() => navigate("auth")}
+                onClick={() => navigate("contact")}
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: i * 0.06 }}
@@ -96,7 +96,7 @@ export function EventsHubPage() {
                     <div className="flex items-center gap-2"><MapPin className="h-3.5 w-3.5 text-[#f4d35e]" />{evt.location}</div>
                   </div>
                   <div className="mt-4 flex items-center gap-1 text-xs font-medium text-[#f4d35e]">
-                    {evt.registrationOpen ? "Quick Register" : "View Details"}
+                    {evt.registrationOpen ? "Enquire now" : "Send enquiry"}
                     <ArrowRight className="h-3 w-3 group-hover:translate-x-1 transition-transform" />
                   </div>
                 </div>

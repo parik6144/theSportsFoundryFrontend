@@ -27,7 +27,7 @@ export function AcademiesHubPage() {
       <PageHeader
         eyebrow="Academies Hub"
         title="Browse partner academies & their programs."
-        subtitle="From elite pathway academies to weekend skills labs — find the right fit for the next step in any athlete's career."
+        subtitle="Browse partner academies — send an enquiry and we will connect you by email."
       />
 
       <section className="py-8 md:py-12 pb-20">
@@ -92,7 +92,7 @@ export function AcademiesHubPage() {
                     </div>
                   </div>
                   <button
-                    onClick={() => navigate("auth")}
+                    onClick={() => navigate("contact")}
                     className="mt-auto w-full btn-outline-gold rounded-lg px-4 py-2.5 text-xs font-medium inline-flex items-center justify-center gap-2"
                   >
                     Enquire
@@ -111,9 +111,9 @@ export function AcademiesHubPage() {
 
       <CTASection
         title="Run an academy? Partner with us."
-        subtitle="List programs, attract talent, and unlock commercial tie-ups — all through one partnership with SportSphere."
-        primaryLabel="Become a Partner Academy"
-        primaryPage="auth"
+        subtitle="List programs, attract talent, and unlock partnerships — send an enquiry to get started."
+        primaryLabel="Send Academy Enquiry"
+        primaryPage="contact"
         secondaryLabel="Learn More"
         secondaryPage="academies"
       />

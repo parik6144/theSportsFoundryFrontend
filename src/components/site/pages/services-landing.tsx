@@ -59,8 +59,8 @@ export function ServicesLandingPage() {
         subtitle="Tell us what you're trying to do and we'll point you at the right service — or build a custom package."
         primaryLabel="Talk to Us"
         primaryPage="contact"
-        secondaryLabel="View All Hubs"
-        secondaryPage="athletes-hub"
+        secondaryLabel="Underprivileged Hub"
+        secondaryPage="underprivileged-hub"
       />
     </div>
   );

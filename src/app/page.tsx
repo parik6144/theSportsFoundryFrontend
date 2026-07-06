@@ -1,5 +1,6 @@
 "use client";
 
+import type { ComponentType } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { NavProvider, useNav } from "@/components/site/nav-context";
 import { SiteThemeProvider } from "@/components/site/site-theme";
@@ -11,13 +12,32 @@ import { AboutPage } from "@/components/site/pages/about";
 import { ContactPage } from "@/components/site/pages/contact";
 import { ServicesLandingPage } from "@/components/site/pages/services-landing";
 import { ServiceDetailPage } from "@/components/site/pages/service-detail";
-import { isServicePage } from "@/lib/site-data";
+import { AthletesHubPage } from "@/components/site/pages/athletes-hub";
+import { TeamsHubPage } from "@/components/site/pages/teams-hub";
+import { AcademiesHubPage } from "@/components/site/pages/academies-hub";
+import { BrandsHubPage } from "@/components/site/pages/brands-hub";
+import { CorporateHubPage } from "@/components/site/pages/corporate-hub";
+import { EventsHubPage } from "@/components/site/pages/events-hub";
+import { CommunityHubPage } from "@/components/site/pages/community-hub";
+import { UnderprivilegedHubPage } from "@/components/site/pages/underprivileged-hub";
+import { isHubPage, isServicePage } from "@/lib/site-data";
+import type { HUB_PAGE_IDS } from "@/lib/site-data";
+
+const HUB_PAGES: Record<(typeof HUB_PAGE_IDS)[number], ComponentType> = {
+  "underprivileged-hub": UnderprivilegedHubPage,
+  "athletes-hub": AthletesHubPage,
+  "teams-hub": TeamsHubPage,
+  "academies-hub": AcademiesHubPage,
+  "brands-hub": BrandsHubPage,
+  "corporate-hub": CorporateHubPage,
+  "events-hub": EventsHubPage,
+  "community-hub": CommunityHubPage,
+};
 
 function PageRouter() {
   const { page, isOpen } = useNav();
 
   const renderPage = () => {
-    // Only enabled pages are routed; others fall back to home
     if (!isOpen(page)) {
       return <HomePage />;
     }
@@ -34,6 +54,10 @@ function PageRouter() {
       default:
         if (isServicePage(page)) {
           return <ServiceDetailPage serviceId={page} />;
+        }
+        if (isHubPage(page)) {
+          const HubPage = HUB_PAGES[page];
+          return HubPage ? <HubPage /> : <HomePage />;
         }
         return <HomePage />;
     }
