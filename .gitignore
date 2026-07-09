@@ -31,3 +31,6 @@ yarn-error.log*
 
 # uploads (local dev only)
 /public/uploads/
+
+# local secrets / Vercel import files (never commit)
+vercel-import.env

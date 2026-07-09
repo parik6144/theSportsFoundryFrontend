@@ -10,7 +10,6 @@ function mapEnquiryTypeToDb(type: string): string {
     case "general":
       return "general";
     case "brand":
-      // Admin/DB enum expects partnership
       return "partnership";
     case "corporate":
       return "corporate";
@@ -18,14 +17,26 @@ function mapEnquiryTypeToDb(type: string): string {
       return "event_hosting";
     case "academy":
       return "academy_partner";
-    // Team/Athlete are both stored as support enquiries
     case "team":
     case "athlete":
       return "support";
     default:
-      // Fallback to support so enquiries still get saved
       return "support";
   }
+}
+
+function parseEnquiryBody(body: Record<string, unknown>) {
+  const enquiryType = String(body.type || "General").trim();
+  return {
+    enquiryType,
+    payload: {
+      name: String(body.name || "").trim(),
+      email: String(body.email || "").trim(),
+      type: enquiryType,
+      subject: body.subject ? String(body.subject).trim() : null,
+      message: String(body.message || "").trim(),
+    },
+  };
 }
 
 export async function GET() {
@@ -40,40 +51,51 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const now = new Date();
+    const { enquiryType, payload } = parseEnquiryBody(body);
 
-    const enquiryType = String(body.type || "General").trim();
-    const dbType = mapEnquiryTypeToDb(enquiryType);
-
-    const data = {
-      name: String(body.name || "").trim(),
-      email: String(body.email || "").trim(),
-      phone: body.phone ? String(body.phone).trim() : null,
-      type: dbType,
-      subject: body.subject ? String(body.subject).trim() : null,
-      message: String(body.message || "").trim(),
-      status: body.status || "new",
-      createdAt: now,
-      updatedAt: now,
-    };
-
-    const record = await db.enquiry.create({ data });
-
-    try {
-      // Keep the original type for email wording/templates (Team/Athlete/etc.)
-      await sendEnquiryEmail({
-        name: data.name,
-        email: data.email,
-        type: enquiryType,
-        subject: data.subject,
-        message: data.message,
-      });
-    } catch (mailErr) {
-      console.error("[enquiry] email failed:", mailErr);
+    if (!payload.name || !payload.email || !payload.message) {
+      return apiError("Name, email and message are required.", 400);
     }
 
-    return apiSuccess(record, 201);
+    const mailResult = await sendEnquiryEmail(payload);
+    if (!mailResult.sent) {
+      return apiError("Could not send your message. Please try again.", 500);
+    }
+
+    // Optional DB save — only when DATABASE_URL is configured (e.g. EC2 admin setup)
+    if (process.env.DATABASE_URL) {
+      try {
+        const now = new Date();
+        const record = await db.enquiry.create({
+          data: {
+            name: payload.name,
+            email: payload.email,
+            phone: body.phone ? String(body.phone).trim() : null,
+            type: mapEnquiryTypeToDb(enquiryType),
+            subject: payload.subject,
+            message: payload.message,
+            status: "new",
+            createdAt: now,
+            updatedAt: now,
+          },
+        });
+        return apiSuccess(record, 201);
+      } catch (dbErr) {
+        console.warn("[enquiry] saved via email only; database write failed:", dbErr);
+      }
+    }
+
+    return apiSuccess(
+      {
+        id: `email-${Date.now()}`,
+        ...payload,
+        status: "sent",
+        createdAt: new Date().toISOString(),
+      },
+      201
+    );
   } catch (err: any) {
-    return apiError(err.message);
+    console.error("[enquiry] submit failed:", err);
+    return apiError(err.message || "Could not send your message. Please try again.");
   }
 }
