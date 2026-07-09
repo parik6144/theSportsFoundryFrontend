@@ -2,11 +2,10 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import { ArrowRight, ArrowLeft, Check, Mail, Lock, User, Phone, Sparkles, Trophy } from "lucide-react";
+import { ArrowRight, ArrowLeft, Check, Mail, Lock, User, Sparkles, Trophy } from "lucide-react";
 import { PageHeader } from "../ui-primitives";
 import { USER_ROLES, AI_QUESTIONS } from "@/lib/site-data";
 import { useNav } from "../nav-context";
-
 type Step = "mode" | "form" | "ai" | "done";
 
 export function AuthPage() {
@@ -31,7 +30,7 @@ export function AuthPage() {
     <div>
       <PageHeader
         eyebrow={mode === "register" ? "Create Your Account" : "Welcome Back"}
-        title={mode === "register" ? "Join the SportSphere ecosystem." : "Login to your account."}
+        title={mode === "register" ? "Join the The Sports Foundry ecosystem." : "Login to your account."}
         subtitle="The platform is free to use for everyone — athletes, teams, academies, brands, corporates, and fans."
       />
 
@@ -134,7 +133,7 @@ export function AuthPage() {
                       <ArrowRight className="h-4 w-4" />
                     </button>
                     <div className="text-center text-xs text-muted-foreground pt-2">
-                      New to SportSphere?{" "}
+                      New to The Sports Foundry?{" "}
                       <button type="button" onClick={() => setMode("register")} className="text-[#f4d35e] hover:underline">Create an account</button>
                     </div>
                   </form>
@@ -173,12 +172,6 @@ export function AuthPage() {
                       <div className="relative">
                         <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                         <input required type="email" className="auth-input pl-10" placeholder="you@example.com" />
-                      </div>
-                    </Field>
-                    <Field label="Phone" required>
-                      <div className="relative">
-                        <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                        <input required className="auth-input pl-10" placeholder="+91 98765 43210" />
                       </div>
                     </Field>
                     <Field label="Password" required>
@@ -266,7 +259,7 @@ export function AuthPage() {
                   <div className="flex items-start gap-2 pt-2">
                     <input type="checkbox" required className="accent-[#d4af37] mt-1" />
                     <span className="text-xs text-muted-foreground">
-                      I agree to SportSphere's <button type="button" className="text-[#f4d35e] hover:underline">Terms of Use</button>, <button type="button" className="text-[#f4d35e] hover:underline">Privacy Policy</button>, and <button type="button" className="text-[#f4d35e] hover:underline">Cookie Policy</button>.
+                      I agree to The Sports Foundry's <button type="button" className="text-[#f4d35e] hover:underline">Terms of Use</button>, <button type="button" className="text-[#f4d35e] hover:underline">Privacy Policy</button>, and <button type="button" className="text-[#f4d35e] hover:underline">Cookie Policy</button>.
                     </span>
                   </div>
 
@@ -370,7 +363,7 @@ export function AuthPage() {
                 >
                   <Trophy className="h-10 w-10 text-[#0a1128]" />
                 </motion.div>
-                <h2 className="text-2xl font-bold text-gradient-gold mb-2">Welcome to SportSphere!</h2>
+                <h2 className="text-2xl font-bold text-gradient-gold mb-2">Welcome to The Sports Foundry!</h2>
                 <p className="text-sm text-muted-foreground mb-6">
                   Your account is being set up. We've sent a verification link to your email — please verify within 24 hours to unlock all features.
                 </p>

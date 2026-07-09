@@ -1,6 +1,18 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@utility sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -288,6 +300,23 @@
   .hero-orbit-chip {
     backdrop-filter: blur(14px);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+
+  .hero-logo-img {
+    display: block;
+    width: min(78vw, 480px);
+    max-width: 100%;
+    height: auto;
+    max-height: min(44vh, 400px);
+    object-fit: contain;
+    object-position: center;
+  }
+
+  @media (min-width: 1024px) {
+    .hero-logo-img {
+      width: min(50vw, 520px);
+      max-height: min(50vh, 480px);
+    }
   }
 
   .enquiry-input {

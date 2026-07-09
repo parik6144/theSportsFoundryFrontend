@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useState, useMemo } from "react";
-import { Search, Filter, ArrowRight, MapPin, Award, Calendar } from "lucide-react";
+import { Search, Filter, ArrowRight, Award, Calendar } from "lucide-react";
 import { PageHeader, CTASection } from "../ui-primitives";
 import { ATHLETES, type Athlete } from "@/lib/site-data";
 import { useNav } from "../nav-context";
@@ -122,10 +122,6 @@ function AthleteCard({ athlete, index, onView }: { athlete: Athlete; index: numb
         <div className="flex items-center gap-1.5 text-muted-foreground">
           <Award className="h-3.5 w-3.5 text-[#f4d35e]" />
           {athlete.level}
-        </div>
-        <div className="flex items-center gap-1.5 text-muted-foreground">
-          <MapPin className="h-3.5 w-3.5 text-[#f4d35e]" />
-          {athlete.location}
         </div>
         <div className="flex items-center gap-1.5 text-muted-foreground">
           <Calendar className="h-3.5 w-3.5 text-[#f4d35e]" />

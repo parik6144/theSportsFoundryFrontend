@@ -1,6 +1,6 @@
 "use client";
 
-import { Twitter, Instagram, Linkedin, Youtube, Facebook, Mail, Phone, MapPin } from "lucide-react";
+import { Twitter, Instagram, Linkedin, Youtube, Facebook, Mail } from "lucide-react";
 import { SERVICES, type PageId } from "@/lib/site-data";
 import { CONTACT_EMAIL } from "@/lib/site-contact";
 import { useNav } from "./nav-context";
@@ -179,18 +179,9 @@ export function SiteFooter() {
               Contact
             </h5>
             <ul className="space-y-3">
-              <li className="flex items-start gap-2 text-sm text-muted-foreground">
-                <MapPin className="h-4 w-4 text-[#f4d35e] mt-0.5 shrink-0" />
-                <span>Mumbai, India</span>
-              </li>
               <li className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Mail className="h-4 w-4 text-[#f4d35e] shrink-0" />
                 <a href={`mailto:${CONTACT_EMAIL}`} className="hover:text-[#f4d35e]">{CONTACT_EMAIL}</a>
-              </li>
-
-              <li className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Phone className="h-4 w-4 text-[#f4d35e] shrink-0" />
-                <span>+91 22 4000 4000</span>
               </li>
             </ul>
           </div>
@@ -203,13 +194,13 @@ export function SiteFooter() {
 
           </div>
           <div className="flex items-center gap-4">
-            <button onClick={(e) => e.preventDefault()} className="hover:text-[#f4d35e] transition-colors">
+            <button type="button" onClick={() => navigate("terms")} className="hover:text-[#f4d35e] transition-colors">
               Terms of Use
             </button>
-            <button onClick={(e) => e.preventDefault()} className="hover:text-[#f4d35e] transition-colors">
+            <button type="button" onClick={() => navigate("privacy")} className="hover:text-[#f4d35e] transition-colors">
               Privacy Policy
             </button>
-            <button onClick={(e) => e.preventDefault()} className="hover:text-[#f4d35e] transition-colors">
+            <button type="button" onClick={() => navigate("cookies")} className="hover:text-[#f4d35e] transition-colors">
               Cookie Policy
             </button>
           </div>

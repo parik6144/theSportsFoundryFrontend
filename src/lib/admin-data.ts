@@ -69,7 +69,7 @@ export const blogData = [
   { id: 3, title: "Brand–Athlete Fit: 5 Principles We Live By", category: "Insights", status: "published", author: "Sanjana Gupta", date: "Jun 15, 2026", featured: false },
   { id: 4, title: "Why 1,200 Children Got Their First Coaching Camp This Year", category: "CSR", status: "published", author: "Rajat Malhotra", date: "Jun 09, 2026", featured: false },
   { id: 5, title: "Corporate Sports Leagues: The Engagement Multiplier", category: "Insights", status: "draft", author: "Editor Team", date: "—", featured: false },
-  { id: 6, title: "SportSphere Raises Series B to Expand Across South Asia", category: "Press Releases", status: "published", author: "Rajat Malhotra", date: "May 26, 2026", featured: false },
+  { id: 6, title: "The Sports Foundry Raises Series B to Expand Across South Asia", category: "Press Releases", status: "published", author: "Rajat Malhotra", date: "May 26, 2026", featured: false },
 ];
 
 export const servicesData = [
@@ -114,7 +114,7 @@ export const testimonialsData = [
 
 export const communityPostsData = [
   { id: 1, author: "Aarav Mehta", handle: "@aaravm", role: "Athlete", content: "Signed my first pro contract today! ⚽", tag: "Athlete Spotlight", likes: 248, comments: 36, pinned: false, active: true, date: "2h ago" },
-  { id: 2, author: "Coach Vikram Rao", handle: "@coachvikram", role: "Academy", content: "Our U-19 trials pulled 240 applicants from SportSphere feed.", tag: "Academy News", likes: 132, comments: 21, pinned: false, active: true, date: "5h ago" },
+  { id: 2, author: "Coach Vikram Rao", handle: "@coachvikram", role: "Academy", content: "Our U-19 trials pulled 240 applicants from The Sports Foundry feed.", tag: "Academy News", likes: 132, comments: 21, pinned: false, active: true, date: "5h ago" },
   { id: 3, author: "Sanjana Gupta", handle: "@sanjanag", role: "Brand", content: "Looking for 3 female athletes for wellness campaign in August.", tag: "Opportunity", likes: 412, comments: 87, pinned: true, active: true, date: "8h ago" },
   { id: 4, author: "Diya Sharma", handle: "@diyasmash", role: "Athlete", content: "Quarter-final week at the All-India Juniors!", tag: "Athlete Spotlight", likes: 596, comments: 64, pinned: false, active: true, date: "1d ago" },
 ];

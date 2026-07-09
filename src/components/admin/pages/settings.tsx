@@ -26,7 +26,7 @@ function SaveBar() {
 }
 
 export function GeneralSettingsPage() {
-  const [form, setForm] = useState({ siteName: "SportSphere", tagline: "Where every sport connects.", email: "hello@sportsphere.app", phone: "+91 22 4000 4000", address: "SportSphere Tower, BKC, Mumbai 400051, India", maintenance: false });
+  const [form, setForm] = useState({ siteName: "The Sports Foundry", tagline: "Where every sport connects.", email: "info@sportsfoundry.in", address: "", maintenance: false });
   return (
     <div>
       <PageHeader title="General Settings" subtitle="Site identity, branding, contact info" />
@@ -42,7 +42,6 @@ export function GeneralSettingsPage() {
           <h2 className="text-sm font-semibold text-white mb-4">Contact Info</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Field label="Contact Email"><input className={inputCls} value={form.email} onChange={e => setForm({...form, email: e.target.value})} /></Field>
-            <Field label="Contact Phone"><input className={inputCls} value={form.phone} onChange={e => setForm({...form, phone: e.target.value})} /></Field>
             <div className="md:col-span-2"><Field label="Office Address"><textarea className={inputCls} rows={2} value={form.address} onChange={e => setForm({...form, address: e.target.value})} /></Field></div>
           </div>
         </Card>
@@ -90,7 +89,7 @@ export function HomeSettingsPage() {
 }
 
 export function SeoSettingsPage() {
-  const [form, setForm] = useState({ title: "SportSphere — Sports Ecosystem Platform", desc: "A single digital sports ecosystem", keywords: "sports, athletes, teams", ga: "", robots: "User-agent: *\nDisallow:" });
+  const [form, setForm] = useState({ title: "The Sports Foundry — Sports Ecosystem Platform", desc: "A single digital sports ecosystem", keywords: "sports, athletes, teams", ga: "", robots: "User-agent: *\nDisallow:" });
   return (
     <div>
       <PageHeader title="SEO Settings" subtitle="Meta tags, analytics, robots.txt" />

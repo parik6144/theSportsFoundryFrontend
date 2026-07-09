@@ -1,10 +1,10 @@
 @echo off
 setlocal EnableExtensions
-title SportSphere Frontend - http://localhost:3000
+title The Sports Foundry Frontend - http://localhost:3001
 cd /d "%~dp0"
 
 echo ========================================
-echo   SportSphere Frontend
+echo   The Sports Foundry Frontend
 echo ========================================
 echo.
 
@@ -24,25 +24,26 @@ if not exist "node_modules\" (
     echo.
 )
 
-echo Checking port 3000...
+echo Checking port 3001...
 set "PORT_PID="
-for /f "tokens=5" %%a in ('netstat -ano ^| findstr ":3000" ^| findstr "LISTENING"') do (
+for /f "tokens=5" %%a in ('netstat -ano ^| findstr ":3001" ^| findstr "LISTENING"') do (
     set "PORT_PID=%%a"
     goto :found_port
 )
 
 :found_port
 if defined PORT_PID (
-    echo Port 3000 is in use by PID %PORT_PID%. Stopping old process...
+    echo Port 3001 is in use by PID %PORT_PID%. Stopping old process...
     taskkill /F /PID %PORT_PID% >nul 2>&1
     ping 127.0.0.1 -n 3 >nul
 )
 
 echo Opening browser in a few seconds...
-start "" cmd /c "ping 127.0.0.1 -n 11 >nul && start http://localhost:3000"
+start "" cmd /c "ping 127.0.0.1 -n 11 >nul && start http://localhost:3001"
 
 echo.
-echo Starting server at http://localhost:3000
+echo Starting server at http://localhost:3001
+echo (Port 3000 is left free for other apps.)
 echo Press Ctrl+C to stop.
 echo.
 

@@ -25,7 +25,7 @@ export function DashboardPage() {
   const { setPage } = useAdmin();
   return (
     <div>
-      <PageHeader title="Dashboard" subtitle="Welcome back, Rajat. Here's what's happening on SportSphere today." />
+      <PageHeader title="Dashboard" subtitle="Welcome back, Rajat. Here's what's happening on The Sports Foundry today." />
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         {adminStats.map((stat, i) => {
           const Icon = iconMap[stat.icon] || Users;

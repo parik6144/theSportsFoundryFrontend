@@ -319,7 +319,7 @@ export function BrandingPage() {
                     type="text"
                     value={theme.siteName}
                     onChange={(e) => updateColor("siteName", e.target.value)}
-                    placeholder="e.g. SportSphere"
+                    placeholder="e.g. The Sports Foundry"
                     className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-[#d4af37]"
                   />
                   <p className="text-[11px] text-gray-500 mt-1">Shown in browser tab and admin sidebar.</p>

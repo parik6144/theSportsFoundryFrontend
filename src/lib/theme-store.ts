@@ -18,7 +18,7 @@ export type ThemeData = {
 };
 
 export const DEFAULT_THEME: ThemeData = {
-  logoUrl: null,
+  logoUrl: "/brand/client-logo.png",
   siteName: "The Sports Foundry",
   tagline: "Where every sport connects.",
   primaryColor: "#d4af37",

@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useState, useMemo } from "react";
-import { Calendar, MapPin, Trophy, ArrowRight, Users, Clock } from "lucide-react";
+import { Calendar, Trophy, ArrowRight, Users, Clock } from "lucide-react";
 import { PageHeader, CTASection, SectionTitle } from "../ui-primitives";
 import { FEATURED_EVENTS } from "@/lib/site-data";
 import { useNav } from "../nav-context";
@@ -93,7 +93,6 @@ export function EventsHubPage() {
                   </h3>
                   <div className="space-y-1.5 text-xs text-muted-foreground">
                     <div className="flex items-center gap-2"><Calendar className="h-3.5 w-3.5 text-[#f4d35e]" />{evt.date}</div>
-                    <div className="flex items-center gap-2"><MapPin className="h-3.5 w-3.5 text-[#f4d35e]" />{evt.location}</div>
                   </div>
                   <div className="mt-4 flex items-center gap-1 text-xs font-medium text-[#f4d35e]">
                     {evt.registrationOpen ? "Enquire now" : "Send enquiry"}

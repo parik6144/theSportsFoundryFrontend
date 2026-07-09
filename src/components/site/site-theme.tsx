@@ -25,7 +25,7 @@ export type SiteTheme = {
 };
 
 export const DEFAULT_SITE_THEME: SiteTheme = {
-  logoUrl: null,
+  logoUrl: "/brand/client-logo.png",
   siteName: "The Sports Foundry",
   tagline: "Where every sport connects.",
   primaryColor: "#d4af37",
@@ -140,6 +140,17 @@ export function useSiteTheme() {
   return useContext(SiteThemeCtx);
 }
 
+const HERO_LOGO_SRC = "/brand/client-logo-hero.png";
+
+function resolveHeroLogoSrc(logoUrl: string | null) {
+  const base = logoUrl?.split("?")[0] ?? "";
+  // Theme may store /uploads/client-logo.png — hero transparent asset lives in /brand/
+  if (!base || base.includes("client-logo")) {
+    return `${HERO_LOGO_SRC}?t=brand`;
+  }
+  return `${base}?t=brand`;
+}
+
 /** Shared brand mark — navy panel + gold glow (navbar, hero, footer) */
 export function BrandMark({
   className = "",
@@ -151,7 +162,7 @@ export function BrandMark({
   height?: number;
   showNameFallback?: boolean;
   /** Slightly stronger glow for hero centerpiece — same panel treatment */
-  emphasis?: "default" | "hero";
+  emphasis?: "default" | "hero" | "hero-half";
 }) {
   const { theme } = useSiteTheme();
   const logoSrc = theme.logoUrl
@@ -159,10 +170,25 @@ export function BrandMark({
     : null;
 
   if (logoSrc) {
+    const isHeroHalf = emphasis === "hero-half";
+    const isHero = emphasis === "hero" || isHeroHalf;
     const padY = Math.max(6, Math.round(height * 0.14));
     const padX = Math.max(10, Math.round(height * 0.22));
-    const maxW = Math.round(height * 4.6);
-    const isHero = emphasis === "hero";
+    const maxW = isHeroHalf ? undefined : Math.round(height * 4.6);
+
+    // Hero banner: transparent logo only — no panel, border, glow, blend hacks, or rotation
+    if (isHeroHalf) {
+      const heroLogo = resolveHeroLogoSrc(theme.logoUrl);
+      const customLogo = !theme.logoUrl?.includes("client-logo");
+      return (
+        <img
+          src={heroLogo}
+          alt={theme.siteName}
+          className={`hero-logo-img ${className}`}
+          style={customLogo ? { mixBlendMode: "screen" } : undefined}
+        />
+      );
+    }
 
     return (
       <span
@@ -178,12 +204,11 @@ export function BrandMark({
         <img
           src={logoSrc}
           alt={theme.siteName}
-          className="object-contain object-left block"
+          className="object-contain object-center block"
           style={{
             height,
             width: "auto",
             maxWidth: maxW,
-            // Black plate blends into navy panel (same as hero logo)
             mixBlendMode: "screen",
           }}
         />

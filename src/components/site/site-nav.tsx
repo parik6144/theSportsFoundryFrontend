@@ -161,11 +161,12 @@ export function SiteNav() {
 
             {/* Mobile menu trigger */}
             <button
-              onClick={() => setMobileOpen(true)}
-              className="lg:hidden p-2 rounded-lg hover:bg-white/5"
-              aria-label="Open menu"
+              onClick={() => setMobileOpen((open) => !open)}
+              className="lg:hidden p-2 rounded-lg hover:bg-white/5 text-foreground"
+              aria-label={mobileOpen ? "Close menu" : "Open menu"}
+              aria-expanded={mobileOpen}
             >
-              <Menu className="h-6 w-6" />
+              {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
             </div>
           </div>

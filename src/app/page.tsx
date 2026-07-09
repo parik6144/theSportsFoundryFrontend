@@ -20,6 +20,7 @@ import { CorporateHubPage } from "@/components/site/pages/corporate-hub";
 import { EventsHubPage } from "@/components/site/pages/events-hub";
 import { CommunityHubPage } from "@/components/site/pages/community-hub";
 import { UnderprivilegedHubPage } from "@/components/site/pages/underprivileged-hub";
+import { LegalPage } from "@/components/site/pages/legal";
 import { isHubPage, isServicePage } from "@/lib/site-data";
 import type { HUB_PAGE_IDS } from "@/lib/site-data";
 
@@ -49,6 +50,12 @@ function PageRouter() {
         return <AboutPage />;
       case "contact":
         return <ContactPage />;
+      case "terms":
+        return <LegalPage kind="terms" />;
+      case "privacy":
+        return <LegalPage kind="privacy" />;
+      case "cookies":
+        return <LegalPage kind="cookies" />;
       case "services":
         return <ServicesLandingPage />;
       default:

@@ -1,7 +1,7 @@
 "use client";
 
-import { Mail, Phone, MapPin, Twitter, Instagram, Linkedin, Youtube } from "lucide-react";
-import { PageHeader, SectionTitle } from "../ui-primitives";
+import { Mail, Twitter, Instagram, Linkedin, Youtube } from "lucide-react";
+import { PageHeader } from "../ui-primitives";
 import { EnquiryForm } from "../enquiry-form";
 import { CONTACT_EMAIL } from "@/lib/site-contact";
 
@@ -31,29 +31,11 @@ export function ContactPage() {
                 <ul className="space-y-4">
                   <li className="flex items-start gap-3">
                     <div className="h-9 w-9 rounded-lg bg-[#d4af37]/15 flex items-center justify-center shrink-0">
-                      <MapPin className="h-4 w-4 text-[#f4d35e]" />
-                    </div>
-                    <div>
-                      <div className="text-xs font-medium mb-0.5">Office</div>
-                      <div className="text-xs text-muted-foreground">SportSphere Tower, BKC<br />Mumbai 400051, IN</div>
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="h-9 w-9 rounded-lg bg-[#d4af37]/15 flex items-center justify-center shrink-0">
                       <Mail className="h-4 w-4 text-[#f4d35e]" />
                     </div>
                     <div>
                       <div className="text-xs font-medium mb-0.5">Email</div>
                       <a href={`mailto:${CONTACT_EMAIL}`} className="text-xs text-muted-foreground hover:text-[#f4d35e]">{CONTACT_EMAIL}</a>
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="h-9 w-9 rounded-lg bg-[#d4af37]/15 flex items-center justify-center shrink-0">
-                      <Phone className="h-4 w-4 text-[#f4d35e]" />
-                    </div>
-                    <div>
-                      <div className="text-xs font-medium mb-0.5">Phone</div>
-                      <div className="text-xs text-muted-foreground">+91 22 4000 4000</div>
                     </div>
                   </li>
                 </ul>
@@ -84,29 +66,6 @@ export function ContactPage() {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="pb-16 md:pb-24">
-        <div className="container mx-auto px-4 md:px-6 max-w-7xl">
-          <SectionTitle eyebrow="Find Us" title="Mumbai · Bengaluru · Delhi" />
-          <div className="mt-8 glossy-card overflow-hidden h-72 relative">
-            <div className="absolute inset-0 bg-gradient-to-br from-[#0d1b3d] to-[#0a1128] flex items-center justify-center">
-              <div className="text-center">
-                <MapPin className="h-12 w-12 text-[#d4af37]/60 mx-auto mb-3" />
-                <div className="text-sm font-medium">SportSphere Tower, BKC</div>
-                <div className="text-xs text-muted-foreground">Mumbai 400051, India</div>
-              </div>
-            </div>
-            <div
-              className="absolute inset-0 opacity-10"
-              style={{
-                backgroundImage:
-                  "linear-gradient(rgba(255,255,255,0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.2) 1px, transparent 1px)",
-                backgroundSize: "40px 40px",
-              }}
-            />
           </div>
         </div>
       </section>

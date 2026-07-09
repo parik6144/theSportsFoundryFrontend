@@ -89,12 +89,12 @@ export function HomePage() {
         <div className="absolute bottom-10 right-0 w-96 h-96 rounded-full bg-[#4a90e2]/15 blur-3xl animate-float pointer-events-none" />
 
         <div className="container mx-auto px-4 md:px-6 max-w-7xl relative">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-8 items-center">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.7 }}
-              className="pt-2"
+              className="pt-2 order-2 lg:order-1"
             >
               <div className="inline-flex items-center gap-2 rounded-full glass px-4 py-2 text-sm font-medium mb-6">
                 <Mail className="h-4 w-4 text-[#f4d35e] shrink-0" />
@@ -145,27 +145,25 @@ export function HomePage() {
               initial={{ opacity: 0, scale: 0.92 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="relative hidden lg:block"
+              className="relative order-1 lg:order-2 flex items-center justify-center min-h-[50vh] lg:min-h-[78vh]"
             >
-              <div className="relative aspect-square max-w-[540px] mx-auto">
-                {/* Logo — same BrandMark treatment as navbar */}
-                <div className="absolute inset-[20%] z-10 flex items-center justify-center pointer-events-none">
+              <div className="relative w-full max-w-[min(100%,720px)] mx-auto aspect-square">
+                {/* Logo — half-page centerpiece */}
+                <div className="absolute inset-[6%] z-10 flex items-center justify-center pointer-events-none">
                   <motion.div
-                    className="relative animate-float-slow"
+                    className="relative w-full flex justify-center"
                     initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.9, delay: 0.35 }}
                   >
                     <BrandMark
-                      height={96}
-                      emphasis="hero"
+                      emphasis="hero-half"
                       showNameFallback={!theme.logoUrl}
-                      className="rounded-2xl md:rounded-3xl"
                     />
                   </motion.div>
                 </div>
 
-                <div className="absolute inset-0 orbit-ring">
+                <div className="absolute inset-0 orbit-ring scale-110 hidden lg:block">
                   {SERVICES.slice(0, 6).map((s, i) => {
                     const positions = [
                       { top: "0%", left: "50%" },

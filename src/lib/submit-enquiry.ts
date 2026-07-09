@@ -1,7 +1,6 @@
 export type EnquiryPayload = {
   name: string;
   email: string;
-  phone?: string;
   type: string;
   message: string;
   subject?: string;
@@ -14,7 +13,6 @@ export async function submitEnquiry(data: EnquiryPayload) {
     body: JSON.stringify({
       name: data.name.trim(),
       email: data.email.trim(),
-      phone: data.phone?.trim() || null,
       type: data.type,
       subject: data.subject?.trim() || null,
       message: data.message.trim(),

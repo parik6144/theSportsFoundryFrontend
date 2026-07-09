@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Toaster } from "@/components/ui/toaster";
 import { Toaster as SonnerToaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
@@ -30,7 +29,7 @@ export const metadata: Metadata = {
     "The Sports Foundry",
   ],
   authors: [{ name: "The Sports Foundry" }],
-  icons: { icon: "/uploads/client-logo.png" },
+  icons: { icon: "/brand/client-logo.png" },
   openGraph: {
     title: "The Sports Foundry — Sports Ecosystem Platform",
     description: "Where every sport connects.",
@@ -54,7 +53,6 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
       >
         {children}
-        <Toaster />
         <SonnerToaster />
       </body>
     </html>

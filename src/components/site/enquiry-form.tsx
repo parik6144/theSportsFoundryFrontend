@@ -30,7 +30,6 @@ export function EnquiryForm({
   const [form, setForm] = useState({
     name: "",
     email: "",
-    phone: "",
     type: defaultType,
     message: "",
   });
@@ -60,13 +59,13 @@ export function EnquiryForm({
         </div>
         <h3 className="text-lg font-semibold mb-2">Enquiry received</h3>
         <p className="text-sm text-muted-foreground">
-          Thanks, {form.name || "there"}. Our team will connect with you by email shortly.
+          Thanks, {form.name || "there"}. Our team will connect with you by email shortly. A confirmation has also been sent to {form.email || "your inbox"}.
         </p>
         <button
           type="button"
           onClick={() => {
             setSubmitted(false);
-            setForm({ name: "", email: "", phone: "", type: defaultType, message: "" });
+            setForm({ name: "", email: "", type: defaultType, message: "" });
           }}
           className="mt-5 btn-outline-gold rounded-full px-5 py-2 text-xs font-medium"
         >
@@ -98,15 +97,7 @@ export function EnquiryForm({
             placeholder="you@example.com"
           />
         </Field>
-        <Field label="Phone">
-          <input
-            value={form.phone}
-            onChange={(e) => setForm({ ...form, phone: e.target.value })}
-            className="enquiry-input"
-            placeholder="+91 98765 43210"
-          />
-        </Field>
-        <Field label="I am a...">
+        <Field label="I am a..." className="md:col-span-2">
           <select
             value={form.type}
             onChange={(e) => setForm({ ...form, type: e.target.value })}
@@ -155,14 +146,16 @@ export function EnquiryForm({
 function Field({
   label,
   required,
+  className = "",
   children,
 }: {
   label: string;
   required?: boolean;
+  className?: string;
   children: React.ReactNode;
 }) {
   return (
-    <label className="block">
+    <label className={`block ${className}`}>
       <span className="block text-xs font-medium text-foreground/80 mb-1.5">
         {label} {required && <span className="text-[#f4d35e]">*</span>}
       </span>

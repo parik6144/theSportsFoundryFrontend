@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Search, MapPin, ArrowRight, GraduationCap } from "lucide-react";
+import { Search, ArrowRight, GraduationCap } from "lucide-react";
 import { PageHeader, CTASection } from "../ui-primitives";
 import { ACADEMIES } from "@/lib/site-data";
 import { useState, useMemo } from "react";
@@ -76,10 +76,6 @@ export function AcademiesHubPage() {
                       <h3 className="font-semibold text-base truncate">{a.name}</h3>
                       <div className="text-xs text-[#f4d35e]">{a.sport}</div>
                     </div>
-                  </div>
-                  <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-4">
-                    <MapPin className="h-3.5 w-3.5 text-[#f4d35e]" />
-                    {a.city}
                   </div>
                   <div className="mb-4">
                     <div className="text-[10px] uppercase tracking-wider text-[#f4d35e] font-semibold mb-2">Programs</div>

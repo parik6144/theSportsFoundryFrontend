@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useState, useMemo } from "react";
-import { Search, MapPin, Users, ArrowRight, CheckCircle2 } from "lucide-react";
+import { Search, Users, ArrowRight, CheckCircle2 } from "lucide-react";
 import { PageHeader, CTASection } from "../ui-primitives";
 import { TEAMS } from "@/lib/site-data";
 import { useNav } from "../nav-context";
@@ -89,10 +89,6 @@ export function TeamsHubPage() {
                     </div>
                   </div>
                   <div className="space-y-1.5 text-xs text-muted-foreground mb-4">
-                    <div className="flex items-center gap-1.5">
-                      <MapPin className="h-3.5 w-3.5 text-[#f4d35e]" />
-                      {t.city}
-                    </div>
                     <div className="flex items-center gap-1.5">
                       <Users className="h-3.5 w-3.5 text-[#f4d35e]" />
                       Active roster & recruiting

@@ -36,6 +36,9 @@ export type PageId =
   | "blog"
   | "success-stories"
   | "contact"
+  | "terms"
+  | "privacy"
+  | "cookies"
   | "auth";
 
 const SERVICE_PAGE_IDS: ServiceId[] = [
@@ -65,6 +68,9 @@ export const OPEN_PAGES: readonly PageId[] = [
   "home",
   "about",
   "contact",
+  "terms",
+  "privacy",
+  "cookies",
   "services",
   ...SERVICE_PAGE_IDS,
   ...HUB_PAGE_IDS,
@@ -148,7 +154,7 @@ export const SERVICES: Service[] = [
     short:
       "We help athletes discover opportunities with teams, brands, academies, coaches, and tournaments.",
     overview:
-      "SportSphere helps athletes discover opportunities with teams, brands, academies, coaches, and tournaments. Whether you're a rising amateur or a seasoned pro, we put your talent in front of the people who matter and give you the tools to manage your career.",
+      "The Sports Foundry helps athletes discover opportunities with teams, brands, academies, coaches, and tournaments. Whether you're a rising amateur or a seasoned pro, we put your talent in front of the people who matter and give you the tools to manage your career.",
     forWhom: {
       title: "For Athletes",
       body: "Create a verified profile, showcase stats & highlights, and get discovered by scouts, teams, and brands looking for talent exactly like you.",
@@ -184,7 +190,7 @@ export const SERVICES: Service[] = [
     short:
       "We enable teams to recruit players, manage registrations, build their digital presence, and streamline operations.",
     overview:
-      "From grassroots clubs to professional franchises, SportSphere gives teams the tools to recruit, register, and operate — while building a digital presence that fans and sponsors can engage with.",
+      "From grassroots clubs to professional franchises, The Sports Foundry gives teams the tools to recruit, register, and operate — while building a digital presence that fans and sponsors can engage with.",
     forWhom: {
       title: "For Teams",
       body: "From grassroots clubs to professional franchises — our tools scale with your team size, so you only pay attention to what matters: performance.",
@@ -224,10 +230,10 @@ export const SERVICES: Service[] = [
     short:
       "We collaborate with sports academies to increase their reach, attract talent, and promote their programs.",
     overview:
-      "SportSphere partners with academies to widen their reach, attract talent, and promote their programs — while opening new commercial and event-partnership opportunities for them.",
+      "The Sports Foundry partners with academies to widen their reach, attract talent, and promote their programs — while opening new commercial and event-partnership opportunities for them.",
     forWhom: {
       title: "For Academies",
-      body: "Academies gain access to athletes, events, and commercial opportunities — all routed through a single partnership with SportSphere.",
+      body: "Academies gain access to athletes, events, and commercial opportunities — all routed through a single partnership with The Sports Foundry.",
     },
     bullets: [
       {
@@ -240,7 +246,7 @@ export const SERVICES: Service[] = [
       },
       {
         title: "Event Partnerships",
-        body: "Co-host tournaments, leagues, and showcase events with SportSphere and partner brands.",
+        body: "Co-host tournaments, leagues, and showcase events with The Sports Foundry and partner brands.",
       },
       {
         title: "Commercial Tie-ups",
@@ -264,7 +270,7 @@ export const SERVICES: Service[] = [
     short:
       "We connect brands with athletes, teams, leagues, and sporting events through strategic partnerships.",
     overview:
-      "SportSphere connects brands with athletes, teams, leagues, and sporting events through strategic partnerships designed to maximise engagement and measurable returns.",
+      "The Sports Foundry connects brands with athletes, teams, leagues, and sporting events through strategic partnerships designed to maximise engagement and measurable returns.",
     forWhom: {
       title: "For Brands",
       body: "Every collaboration is designed to maximise engagement and measurable returns — from awareness to conversion.",
@@ -304,7 +310,7 @@ export const SERVICES: Service[] = [
     short:
       "We design and execute corporate sports leagues, wellness programs, and employee engagement initiatives.",
     overview:
-      "SportSphere designs and executes corporate sports leagues, wellness programs, and employee engagement initiatives — professionally managed sporting experiences that build culture and teamwork.",
+      "The Sports Foundry designs and executes corporate sports leagues, wellness programs, and employee engagement initiatives — professionally managed sporting experiences that build culture and teamwork.",
     forWhom: {
       title: "For Companies",
       body: "Professionally managed sporting experiences that build culture, teamwork, and employee wellbeing — without lifting internal bandwidth.",
@@ -344,7 +350,7 @@ export const SERVICES: Service[] = [
     short:
       "We plan and deliver end-to-end sporting events, from tournaments and leagues to pro-ams and corporate competitions.",
     overview:
-      "SportSphere plans and delivers end-to-end sporting events — tournaments, leagues, pro-ams, and corporate competitions. Our team manages every aspect, ensuring a seamless experience for participants, sponsors, and fans.",
+      "The Sports Foundry plans and delivers end-to-end sporting events — tournaments, leagues, pro-ams, and corporate competitions. Our team manages every aspect, ensuring a seamless experience for participants, sponsors, and fans.",
     forWhom: {
       title: "For Event Owners",
       body: "Whether you're a federation, brand, corporate, or community — we deliver events that look premium on broadcast and feel smooth on the ground.",
@@ -380,7 +386,7 @@ export const SERVICES: Service[] = [
     short:
       "We bring together athletes, fans, coaches, academies, and brands on one platform.",
     overview:
-      "SportSphere brings together athletes, fans, coaches, academies, and brands on one platform. Through networking, content, and shared experiences, we create a thriving sports community.",
+      "The Sports Foundry brings together athletes, fans, coaches, academies, and brands on one platform. Through networking, content, and shared experiences, we create a thriving sports community.",
     forWhom: {
       title: "For Everyone",
       body: "Whether you live and breathe sport or just want to follow your favourite athletes — there's a place for you here.",
@@ -860,7 +866,7 @@ export const BLOG_POSTS: BlogPost[] = [
     id: "p1",
     title: "How AI Matching Is Quietly Reshaping Sports Recruitment",
     excerpt:
-      "We dive into the recommendation layer behind SportSphere — how it ranks athletes against team needs, and why it beats traditional scouting.",
+      "We dive into the recommendation layer behind The Sports Foundry — how it ranks athletes against team needs, and why it beats traditional scouting.",
     category: "Platform Updates",
     date: "Jun 28, 2026",
     readTime: "6 min read",
@@ -913,7 +919,7 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     id: "p6",
-    title: "SportSphere Raises Series B to Expand Across South Asia",
+    title: "The Sports Foundry Raises Series B to Expand Across South Asia",
     excerpt:
       "Our Series B will fund expansion into Sri Lanka, Bangladesh, and Nepal — and a deeper investment in our recommendation engine.",
     category: "Press Releases",
@@ -943,7 +949,7 @@ export const SUCCESS_STORIES: SuccessStory[] = [
     outcome: "Pro Contract with Bengal Tigers FC",
     sport: "Football",
     excerpt:
-      "Aarav uploaded 3 match clips and updated his stats on SportSphere. Within 6 weeks, he was trialling with three pro clubs — and signed his first pro deal.",
+      "Aarav uploaded 3 match clips and updated his stats on The Sports Foundry. Within 6 weeks, he was trialling with three pro clubs — and signed his first pro deal.",
     initials: "AM",
     accent: "from-emerald-400 to-emerald-700",
   },
@@ -954,14 +960,14 @@ export const SUCCESS_STORIES: SuccessStory[] = [
     outcome: "+104% Enrolment YoY",
     sport: "Cricket",
     excerpt:
-      "By listing programs on SportSphere and using the talent-match feed, Apex reached full capacity in 4 months and opened a second campus.",
+      "By listing programs on The Sports Foundry and using the talent-match feed, Apex reached full capacity in 4 months and opened a second campus.",
     initials: "AC",
     accent: "from-rose-400 to-rose-700",
   },
   {
     id: "s3",
     title: "A 12-City Brand Activation in 8 Weeks",
-    subject: "Velocity Sports × SportSphere",
+    subject: "Velocity Sports × The Sports Foundry",
     outcome: "12 City Stops, 4.2M Impressions",
     sport: "Multi-sport",
     excerpt:
@@ -1001,7 +1007,7 @@ export const LEADERS: Leader[] = [
   {
     name: "Priya Deshpande",
     role: "Co-founder & COO",
-    bio: "Ex-Olympic sports administrator. Built national coaching pathways before co-founding SportSphere to scale access to sport.",
+    bio: "Ex-Olympic sports administrator. Built national coaching pathways before co-founding The Sports Foundry to scale access to sport.",
     initials: "PD",
     accent: "from-rose-400 to-rose-700",
   },
@@ -1028,7 +1034,7 @@ export interface Milestone {
 }
 
 export const MILESTONES: Milestone[] = [
-  { year: "2022", title: "Founded", body: "SportSphere launches with a single mission: one platform for every stakeholder in sport." },
+  { year: "2022", title: "Founded", body: "The Sports Foundry launches with a single mission: one platform for every stakeholder in sport." },
   { year: "2023", title: "1,000 Athletes", body: "Crossed 1,000 verified athlete profiles in year one, with our first 50 team partners." },
   { year: "2024", title: "Academy Network", body: "Launched the academy partnership program with 40 academies across 8 cities." },
   { year: "2025", title: "CSR Initiative", body: "Launched the Underprivileged Sports Initiative — 1,200 children in our first year." },
@@ -1068,7 +1074,7 @@ export const COMMUNITY_POSTS: CommunityPost[] = [
     author: "Coach Vikram Rao",
     handle: "@coachvikram",
     role: "Academy",
-    content: "Our U-19 trials this weekend pulled 240 applicants from the SportSphere feed. Quality was incredible. Sign of where recruitment is going.",
+    content: "Our U-19 trials this weekend pulled 240 applicants from the The Sports Foundry feed. Quality was incredible. Sign of where recruitment is going.",
     time: "5h",
     likes: 132,
     comments: 21,
@@ -1094,7 +1100,7 @@ export const COMMUNITY_POSTS: CommunityPost[] = [
     author: "Diya Sharma",
     handle: "@diyasmash",
     role: "Athlete",
-    content: "Quarter-final week at the All-India Juniors. Thank you Apex Academy for the prep — and SportSphere for the tournament invite.",
+    content: "Quarter-final week at the All-India Juniors. Thank you Apex Academy for the prep — and The Sports Foundry for the tournament invite.",
     time: "1d",
     likes: 596,
     comments: 64,
