@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 
 import { useNav } from "../nav-context";
-import { BrandMark, useSiteTheme } from "../site-theme";
+import { BrandMark, resolveDisplayLogoUrl, useSiteTheme } from "../site-theme";
 import { EnquiryForm } from "../enquiry-form";
 import { SERVICES } from "@/lib/site-data";
 import { CONTACT_EMAIL } from "@/lib/site-contact";
@@ -158,7 +158,7 @@ export function HomePage() {
                   >
                     <BrandMark
                       emphasis="hero-half"
-                      showNameFallback={!theme.logoUrl}
+                      showNameFallback={false}
                     />
                   </motion.div>
                 </div>
@@ -466,14 +466,12 @@ export function HomePage() {
             <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-[#d4af37]/20 blur-3xl pointer-events-none" />
             <div className="absolute -bottom-20 -left-20 w-72 h-72 rounded-full bg-[#4a90e2]/15 blur-3xl pointer-events-none" />
             <div className="relative">
-              {theme.logoUrl && (
-                <img
-                  src={`${theme.logoUrl.split("?")[0]}?t=cta`}
-                  alt={theme.siteName}
-                  className="h-14 md:h-16 mx-auto mb-5 object-contain"
-                  style={{ mixBlendMode: "screen" }}
-                />
-              )}
+              <img
+                src={`${resolveDisplayLogoUrl(theme.logoUrl)}?t=cta`}
+                alt={theme.siteName}
+                className="h-14 md:h-16 mx-auto mb-5 object-contain"
+                style={{ mixBlendMode: "screen" }}
+              />
 
               <h2 className="text-2xl md:text-4xl font-bold text-gradient-gold mb-3">
                 Ready to connect with {theme.siteName}?

@@ -52,7 +52,7 @@ const SiteThemeCtx = createContext<{
 
 function applyThemeVars(theme: SiteTheme) {
   const root = document.documentElement;
-  const logoUrl = theme.logoUrl ? theme.logoUrl.split("?")[0] : null;
+  const logoUrl = resolveDisplayLogoUrl(theme.logoUrl);
 
   root.style.setProperty("--background", theme.backgroundColor);
   root.style.setProperty("--foreground", theme.textColor);
@@ -112,7 +112,7 @@ export function SiteThemeProvider({ children }: { children: ReactNode }) {
       .then((r) => r.json())
       .then((data) => {
         if (data.success && data.data) {
-          const next = { ...DEFAULT_SITE_THEME, ...data.data } as SiteTheme;
+          const next = mergeSiteTheme(data.data as Partial<SiteTheme>);
           setTheme(next);
           applyThemeVars(next);
         } else {
@@ -141,14 +141,27 @@ export function useSiteTheme() {
 }
 
 const HERO_LOGO_SRC = "/brand/client-logo-hero.png";
+const NAV_LOGO_SRC = "/brand/client-logo.png";
 
-function resolveHeroLogoSrc(logoUrl: string | null) {
+/** Map stored theme paths to committed brand assets when needed. */
+export function resolveDisplayLogoUrl(logoUrl: string | null | undefined): string {
   const base = logoUrl?.split("?")[0] ?? "";
-  // Theme may store /uploads/client-logo.png — hero transparent asset lives in /brand/
+  if (!base || base.includes("client-logo")) return NAV_LOGO_SRC;
+  return base;
+}
+
+function resolveHeroLogoSrc(logoUrl: string | null | undefined) {
+  const base = logoUrl?.split("?")[0] ?? "";
   if (!base || base.includes("client-logo")) {
     return `${HERO_LOGO_SRC}?t=brand`;
   }
   return `${base}?t=brand`;
+}
+
+function mergeSiteTheme(data: Partial<SiteTheme>): SiteTheme {
+  const merged = { ...DEFAULT_SITE_THEME, ...data };
+  merged.logoUrl = resolveDisplayLogoUrl(merged.logoUrl);
+  return merged;
 }
 
 /** Shared brand mark — navy panel + gold glow (navbar, hero, footer) */
@@ -165,9 +178,7 @@ export function BrandMark({
   emphasis?: "default" | "hero" | "hero-half";
 }) {
   const { theme } = useSiteTheme();
-  const logoSrc = theme.logoUrl
-    ? `${theme.logoUrl.split("?")[0]}?t=brand`
-    : null;
+  const logoSrc = `${resolveDisplayLogoUrl(theme.logoUrl)}?t=brand`;
 
   if (logoSrc) {
     const isHeroHalf = emphasis === "hero-half";
@@ -179,7 +190,7 @@ export function BrandMark({
     // Hero banner: transparent logo only — no panel, border, glow, blend hacks, or rotation
     if (isHeroHalf) {
       const heroLogo = resolveHeroLogoSrc(theme.logoUrl);
-      const customLogo = !theme.logoUrl?.includes("client-logo");
+      const customLogo = !resolveDisplayLogoUrl(theme.logoUrl).includes("client-logo");
       return (
         <img
           src={heroLogo}

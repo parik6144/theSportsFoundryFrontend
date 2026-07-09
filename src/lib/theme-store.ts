@@ -32,7 +32,27 @@ export const DEFAULT_THEME: ThemeData = {
   accentColor: "#d4af37",
 };
 
+const BRAND_LOGO = DEFAULT_THEME.logoUrl;
 
+/** Always resolve to a working logo path (Vercel has no /uploads persistence). */
+export function resolveBrandLogoUrl(
+  stored: Partial<ThemeData>,
+  logoMeta: { url?: string } | null
+): string {
+  const candidate = stored.logoUrl || logoMeta?.url;
+  if (!candidate) return BRAND_LOGO;
+
+  const clean = candidate.split("?")[0];
+  // Built-in client logos live in /brand/ — same on EC2, local, and Vercel
+  if (clean.includes("client-logo")) return BRAND_LOGO;
+
+  if (clean.startsWith("/uploads/")) {
+    const filePath = path.join(process.cwd(), "public", clean.slice(1));
+    if (!existsSync(filePath)) return BRAND_LOGO;
+  }
+
+  return clean;
+}
 
 const uploadsDir = () => path.join(process.cwd(), "public", "uploads");
 const themePath = () => path.join(uploadsDir(), "theme.json");
@@ -89,6 +109,6 @@ export async function resolveTheme(): Promise<ThemeData> {
   return {
     ...DEFAULT_THEME,
     ...stored,
-    logoUrl: stored.logoUrl || logoMeta?.url || null,
+    logoUrl: resolveBrandLogoUrl(stored, logoMeta),
   };
 }
