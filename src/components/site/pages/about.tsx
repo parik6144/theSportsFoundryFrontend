@@ -15,7 +15,6 @@ import {
   Compass,
 } from "lucide-react";
 import { SectionTitle } from "../ui-primitives";
-import { LEADERS } from "@/lib/site-data";
 import { useNav } from "../nav-context";
 import { useSiteTheme } from "../site-theme";
 
@@ -155,7 +154,6 @@ export function AboutPage() {
               { id: "who-we-help", label: "Who we help" },
               { id: "how-it-works", label: "How it works" },
               { id: "mission", label: "Mission & vision" },
-              { id: "team", label: "Team" },
             ].map((item) => (
               <button
                 key={item.id}
@@ -348,41 +346,6 @@ export function AboutPage() {
                 <CheckCircle2 className="h-6 w-6 text-[#f4d35e] mb-3" />
                 <h4 className="text-base md:text-lg font-semibold mb-2">{v.title}</h4>
                 <p className="text-sm md:text-base text-muted-foreground leading-relaxed">{v.body}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* TEAM */}
-      <section
-        id="team"
-        className="py-14 md:py-20 bg-white/[0.02] border-y border-white/10 scroll-mt-28"
-      >
-        <div className="container mx-auto px-4 md:px-6 max-w-7xl">
-          <SectionTitle
-            eyebrow="Our team"
-            title={`The people behind ${theme.siteName}`}
-            subtitle="Athletes, operators, and builders who have lived this problem — and care about fixing it."
-          />
-          <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {LEADERS.map((leader, i) => (
-              <motion.div
-                key={leader.name}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: i * 0.07 }}
-                className="glossy-card p-6 text-center"
-              >
-                <div
-                  className={`h-20 w-20 mx-auto rounded-full bg-gradient-to-br ${leader.accent} flex items-center justify-center font-bold text-2xl text-white mb-4 shadow-lg`}
-                >
-                  {leader.initials}
-                </div>
-                <h3 className="font-semibold text-base md:text-lg">{leader.name}</h3>
-                <div className="text-sm text-[#f4d35e] mt-1 mb-3">{leader.role}</div>
-                <p className="text-sm text-muted-foreground leading-relaxed">{leader.bio}</p>
               </motion.div>
             ))}
           </div>
