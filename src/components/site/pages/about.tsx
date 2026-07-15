@@ -15,9 +15,9 @@ import {
   Compass,
 } from "lucide-react";
 import { SectionTitle } from "../ui-primitives";
-import { LEADERS, MILESTONES } from "@/lib/site-data";
+import { LEADERS } from "@/lib/site-data";
 import { useNav } from "../nav-context";
-import { BrandMark, useSiteTheme } from "../site-theme";
+import { useSiteTheme } from "../site-theme";
 
 const WHO_WE_HELP = [
   {
@@ -155,7 +155,6 @@ export function AboutPage() {
               { id: "who-we-help", label: "Who we help" },
               { id: "how-it-works", label: "How it works" },
               { id: "mission", label: "Mission & vision" },
-              { id: "journey", label: "Our journey" },
               { id: "team", label: "Team" },
             ].map((item) => (
               <button
@@ -174,77 +173,40 @@ export function AboutPage() {
 
       {/* OUR STORY */}
       <section id="our-story" className="py-14 md:py-20 scroll-mt-28">
-        <div className="container mx-auto px-4 md:px-6 max-w-7xl">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-            >
-              <div className="text-sm uppercase tracking-wider text-[#f4d35e] font-semibold mb-3">
-                Our story
-              </div>
-              <h2 className="text-2xl md:text-4xl font-bold text-gradient-white mb-5 leading-tight">
-                Too much talent. Too few open doors.
-              </h2>
-              <div className="space-y-4 text-base text-muted-foreground leading-relaxed">
-                <p>
-                  India loves sport. But many good athletes still get missed — not because they lack
-                  skill, but because they lack a path.
-                </p>
-                <p>
-                  Teams know a few coaches. Coaches know a few academies. Brands know a few names.
-                  Everyone else waits.
-                </p>
-                <p>
-                  We built {theme.siteName} to connect those separate worlds. An athlete in a small
-                  town can be found by a team in another city, supported by a brand, and trained by
-                  an academy — without needing “the right contacts.”
-                </p>
-                <p>
-                  Today we help thousands of athletes, teams, academies, and partners work together.
-                  And every year, part of our work supports children who would otherwise never get a
-                  chance.
-                </p>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, scale: 0.96 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.55 }}
-              className="relative"
-            >
-              <div className="glossy-card p-6 md:p-8">
-                {theme.logoUrl && (
-                  <div className="mb-6 flex justify-center">
-                    <BrandMark height={52} />
-                  </div>
-                )}
-                <div className="space-y-4">
-                  {[
-                    { stat: "12,500+", label: "Athletes on the platform" },
-                    { stat: "850+", label: "Teams across sports" },
-                    { stat: "140+", label: "Partner academies" },
-                    { stat: "320+", label: "Events organised" },
-                    { stat: "1,200+", label: "Children coached through CSR" },
-                  ].map((row) => (
-                    <div
-                      key={row.label}
-                      className="flex items-center justify-between gap-4 pb-4 border-b border-white/10 last:border-0 last:pb-0"
-                    >
-                      <span className="text-sm md:text-base text-muted-foreground">{row.label}</span>
-                      <span className="text-xl md:text-2xl font-bold text-gradient-gold shrink-0">
-                        {row.stat}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-          </div>
+        <div className="container mx-auto px-4 md:px-6 max-w-3xl">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <div className="text-sm uppercase tracking-wider text-[#f4d35e] font-semibold mb-3">
+              Our story
+            </div>
+            <h2 className="text-2xl md:text-4xl font-bold text-gradient-white mb-5 leading-tight">
+              Too much talent. Too few open doors.
+            </h2>
+            <div className="space-y-4 text-base text-muted-foreground leading-relaxed">
+              <p>
+                India loves sport. But many good athletes still get missed — not because they lack
+                skill, but because they lack a path.
+              </p>
+              <p>
+                Teams know a few coaches. Coaches know a few academies. Brands know a few names.
+                Everyone else waits.
+              </p>
+              <p>
+                We built {theme.siteName} to connect those separate worlds. An athlete in a small
+                town can be found by a team in another city, supported by a brand, and trained by
+                an academy — without needing “the right contacts.”
+              </p>
+              <p>
+                Today we help thousands of athletes, teams, academies, and partners work together.
+                And every year, part of our work supports children who would otherwise never get a
+                chance.
+              </p>
+            </div>
+          </motion.div>
         </div>
       </section>
 
@@ -388,45 +350,6 @@ export function AboutPage() {
                 <p className="text-sm md:text-base text-muted-foreground leading-relaxed">{v.body}</p>
               </motion.div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* JOURNEY */}
-      <section id="journey" className="py-14 md:py-20 scroll-mt-28">
-        <div className="container mx-auto px-4 md:px-6 max-w-5xl">
-          <SectionTitle
-            eyebrow="Our journey"
-            title="How we got here"
-            subtitle="A few big steps. Many more to come."
-          />
-          <div className="mt-14 relative">
-            <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-[#d4af37]/40 via-[#d4af37]/20 to-transparent" />
-            <div className="space-y-8 md:space-y-12">
-              {MILESTONES.filter((m) => !m.title.toLowerCase().includes("csr")).map((m, i) => (
-                <motion.div
-                  key={m.year}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  transition={{ duration: 0.5 }}
-                  className={`relative flex items-start gap-6 md:gap-0 ${
-                    i % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
-                  }`}
-                >
-                  <div className="absolute left-4 md:left-1/2 -translate-x-1/2 h-4 w-4 rounded-full bg-[#d4af37] border-2 border-[#0a1128] z-10 mt-1" />
-                  <div className="ml-12 md:ml-0 md:w-1/2 md:px-8">
-                    <div className="glossy-card p-5 md:p-6">
-                      <div className="text-2xl font-bold text-gradient-gold mb-1">{m.year}</div>
-                      <h4 className="font-semibold text-base md:text-lg mb-2">{m.title}</h4>
-                      <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
-                        {m.body}
-                      </p>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
           </div>
         </div>
       </section>
