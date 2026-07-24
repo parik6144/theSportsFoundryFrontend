@@ -4,25 +4,28 @@ import { motion } from "framer-motion";
 import { useState, useMemo } from "react";
 import { Search, Users, ArrowRight, CheckCircle2 } from "lucide-react";
 import { PageHeader, CTASection } from "../ui-primitives";
-import { TEAMS } from "@/lib/site-data";
 import { useNav } from "../nav-context";
-
-const SPORTS = ["All", "Football", "Cricket", "Basketball", "Hockey", "Volleyball", "Athletics"];
+import { useJsonCollection } from "@/hooks/use-json-collection";
+import { mapTeams, uniqueSorted } from "@/lib/hub-mappers";
 
 export function TeamsHubPage() {
   const { navigate } = useNav();
+  const { data: raw, loading, error } = useJsonCollection("teams");
+  const teams = useMemo(() => mapTeams(raw as Record<string, unknown>[]), [raw]);
   const [search, setSearch] = useState("");
   const [sport, setSport] = useState("All");
   const [openTrialsOnly, setOpenTrialsOnly] = useState(false);
 
+  const sports = useMemo(() => ["All", ...uniqueSorted(teams.map((t) => t.sport))], [teams]);
+
   const filtered = useMemo(() => {
-    return TEAMS.filter((t) => {
+    return teams.filter((t) => {
       if (search && !t.name.toLowerCase().includes(search.toLowerCase())) return false;
       if (sport !== "All" && t.sport !== sport) return false;
       if (openTrialsOnly && !t.openTrials) return false;
       return true;
     });
-  }, [search, sport, openTrialsOnly]);
+  }, [teams, search, sport, openTrialsOnly]);
 
   return (
     <div>
@@ -50,8 +53,10 @@ export function TeamsHubPage() {
                 onChange={(e) => setSport(e.target.value)}
                 className="bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-[#d4af37]"
               >
-                {SPORTS.map((s) => (
-                  <option key={s} value={s} className="bg-[#0d1b3d]">{s}</option>
+                {sports.map((s) => (
+                  <option key={s} value={s} className="bg-[#0d1b3d]">
+                    {s}
+                  </option>
                 ))}
               </select>
               <label className="flex items-center gap-2 px-3 py-2.5 rounded-lg glass cursor-pointer text-sm">
@@ -65,11 +70,26 @@ export function TeamsHubPage() {
               </label>
             </div>
             <div className="mt-3 text-xs text-muted-foreground">
-              Showing <span className="text-[#f4d35e] font-medium">{filtered.length}</span> of {TEAMS.length} teams
+              {loading ? (
+                "Loading teams…"
+              ) : (
+                <>
+                  Showing <span className="text-[#f4d35e] font-medium">{filtered.length}</span> of{" "}
+                  {teams.length} teams
+                </>
+              )}
             </div>
           </div>
 
-          {filtered.length > 0 ? (
+          {error ? (
+            <div className="glossy-card p-10 text-center">
+              <p className="text-sm text-red-300">{error}</p>
+            </div>
+          ) : loading ? (
+            <div className="glossy-card p-10 text-center">
+              <p className="text-sm text-muted-foreground">Loading from data store…</p>
+            </div>
+          ) : filtered.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {filtered.map((t, i) => (
                 <motion.div
@@ -80,12 +100,16 @@ export function TeamsHubPage() {
                   className="glossy-card p-5 flex flex-col"
                 >
                   <div className="flex items-center gap-3 mb-4">
-                    <div className={`h-14 w-14 rounded-xl bg-gradient-to-br ${t.accent} flex items-center justify-center font-bold text-white shadow-lg shrink-0`}>
+                    <div
+                      className={`h-14 w-14 rounded-xl bg-gradient-to-br ${t.accent} flex items-center justify-center font-bold text-white shadow-lg shrink-0`}
+                    >
                       {t.initials}
                     </div>
                     <div className="min-w-0">
                       <h3 className="font-semibold text-base truncate">{t.name}</h3>
-                      <div className="text-xs text-[#f4d35e]">{t.sport} · {t.level}</div>
+                      <div className="text-xs text-[#f4d35e]">
+                        {t.sport} · {t.level}
+                      </div>
                     </div>
                   </div>
                   <div className="space-y-1.5 text-xs text-muted-foreground mb-4">
@@ -116,7 +140,11 @@ export function TeamsHubPage() {
             </div>
           ) : (
             <div className="glossy-card p-10 text-center">
-              <p className="text-sm text-muted-foreground">No teams match your filters.</p>
+              <p className="text-sm text-muted-foreground">
+                {teams.length === 0
+                  ? "No teams listed yet. Add teams from the admin panel."
+                  : "No teams match your filters."}
+              </p>
             </div>
           )}
         </div>

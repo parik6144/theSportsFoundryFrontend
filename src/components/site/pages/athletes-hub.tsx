@@ -4,26 +4,35 @@ import { motion } from "framer-motion";
 import { useState, useMemo } from "react";
 import { Search, Filter, ArrowRight, Award, Calendar } from "lucide-react";
 import { PageHeader, CTASection } from "../ui-primitives";
-import { ATHLETES, type Athlete } from "@/lib/site-data";
 import { useNav } from "../nav-context";
-
-const SPORTS = ["All", "Football", "Cricket", "Badminton", "Basketball", "Athletics", "Tennis"];
-const LEVELS = ["All", "Amateur", "Semi-Pro", "National", "Pro League", "U-23 State", "ITF Circuit"];
+import { useJsonCollection } from "@/hooks/use-json-collection";
+import { mapAthletes, uniqueSorted, type HubAthlete } from "@/lib/hub-mappers";
 
 export function AthletesHubPage() {
   const { navigate } = useNav();
+  const { data: raw, loading, error } = useJsonCollection("athletes");
+  const athletes = useMemo(() => mapAthletes(raw as Record<string, unknown>[]), [raw]);
   const [search, setSearch] = useState("");
   const [sport, setSport] = useState("All");
   const [level, setLevel] = useState("All");
 
+  const sports = useMemo(() => ["All", ...uniqueSorted(athletes.map((a) => a.sport))], [athletes]);
+  const levels = useMemo(() => ["All", ...uniqueSorted(athletes.map((a) => a.level))], [athletes]);
+
   const filtered = useMemo(() => {
-    return ATHLETES.filter((a) => {
-      if (search && !a.name.toLowerCase().includes(search.toLowerCase()) && !a.sport.toLowerCase().includes(search.toLowerCase())) return false;
+    return athletes.filter((a) => {
+      if (
+        search &&
+        !a.name.toLowerCase().includes(search.toLowerCase()) &&
+        !a.sport.toLowerCase().includes(search.toLowerCase())
+      ) {
+        return false;
+      }
       if (sport !== "All" && a.sport !== sport) return false;
       if (level !== "All" && a.level !== level) return false;
       return true;
     });
-  }, [search, sport, level]);
+  }, [athletes, search, sport, level]);
 
   return (
     <div>
@@ -35,7 +44,6 @@ export function AthletesHubPage() {
 
       <section className="py-8 md:py-12 pb-20">
         <div className="container mx-auto px-4 md:px-6 max-w-7xl">
-          {/* Filters */}
           <div className="glossy-card p-4 md:p-5 mb-8">
             <div className="flex flex-col lg:flex-row gap-3">
               <div className="relative flex-1">
@@ -53,8 +61,10 @@ export function AthletesHubPage() {
                   onChange={(e) => setSport(e.target.value)}
                   className="bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-[#d4af37]"
                 >
-                  {SPORTS.map((s) => (
-                    <option key={s} value={s} className="bg-[#0d1b3d]">{s}</option>
+                  {sports.map((s) => (
+                    <option key={s} value={s} className="bg-[#0d1b3d]">
+                      {s}
+                    </option>
                   ))}
                 </select>
                 <select
@@ -62,20 +72,36 @@ export function AthletesHubPage() {
                   onChange={(e) => setLevel(e.target.value)}
                   className="bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-[#d4af37]"
                 >
-                  {LEVELS.map((l) => (
-                    <option key={l} value={l} className="bg-[#0d1b3d]">{l}</option>
+                  {levels.map((l) => (
+                    <option key={l} value={l} className="bg-[#0d1b3d]">
+                      {l}
+                    </option>
                   ))}
                 </select>
               </div>
             </div>
             <div className="mt-3 flex items-center gap-2 text-xs text-muted-foreground">
               <Filter className="h-3.5 w-3.5" />
-              Showing <span className="text-[#f4d35e] font-medium">{filtered.length}</span> of {ATHLETES.length} athletes
+              {loading ? (
+                "Loading athletes…"
+              ) : (
+                <>
+                  Showing <span className="text-[#f4d35e] font-medium">{filtered.length}</span> of{" "}
+                  {athletes.length} athletes
+                </>
+              )}
             </div>
           </div>
 
-          {/* Grid */}
-          {filtered.length > 0 ? (
+          {error ? (
+            <div className="glossy-card p-10 text-center">
+              <p className="text-sm text-red-300">{error}</p>
+            </div>
+          ) : loading ? (
+            <div className="glossy-card p-10 text-center">
+              <p className="text-sm text-muted-foreground">Loading from data store…</p>
+            </div>
+          ) : filtered.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {filtered.map((a, i) => (
                 <AthleteCard key={a.id} athlete={a} index={i} onView={() => navigate("contact")} />
@@ -83,7 +109,11 @@ export function AthletesHubPage() {
             </div>
           ) : (
             <div className="glossy-card p-10 text-center">
-              <p className="text-sm text-muted-foreground">No athletes match your filters. Try widening the search.</p>
+              <p className="text-sm text-muted-foreground">
+                {athletes.length === 0
+                  ? "No athletes listed yet. Add athletes from the admin panel."
+                  : "No athletes match your filters. Try widening the search."}
+              </p>
             </div>
           )}
         </div>
@@ -101,7 +131,15 @@ export function AthletesHubPage() {
   );
 }
 
-function AthleteCard({ athlete, index, onView }: { athlete: Athlete; index: number; onView: () => void }) {
+function AthleteCard({
+  athlete,
+  index,
+  onView,
+}: {
+  athlete: HubAthlete;
+  index: number;
+  onView: () => void;
+}) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -110,7 +148,9 @@ function AthleteCard({ athlete, index, onView }: { athlete: Athlete; index: numb
       className="glossy-card p-5 flex flex-col"
     >
       <div className="flex items-center gap-3 mb-4">
-        <div className={`h-14 w-14 rounded-xl bg-gradient-to-br ${athlete.accent} flex items-center justify-center font-bold text-white shadow-lg shrink-0`}>
+        <div
+          className={`h-14 w-14 rounded-xl bg-gradient-to-br ${athlete.accent} flex items-center justify-center font-bold text-white shadow-lg shrink-0`}
+        >
           {athlete.initials}
         </div>
         <div className="min-w-0">
@@ -125,17 +165,19 @@ function AthleteCard({ athlete, index, onView }: { athlete: Athlete; index: numb
         </div>
         <div className="flex items-center gap-1.5 text-muted-foreground">
           <Calendar className="h-3.5 w-3.5 text-[#f4d35e]" />
-          Age {athlete.age}
+          Age {athlete.age || "—"}
         </div>
       </div>
-      <div className="grid grid-cols-3 gap-2 pb-4 border-b border-white/10 mb-4">
-        {athlete.stats.map((s, i) => (
-          <div key={i} className="text-center">
-            <div className="text-base font-bold text-gradient-gold">{s.value}</div>
-            <div className="text-[10px] text-muted-foreground uppercase tracking-wide">{s.label}</div>
-          </div>
-        ))}
-      </div>
+      {athlete.stats.length > 0 && (
+        <div className="grid grid-cols-3 gap-2 pb-4 border-b border-white/10 mb-4">
+          {athlete.stats.map((s, i) => (
+            <div key={i} className="text-center">
+              <div className="text-base font-bold text-gradient-gold">{s.value}</div>
+              <div className="text-[10px] text-muted-foreground uppercase tracking-wide">{s.label}</div>
+            </div>
+          ))}
+        </div>
+      )}
       <button
         onClick={onView}
         className="mt-auto w-full btn-outline-gold rounded-lg px-4 py-2.5 text-xs font-medium inline-flex items-center justify-center gap-2"

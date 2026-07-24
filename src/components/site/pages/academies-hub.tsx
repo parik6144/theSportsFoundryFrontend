@@ -3,24 +3,30 @@
 import { motion } from "framer-motion";
 import { Search, ArrowRight, GraduationCap } from "lucide-react";
 import { PageHeader, CTASection } from "../ui-primitives";
-import { ACADEMIES } from "@/lib/site-data";
 import { useState, useMemo } from "react";
 import { useNav } from "../nav-context";
-
-const SPORTS = ["All", "Cricket", "Football", "Badminton", "Basketball", "Athletics", "Tennis"];
+import { useJsonCollection } from "@/hooks/use-json-collection";
+import { mapAcademies, uniqueSorted } from "@/lib/hub-mappers";
 
 export function AcademiesHubPage() {
   const { navigate } = useNav();
+  const { data: raw, loading, error } = useJsonCollection("academies");
+  const academies = useMemo(() => mapAcademies(raw as Record<string, unknown>[]), [raw]);
   const [search, setSearch] = useState("");
   const [sport, setSport] = useState("All");
 
+  const sports = useMemo(
+    () => ["All", ...uniqueSorted(academies.map((a) => a.sport))],
+    [academies]
+  );
+
   const filtered = useMemo(() => {
-    return ACADEMIES.filter((a) => {
+    return academies.filter((a) => {
       if (search && !a.name.toLowerCase().includes(search.toLowerCase())) return false;
       if (sport !== "All" && a.sport !== sport) return false;
       return true;
     });
-  }, [search, sport]);
+  }, [academies, search, sport]);
 
   return (
     <div>
@@ -48,17 +54,34 @@ export function AcademiesHubPage() {
                 onChange={(e) => setSport(e.target.value)}
                 className="bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-[#d4af37]"
               >
-                {SPORTS.map((s) => (
-                  <option key={s} value={s} className="bg-[#0d1b3d]">{s}</option>
+                {sports.map((s) => (
+                  <option key={s} value={s} className="bg-[#0d1b3d]">
+                    {s}
+                  </option>
                 ))}
               </select>
             </div>
             <div className="mt-3 text-xs text-muted-foreground">
-              Showing <span className="text-[#f4d35e] font-medium">{filtered.length}</span> of {ACADEMIES.length} academies
+              {loading ? (
+                "Loading academies…"
+              ) : (
+                <>
+                  Showing <span className="text-[#f4d35e] font-medium">{filtered.length}</span> of{" "}
+                  {academies.length} academies
+                </>
+              )}
             </div>
           </div>
 
-          {filtered.length > 0 ? (
+          {error ? (
+            <div className="glossy-card p-10 text-center">
+              <p className="text-sm text-red-300">{error}</p>
+            </div>
+          ) : loading ? (
+            <div className="glossy-card p-10 text-center">
+              <p className="text-sm text-muted-foreground">Loading from data store…</p>
+            </div>
+          ) : filtered.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {filtered.map((a, i) => (
                 <motion.div
@@ -69,7 +92,9 @@ export function AcademiesHubPage() {
                   className="glossy-card p-5 flex flex-col"
                 >
                   <div className="flex items-center gap-3 mb-4">
-                    <div className={`h-14 w-14 rounded-xl bg-gradient-to-br ${a.accent} flex items-center justify-center shadow-lg shrink-0`}>
+                    <div
+                      className={`h-14 w-14 rounded-xl bg-gradient-to-br ${a.accent} flex items-center justify-center shadow-lg shrink-0`}
+                    >
                       <GraduationCap className="h-7 w-7 text-white" />
                     </div>
                     <div className="min-w-0">
@@ -78,7 +103,9 @@ export function AcademiesHubPage() {
                     </div>
                   </div>
                   <div className="mb-4">
-                    <div className="text-[10px] uppercase tracking-wider text-[#f4d35e] font-semibold mb-2">Programs</div>
+                    <div className="text-[10px] uppercase tracking-wider text-[#f4d35e] font-semibold mb-2">
+                      Programs
+                    </div>
                     <div className="flex flex-wrap gap-1.5">
                       {a.programs.map((p) => (
                         <span key={p} className="text-[10px] glass px-2 py-1 rounded-full text-foreground/80">
@@ -99,7 +126,11 @@ export function AcademiesHubPage() {
             </div>
           ) : (
             <div className="glossy-card p-10 text-center">
-              <p className="text-sm text-muted-foreground">No academies match your filters.</p>
+              <p className="text-sm text-muted-foreground">
+                {academies.length === 0
+                  ? "No academies listed yet. Add academies from the admin panel."
+                  : "No academies match your filters."}
+              </p>
             </div>
           )}
         </div>
