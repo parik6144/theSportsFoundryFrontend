@@ -97,10 +97,9 @@ function ErrorState({ error, onRetry }: { error: string; onRetry: () => void }) 
     <div className="text-center py-12 max-w-lg mx-auto px-4">
       <p className="text-sm text-red-400 mb-2">⚠ {error}</p>
       <p className="text-xs text-gray-500 mb-3">
-        Data is stored as JSON (local <code className="text-gray-400">data/*.json</code> in
-        development). On Vercel, create a Blob store and set{" "}
-        <code className="text-gray-400">BLOB_READ_WRITE_TOKEN</code>, and remove{" "}
-        <code className="text-gray-400">DATABASE_URL</code> if it is still set.
+        On Vercel, create a Blob store (Storage → Blob) so{" "}
+        <code className="text-gray-400">BLOB_READ_WRITE_TOKEN</code> is set — that keeps admin data
+        permanent. Also remove any old <code className="text-gray-400">DATABASE_URL</code>.
       </p>
       <button onClick={onRetry} className="px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-sm">Retry</button>
     </div>

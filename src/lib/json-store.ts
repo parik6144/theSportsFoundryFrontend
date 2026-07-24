@@ -49,6 +49,10 @@ function useBlob(): boolean {
 }
 
 function dataDir(): string {
+  // Vercel lambda FS is read-only except /tmp
+  if (process.env.VERCEL === "1") {
+    return path.join("/tmp", "sportsfoundry-data");
+  }
   return path.join(process.cwd(), "data");
 }
 
@@ -68,10 +72,19 @@ async function ensureDataDir() {
 }
 
 async function readLocal(collection: CollectionName): Promise<JsonRecord[]> {
-  await ensureDataDir();
+  try {
+    await ensureDataDir();
+  } catch {
+    // Read-only FS or mkdir failure — treat as empty store
+    return [];
+  }
   const file = localPath(collection);
   if (!existsSync(file)) {
-    await writeFile(file, "[]", "utf-8");
+    try {
+      await writeFile(file, "[]", "utf-8");
+    } catch {
+      return [];
+    }
     return [];
   }
   try {
@@ -84,8 +97,17 @@ async function readLocal(collection: CollectionName): Promise<JsonRecord[]> {
 }
 
 async function writeLocal(collection: CollectionName, records: JsonRecord[]) {
-  await ensureDataDir();
-  await writeFile(localPath(collection), JSON.stringify(records, null, 2), "utf-8");
+  try {
+    await ensureDataDir();
+    await writeFile(localPath(collection), JSON.stringify(records, null, 2), "utf-8");
+  } catch (err) {
+    if (process.env.VERCEL === "1" && !useBlob()) {
+      throw new Error(
+        "Cannot persist data on Vercel without Blob. Create a Blob store and set BLOB_READ_WRITE_TOKEN."
+      );
+    }
+    throw err;
+  }
 }
 
 async function readBlob(collection: CollectionName): Promise<JsonRecord[]> {
