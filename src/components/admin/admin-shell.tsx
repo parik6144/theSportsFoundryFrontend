@@ -25,17 +25,9 @@ export function AdminShell({ children, onLogout }: { children: ReactNode; onLogo
   const [page, setPage] = useState("dashboard");
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  // Keep-alive ping — prevents sandbox from sleeping while admin is active
+  // Theme warm-up only — do not hit /api/seed (avoids noisy DB/store errors in logs)
   useEffect(() => {
-    const ping = () => {
-      fetch("/api/seed", { method: "GET" }).catch(() => {});
-      fetch("/api/settings/theme").catch(() => {});
-    };
-    // Ping immediately on load
-    ping();
-    // Then ping every 25 seconds to keep server alive
-    const interval = setInterval(ping, 25000);
-    return () => clearInterval(interval);
+    fetch("/api/settings/theme").catch(() => {});
   }, []);
 
   const handleLogout = () => {

@@ -165,9 +165,11 @@ export function isJsonStoreEnabled(): boolean {
   const forced = process.env.DATA_STORE?.trim().toLowerCase();
   if (forced === "json") return true;
   if (forced === "mysql" || forced === "prisma") return false;
+  // Vercel production/preview: always JSON (ignore stale DATABASE_URL to dead EC2 MySQL)
+  if (process.env.VERCEL === "1") return true;
   // Blob token present → prefer JSON even if a stale DATABASE_URL remains
   if (process.env.BLOB_READ_WRITE_TOKEN?.trim()) return true;
-  // Default: JSON when no MySQL URL (Vercel / local without DB)
+  // Local default: JSON when no MySQL URL
   return !process.env.DATABASE_URL?.trim();
 }
 
