@@ -48,9 +48,19 @@ function useBlob(): boolean {
   return Boolean(process.env.BLOB_READ_WRITE_TOKEN?.trim());
 }
 
+function isServerlessRuntime(): boolean {
+  return (
+    process.env.VERCEL === "1" ||
+    process.env.VERCEL === "true" ||
+    Boolean(process.env.AWS_LAMBDA_FUNCTION_NAME) ||
+    process.cwd().includes(`${path.sep}var${path.sep}task`) ||
+    process.cwd() === "/var/task"
+  );
+}
+
 function dataDir(): string {
-  // Vercel lambda FS is read-only except /tmp
-  if (process.env.VERCEL === "1") {
+  // Never mkdir under /var/task (read-only on Vercel). Use /tmp instead.
+  if (isServerlessRuntime()) {
     return path.join("/tmp", "sportsfoundry-data");
   }
   return path.join(process.cwd(), "data");
@@ -101,7 +111,7 @@ async function writeLocal(collection: CollectionName, records: JsonRecord[]) {
     await ensureDataDir();
     await writeFile(localPath(collection), JSON.stringify(records, null, 2), "utf-8");
   } catch (err) {
-    if (process.env.VERCEL === "1" && !useBlob()) {
+    if (isServerlessRuntime() && !useBlob()) {
       throw new Error(
         "Cannot persist data on Vercel without Blob. Create a Blob store and set BLOB_READ_WRITE_TOKEN."
       );
@@ -136,8 +146,13 @@ async function writeBlob(collection: CollectionName, records: JsonRecord[]) {
 }
 
 async function readAll(collection: CollectionName): Promise<JsonRecord[]> {
-  if (useBlob()) return readBlob(collection);
-  return readLocal(collection);
+  try {
+    if (useBlob()) return await readBlob(collection);
+    return await readLocal(collection);
+  } catch (err) {
+    console.warn(`[json-store] read ${collection} failed, returning []:`, err);
+    return [];
+  }
 }
 
 async function writeAll(collection: CollectionName, records: JsonRecord[]) {
@@ -187,8 +202,8 @@ export function isJsonStoreEnabled(): boolean {
   const forced = process.env.DATA_STORE?.trim().toLowerCase();
   if (forced === "json") return true;
   if (forced === "mysql" || forced === "prisma") return false;
-  // Vercel production/preview: always JSON (ignore stale DATABASE_URL to dead EC2 MySQL)
-  if (process.env.VERCEL === "1") return true;
+  // Vercel / lambda: always JSON (ignore stale DATABASE_URL)
+  if (isServerlessRuntime()) return true;
   // Blob token present → prefer JSON even if a stale DATABASE_URL remains
   if (process.env.BLOB_READ_WRITE_TOKEN?.trim()) return true;
   // Local default: JSON when no MySQL URL
