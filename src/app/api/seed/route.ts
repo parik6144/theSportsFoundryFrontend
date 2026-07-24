@@ -1,5 +1,5 @@
-import { db } from "@/lib/db";
-import { apiError, apiSuccess } from "@/lib/api-response";
+import { db, apiDbError } from "@/lib/db";
+import { apiSuccess } from "@/lib/api-response";
 
 export async function GET() {
   try {
@@ -13,7 +13,7 @@ export async function GET() {
     ]);
     return apiSuccess({ services, partners, testimonials, athletes, users, roles });
   } catch (err: any) {
-    return apiError(err.message);
+    return apiDbError(err);
   }
 }
 

@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
-import { db } from "@/lib/db";
-import { apiError, apiSuccess } from "@/lib/api-response";
+import { db, apiDbError } from "@/lib/db";
+import { apiSuccess } from "@/lib/api-response";
 import { prepareAthleteBody } from "@/lib/sanitize-record";
 
 export async function GET() {
@@ -8,7 +8,7 @@ export async function GET() {
     const records = await db.athlete.findMany({ orderBy: { createdAt: "desc" } });
     return apiSuccess(records);
   } catch (err: any) {
-    return apiError(err.message);
+    return apiDbError(err);
   }
 }
 
@@ -18,6 +18,6 @@ export async function POST(req: NextRequest) {
     const record = await db.athlete.create({ data: prepareAthleteBody(body) as any });
     return apiSuccess(record, 201);
   } catch (err: any) {
-    return apiError(err.message);
+    return apiDbError(err);
   }
 }

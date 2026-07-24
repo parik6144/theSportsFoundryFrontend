@@ -1,13 +1,13 @@
 import { NextRequest } from "next/server";
-import { db } from "@/lib/db";
-import { apiError, apiSuccess } from "@/lib/api-response";
+import { db, apiDbError } from "@/lib/db";
+import { apiSuccess } from "@/lib/api-response";
 
 export async function GET() {
   try {
     const records = await db.academy.findMany({ orderBy: { createdAt: "desc" } });
     return apiSuccess(records);
   } catch (err: any) {
-    return apiError(err.message);
+    return apiDbError(err);
   }
 }
 
@@ -18,6 +18,6 @@ export async function POST(req: NextRequest) {
     const record = await db.academy.create({ data: { ...body, slug } });
     return apiSuccess(record, 201);
   } catch (err: any) {
-    return apiError(err.message);
+    return apiDbError(err);
   }
 }

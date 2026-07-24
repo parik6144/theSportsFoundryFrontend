@@ -25,6 +25,7 @@ jobs:
             git fetch origin main
             git reset --hard origin/main
             printf '%s\n' "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env
+            # Prefer secrets.DATABASE_URL with host 127.0.0.1 (MySQL on this EC2), not the public IP.
             printf '%s\n' "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env.local
             export NODE_OPTIONS="--max-old-space-size=2048"
             npm ci

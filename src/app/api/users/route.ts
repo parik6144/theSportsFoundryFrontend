@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
-import { db } from "@/lib/db";
-import { apiError, apiSuccess } from "@/lib/api-response";
+import { db, apiDbError } from "@/lib/db";
+import { apiSuccess } from "@/lib/api-response";
 
 export async function GET() {
   try {
@@ -13,7 +13,7 @@ export async function GET() {
     });
     return apiSuccess(records);
   } catch (err: any) {
-    return apiError(err.message);
+    return apiDbError(err);
   }
 }
 
@@ -23,6 +23,6 @@ export async function POST(req: NextRequest) {
     const record = await db.user.create({ data: body });
     return apiSuccess(record, 201);
   } catch (err: any) {
-    return apiError(err.message);
+    return apiDbError(err);
   }
 }

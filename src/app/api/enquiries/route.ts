@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { db } from "@/lib/db";
+import { db, apiDbError } from "@/lib/db";
 import { apiError, apiSuccess } from "@/lib/api-response";
 import { sendEnquiryEmail } from "@/lib/send-enquiry-email";
 
@@ -44,7 +44,7 @@ export async function GET() {
     const records = await db.enquiry.findMany({ orderBy: { createdAt: "desc" } });
     return apiSuccess(records);
   } catch (err: any) {
-    return apiError(err.message);
+    return apiDbError(err);
   }
 }
 

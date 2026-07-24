@@ -94,8 +94,12 @@ function LoadingState() {
 
 function ErrorState({ error, onRetry }: { error: string; onRetry: () => void }) {
   return (
-    <div className="text-center py-12">
-      <p className="text-sm text-red-400 mb-3">⚠ {error}</p>
+    <div className="text-center py-12 max-w-lg mx-auto px-4">
+      <p className="text-sm text-red-400 mb-2">⚠ {error}</p>
+      <p className="text-xs text-gray-500 mb-3">
+        Public marketing pages do not need MySQL. Admin lists need a reachable database — use EC2 admin,
+        or remove <code className="text-gray-400">DATABASE_URL</code> from Vercel if it points at a private host.
+      </p>
       <button onClick={onRetry} className="px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-sm">Retry</button>
     </div>
   );

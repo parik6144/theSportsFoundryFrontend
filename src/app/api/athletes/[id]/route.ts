@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { db } from "@/lib/db";
+import { db, apiDbError } from "@/lib/db";
 import { apiError, apiSuccess, parseId } from "@/lib/api-response";
 import { prepareAthleteBody } from "@/lib/sanitize-record";
 
@@ -12,7 +12,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
     if (!record) return apiError("Not found", 404);
     return apiSuccess(record);
   } catch (err: any) {
-    return apiError(err.message);
+    return apiDbError(err);
   }
 }
 
@@ -28,7 +28,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     });
     return apiSuccess(record);
   } catch (err: any) {
-    return apiError(err.message);
+    return apiDbError(err);
   }
 }
 
@@ -40,6 +40,6 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
     await db.athlete.delete({ where: { id: recordId } });
     return apiSuccess({ message: "Deleted" });
   } catch (err: any) {
-    return apiError(err.message);
+    return apiDbError(err);
   }
 }
