@@ -1,10 +1,11 @@
 import { NextRequest } from "next/server";
-import { db, apiDbError } from "@/lib/db";
+import { apiDbError } from "@/lib/db";
 import { apiSuccess } from "@/lib/api-response";
+import { repoCreate, repoList } from "@/lib/collection-repo";
 
 export async function GET() {
   try {
-    const records = await db.testimonial.findMany({ orderBy: { sortOrder: "asc" } });
+    const records = await repoList("testimonials", { orderBy: "sortOrder", order: "asc" });
     return apiSuccess(records);
   } catch (err: any) {
     return apiDbError(err);
@@ -14,7 +15,7 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const record = await db.testimonial.create({ data: body });
+    const record = await repoCreate("testimonials", body);
     return apiSuccess(record, 201);
   } catch (err: any) {
     return apiDbError(err);

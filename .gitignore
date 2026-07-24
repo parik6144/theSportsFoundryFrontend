@@ -32,5 +32,8 @@ yarn-error.log*
 # uploads (local dev only)
 /public/uploads/
 
+# local JSON store (Vercel uses Blob; keep data/.gitkeep)
+/data/*.json
+
 # local secrets / Vercel import files (never commit)
 vercel-import.env

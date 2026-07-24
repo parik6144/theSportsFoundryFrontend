@@ -1,9 +1,10 @@
 import { NextRequest } from "next/server";
-import { db, apiDbError } from "@/lib/db";
+import { apiDbError } from "@/lib/db";
 import { apiError, apiSuccess } from "@/lib/api-response";
 import { sendEnquiryEmail } from "@/lib/send-enquiry-email";
+import { repoCreate, repoList } from "@/lib/collection-repo";
 
-function mapEnquiryTypeToDb(type: string): string {
+function mapEnquiryType(type: string): string {
   const normalized = type.trim().toLowerCase();
 
   switch (normalized) {
@@ -41,7 +42,7 @@ function parseEnquiryBody(body: Record<string, unknown>) {
 
 export async function GET() {
   try {
-    const records = await db.enquiry.findMany({ orderBy: { createdAt: "desc" } });
+    const records = await repoList("enquiries", { orderBy: "createdAt", order: "desc" });
     return apiSuccess(records);
   } catch (err: any) {
     return apiDbError(err);
@@ -62,38 +63,29 @@ export async function POST(req: NextRequest) {
       return apiError("Could not send your message. Please try again.", 500);
     }
 
-    // Optional DB save — only when DATABASE_URL is configured (e.g. EC2 admin setup)
-    if (process.env.DATABASE_URL) {
-      try {
-        const now = new Date();
-        const record = await db.enquiry.create({
-          data: {
-            name: payload.name,
-            email: payload.email,
-            phone: body.phone ? String(body.phone).trim() : null,
-            type: mapEnquiryTypeToDb(enquiryType),
-            subject: payload.subject,
-            message: payload.message,
-            status: "new",
-            createdAt: now,
-            updatedAt: now,
-          },
-        });
-        return apiSuccess(record, 201);
-      } catch (dbErr) {
-        console.warn("[enquiry] saved via email only; database write failed:", dbErr);
-      }
+    try {
+      const record = await repoCreate("enquiries", {
+        name: payload.name,
+        email: payload.email,
+        phone: body.phone ? String(body.phone).trim() : null,
+        type: mapEnquiryType(enquiryType),
+        subject: payload.subject,
+        message: payload.message,
+        status: "new",
+      });
+      return apiSuccess(record, 201);
+    } catch (storeErr) {
+      console.warn("[enquiry] email sent; JSON store write failed:", storeErr);
+      return apiSuccess(
+        {
+          id: `email-${Date.now()}`,
+          ...payload,
+          status: "sent",
+          createdAt: new Date().toISOString(),
+        },
+        201
+      );
     }
-
-    return apiSuccess(
-      {
-        id: `email-${Date.now()}`,
-        ...payload,
-        status: "sent",
-        createdAt: new Date().toISOString(),
-      },
-      201
-    );
   } catch (err: any) {
     console.error("[enquiry] submit failed:", err);
     return apiError(err.message || "Could not send your message. Please try again.");

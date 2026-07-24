@@ -32,7 +32,7 @@ function getSiteUrl() {
   return (
     process.env.SITE_URL ||
     process.env.NEXT_PUBLIC_SITE_URL ||
-    "http://13.50.4.113"
+    "https://www.sportsfoundry.in"
   ).replace(/\/$/, "");
 }
 

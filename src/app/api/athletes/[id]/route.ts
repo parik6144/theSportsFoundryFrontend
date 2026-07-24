@@ -1,14 +1,16 @@
 import { NextRequest } from "next/server";
-import { db, apiDbError } from "@/lib/db";
-import { apiError, apiSuccess, parseId } from "@/lib/api-response";
+import { apiDbError } from "@/lib/db";
+import { apiError, apiSuccess } from "@/lib/api-response";
+import { repoDelete, repoGet, repoUpdate } from "@/lib/collection-repo";
 import { prepareAthleteBody } from "@/lib/sanitize-record";
 
-export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function GET(
+  _req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
     const { id } = await params;
-    const recordId = parseId(id);
-    if (!recordId) return apiError("Not found", 404);
-    const record = await db.athlete.findUnique({ where: { id: recordId } });
+    const record = await repoGet("athletes", id);
     if (!record) return apiError("Not found", 404);
     return apiSuccess(record);
   } catch (err: any) {
@@ -16,28 +18,29 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
   }
 }
 
-export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function PUT(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
     const { id } = await params;
-    const recordId = parseId(id);
-    if (!recordId) return apiError("Not found", 404);
     const body = await req.json();
-    const record = await db.athlete.update({
-      where: { id: recordId },
-      data: prepareAthleteBody(body) as any,
-    });
+    const record = await repoUpdate("athletes", id, prepareAthleteBody(body) as Record<string, unknown>);
+    if (!record) return apiError("Not found", 404);
     return apiSuccess(record);
   } catch (err: any) {
     return apiDbError(err);
   }
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function DELETE(
+  _req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
     const { id } = await params;
-    const recordId = parseId(id);
-    if (!recordId) return apiError("Not found", 404);
-    await db.athlete.delete({ where: { id: recordId } });
+    const ok = await repoDelete("athletes", id);
+    if (!ok) return apiError("Not found", 404);
     return apiSuccess({ message: "Deleted" });
   } catch (err: any) {
     return apiDbError(err);

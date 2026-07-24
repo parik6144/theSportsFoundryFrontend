@@ -87,7 +87,7 @@ function LoadingState() {
   return (
     <div className="flex items-center justify-center py-12">
       <RefreshCw className="h-6 w-6 text-[#f4d35e] animate-spin" />
-      <span className="ml-2 text-sm text-gray-400">Loading from database...</span>
+      <span className="ml-2 text-sm text-gray-400">Loading from JSON store...</span>
     </div>
   );
 }
@@ -97,8 +97,10 @@ function ErrorState({ error, onRetry }: { error: string; onRetry: () => void }) 
     <div className="text-center py-12 max-w-lg mx-auto px-4">
       <p className="text-sm text-red-400 mb-2">⚠ {error}</p>
       <p className="text-xs text-gray-500 mb-3">
-        Public marketing pages do not need MySQL. Admin lists need a reachable database — use EC2 admin,
-        or remove <code className="text-gray-400">DATABASE_URL</code> from Vercel if it points at a private host.
+        Data is stored as JSON (local <code className="text-gray-400">data/*.json</code> in
+        development). On Vercel, create a Blob store and set{" "}
+        <code className="text-gray-400">BLOB_READ_WRITE_TOKEN</code>, and remove{" "}
+        <code className="text-gray-400">DATABASE_URL</code> if it is still set.
       </p>
       <button onClick={onRetry} className="px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-sm">Retry</button>
     </div>

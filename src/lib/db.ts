@@ -13,21 +13,21 @@ export const db =
 
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = db
 
-/** True when DATABASE_URL is set (EC2 admin). Public Vercel deploys should omit it. */
+/** True when DATABASE_URL is set (legacy MySQL). Prefer JSON store on Vercel. */
 export function isDatabaseConfigured(): boolean {
   return Boolean(process.env.DATABASE_URL?.trim())
 }
 
 /**
- * Turn Prisma / connection failures into a short admin-facing message.
- * Vercel cannot reach EC2 MySQL at 13.x:3306 unless the security group allows it.
+ * Turn store / Prisma failures into a short admin-facing message.
  */
 export function toApiDbError(err: unknown): string {
-  if (!isDatabaseConfigured()) {
-    return "Database is not configured on this host. Use the EC2 admin for Athletes, Teams, Academies, and Brands — or set a reachable DATABASE_URL."
+  const raw = err instanceof Error ? err.message : String(err ?? "Data store error")
+
+  if (/BLOB_READ_WRITE_TOKEN|No token|blob/i.test(raw) && !process.env.BLOB_READ_WRITE_TOKEN) {
+    return "JSON store needs BLOB_READ_WRITE_TOKEN on Vercel (Storage → Blob). Locally, data is written to data/*.json without a token."
   }
 
-  const raw = err instanceof Error ? err.message : String(err ?? "Database error")
   const unreachable =
     /Can't reach database server/i.test(raw) ||
     /P1001/i.test(raw) ||
@@ -35,7 +35,7 @@ export function toApiDbError(err: unknown): string {
     /ETIMEDOUT/i.test(raw)
 
   if (unreachable) {
-    return "Cannot reach MySQL (check DATABASE_URL host/port and EC2 security group for 3306). On Vercel, remove DATABASE_URL and manage data on EC2 admin instead."
+    return "Cannot reach MySQL. Remove DATABASE_URL on Vercel to use the JSON store (Blob), or fix DATABASE_URL."
   }
 
   return raw.replace(/^Invalid `[^`]+` invocation:?\s*/i, "").trim() || raw
