@@ -63,7 +63,7 @@ export const HUB_PAGE_IDS = [
   "community-hub",
 ] as const satisfies readonly PageId[];
 
-/** Pages available from the public site navigation. */
+/** Pages available from the public site navigation. Hub pages are intentionally hidden. */
 export const OPEN_PAGES: readonly PageId[] = [
   "home",
   "about",
@@ -73,7 +73,6 @@ export const OPEN_PAGES: readonly PageId[] = [
   "cookies",
   "services",
   ...SERVICE_PAGE_IDS,
-  ...HUB_PAGE_IDS,
 ] as const;
 
 export function isHubPage(page: PageId): page is (typeof HUB_PAGE_IDS)[number] {
@@ -438,19 +437,6 @@ export const NAV_GROUPS: { label: string; items: NavItem[] }[] = [
     items: [
       { id: "services", label: "All Services" },
       ...SERVICES.map((s) => ({ id: s.id, label: s.title })),
-    ],
-  },
-  {
-    label: "Hubs",
-    items: [
-      { id: "underprivileged-hub", label: "Underprivileged Initiative" },
-      { id: "athletes-hub", label: "Athletes Hub" },
-      { id: "teams-hub", label: "Teams Hub" },
-      { id: "academies-hub", label: "Academies Hub" },
-      { id: "brands-hub", label: "Brands & Partners" },
-      { id: "corporate-hub", label: "Corporate Sports" },
-      { id: "events-hub", label: "Events & Tournaments" },
-      { id: "community-hub", label: "Community" },
     ],
   },
 ];

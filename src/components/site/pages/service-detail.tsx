@@ -118,16 +118,10 @@ export function ServiceDetailPage({ serviceId }: { serviceId?: ServiceId }) {
                 </p>
                 <button
                   onClick={() => navigate("contact")}
-                  className="w-full btn-gold rounded-full px-5 py-3 text-sm font-semibold inline-flex items-center justify-center gap-2 mb-3"
+                  className="w-full btn-gold rounded-full px-5 py-3 text-sm font-semibold inline-flex items-center justify-center gap-2"
                 >
                   Send Enquiry
                   <ArrowRight className="h-4 w-4" />
-                </button>
-                <button
-                  onClick={() => navigate(service.hubId)}
-                  className="w-full btn-outline-gold rounded-full px-5 py-3 text-sm font-semibold"
-                >
-                  Open Hub
                 </button>
               </div>
 
