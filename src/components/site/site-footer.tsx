@@ -19,6 +19,15 @@ export function SiteFooter() {
     { label: "Contact", page: "contact" },
   ];
 
+  const hubLinks: { label: string; page: PageId }[] = [
+    { label: "Underprivileged Initiative", page: "underprivileged-hub" },
+    { label: "Athletes Hub", page: "athletes-hub" },
+    { label: "Teams Hub", page: "teams-hub" },
+    { label: "Academies Hub", page: "academies-hub" },
+    { label: "Brands & Partners", page: "brands-hub" },
+    { label: "Corporate Sports", page: "corporate-hub" },
+  ];
+
   return (
     <footer
       className="relative mt-auto border-t border-white/10 backdrop-blur-xl"
@@ -79,7 +88,7 @@ export function SiteFooter() {
         </div>
 
         {/* Middle: link columns */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 py-10 border-b border-white/10">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 py-10 border-b border-white/10">
           <div>
             <h5 className="text-xs uppercase tracking-wider text-[#f4d35e] font-semibold mb-3">
               Company
@@ -128,6 +137,33 @@ export function SiteFooter() {
                       }`}
                     >
                       {s.title}
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+          <div>
+            <h5 className="text-xs uppercase tracking-wider text-[#f4d35e] font-semibold mb-3">
+              Hubs
+            </h5>
+            <ul className="space-y-2">
+              {hubLinks.map((l) => {
+                const open = isOpen(l.page);
+                return (
+                  <li key={l.page}>
+                    <button
+                      type="button"
+                      onClick={() => open && navigate(l.page)}
+                      disabled={!open}
+                      title={open ? l.label : "Coming soon"}
+                      className={`text-sm text-left transition-colors ${
+                        open
+                          ? "text-muted-foreground hover:text-[#f4d35e]"
+                          : "text-muted-foreground/40 cursor-not-allowed line-through decoration-white/15"
+                      }`}
+                    >
+                      {l.label}
                     </button>
                   </li>
                 );

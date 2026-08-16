@@ -7,9 +7,10 @@ import { SERVICES, type ServiceId } from "@/lib/site-data";
 import { useNav } from "../nav-context";
 
 export function ServiceDetailPage({ serviceId }: { serviceId?: ServiceId }) {
-  const { navigate } = useNav();
+  const { navigate, isOpen } = useNav();
   const service = SERVICES.find((s) => s.id === serviceId) ?? SERVICES[0];
   const Icon = service.icon;
+  const hubOpen = isOpen(service.hubId);
 
   return (
     <div>
@@ -118,11 +119,19 @@ export function ServiceDetailPage({ serviceId }: { serviceId?: ServiceId }) {
                 </p>
                 <button
                   onClick={() => navigate("contact")}
-                  className="w-full btn-gold rounded-full px-5 py-3 text-sm font-semibold inline-flex items-center justify-center gap-2"
+                  className="w-full btn-gold rounded-full px-5 py-3 text-sm font-semibold inline-flex items-center justify-center gap-2 mb-3"
                 >
                   Send Enquiry
                   <ArrowRight className="h-4 w-4" />
                 </button>
+                {hubOpen && (
+                  <button
+                    onClick={() => navigate(service.hubId)}
+                    className="w-full btn-outline-gold rounded-full px-5 py-3 text-sm font-semibold"
+                  >
+                    Open Hub
+                  </button>
+                )}
               </div>
 
               {/* Other services */}
